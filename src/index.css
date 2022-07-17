@@ -1,0 +1,220 @@
+/* @import url('./public/fonts/LexendDeca-VariableFont_wght.ttf'); */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lexend Deca', sans-serif;
+}
+
+:root {
+  --white: #FFF;
+  --whitesmoke: #F9F9F9;
+  --light-grey: #ECECEC;
+  --grey: #C4C4C4;
+  --medium-grey: #A7A7A7;
+  --deep-grey: #343434;
+  --black: #000000;
+  --blue: #1B77F3;
+  --red: #CF3C3F;
+}
+
+main {
+  display: flex;
+}
+
+body {
+  background-color: var(--light-grey);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+form {
+  height: fit-content;
+  width: 40rem;
+  padding: 1rem 2rem 1rem 2rem;
+  border: 1px solid var(--black);
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: var(--black) 0px 0px 10px;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+form h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}
+
+.btn-close:focus-visible {
+  outline: none;
+  border-style: none;
+}
+
+.btn-close:focus-visible span {
+  background-color: var(--red);
+}
+
+.btn-close {
+  width: 3rem;
+  height: 3rem;
+  padding: 0.25rem;
+  border: none;
+  background-color: transparent;
+}
+
+.btn-close:hover span {
+  background-color: var(--red);
+}
+
+.btn-close span {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  height: 70%;
+  margin: auto;
+  background-color: var(--deep-grey);
+  border-radius: 100%;
+}
+
+.btn-close span div {
+  position: absolute;
+  width: 75%;
+  height: 0.2rem;
+  background-color: var(--white);
+  border-radius: 25px;
+}
+
+.btn-close span div:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.btn-close span div:nth-child(2) {
+  transform: rotate(-45deg);
+}
+
+label {
+  display: block;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+label input {
+  width: 100%;
+  background-color: var(--light-grey);
+  border: 2px solid rgba(0, 0, 0, 0);
+  border-radius: 5px;
+  outline: none;
+  font-size: 0.9em;
+  padding: 25px 10px 10px;
+  font-weight: 600;
+  color: var(--deep-grey);
+}
+
+label input:focus {
+  background-color: var(--whitesmoke);
+  border: 2px solid var(--deep-grey);
+}
+
+label span {
+  position: absolute;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--medium-grey);
+  margin: 20px;
+  cursor: text;
+  transition: all 200ms ease;
+}
+
+label .span-active {
+  font-size: 0.7em;
+  margin: 8px 10px;
+}
+
+.btn-submit {
+  display: flex;
+  justify-content: end;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  gap: 15px;
+}
+
+.btn-submit button:focus-visible {
+  outline: none;
+
+}
+
+.btn-submit button {
+  padding: 1rem;
+  background-color: var(--blue);
+  border: none;
+  border-radius: 5px;
+  color: var(--white);
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.btn-submit button:hover,
+.btn-submit button:focus {
+  background-color: var(--light-grey);
+  color: var(--blue);
+}
+
+.content-double-label {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-return {
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  color: var(--whitesmoke);
+  background-color: transparent;
+}
+
+.btn-return img {
+  position: absolute;
+  padding: 0.3rem;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.btn-return:hover {
+  filter: invert(75%) sepia(200%) saturate(10000%) hue-rotate(200deg) brightness(100%) contrast(100%);
+}
+
+
+.container-btn-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+@keyframes button-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.section-cad-cliente-pt1 {
+  display: block;
+}
+
+.section-cad-cliente-pt2 {
+  display: none;
+}
