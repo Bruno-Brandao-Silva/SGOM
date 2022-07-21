@@ -12,9 +12,10 @@ export default class Endereco {
     complemento?: string;
     id_cliente?: number;
 
-    constructor(id?: number, cep?: string, logradouro?: string, bairro?: string, cidade?: string,
-        estado?: string, numero?: string, complemento?: string, id_cliente?: number) {
+    constructor(id?: number, id_cliente?: number, cep?: string, logradouro?: string, bairro?: string, cidade?: string,
+        estado?: string, numero?: string, complemento?: string) {
         this.id = id;
+        this.id_cliente = id_cliente;
         this.cep = cep;
         this.logradouro = logradouro;
         this.bairro = bairro;
@@ -22,7 +23,6 @@ export default class Endereco {
         this.estado = estado;
         this.numero = numero;
         this.complemento = complemento;
-        this.id_cliente = id_cliente;
     }
 
     insertEndereco(endereco = this) {
@@ -38,7 +38,7 @@ export default class Endereco {
     getEndereco(endereco = this) {
         const db = database();
         const statement = db.prepare(`SELECT * FROM endereco WHERE id = ?`)
-        const info = statement.run(endereco.id)
+        const info = statement.all(endereco.id)[0]
         db.close();
         return info;
     }

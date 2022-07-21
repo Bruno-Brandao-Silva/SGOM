@@ -3,13 +3,15 @@ import database from './database'
 
 export default class Cliente {
     id?: number;
+    cpf: string;
     nome?: string;
     email?: string;
     contato_1?: string;
     contato_2?: string;
 
-    constructor(id?: number, nome?: string, email?: string, contato_1?: string, contato_2?: string) {
-        this.id = id || null;
+    constructor(id?: number, cpf?: string, nome?: string, email?: string, contato_1?: string, contato_2?: string) {
+        this.id = id;
+        this.cpf = cpf;
         this.nome = nome;
         this.email = email;
         this.contato_1 = contato_1;
@@ -20,8 +22,8 @@ export default class Cliente {
     insertCliente(cliente = this) {
         console.log(cliente)
         const db = database();
-        const statement = db.prepare(`INSERT INTO cliente (nome, email, contato_1, contato_2) VALUES (?, ?, ?, ?)`)
-        const info = statement.run(cliente.nome, cliente.email, cliente.contato_1, cliente.contato_2)
+        const statement = db.prepare(`INSERT INTO cliente (cpf, nome, email, contato_1, contato_2) VALUES (?, ?, ?, ?, ?)`)
+        const info = statement.run(cliente.cpf, cliente.nome, cliente.email, cliente.contato_1, cliente.contato_2)
         db.close();
         return info;
     }
@@ -44,8 +46,8 @@ export default class Cliente {
 
     updateCliente(cliente = this) {
         const db = database();
-        const statement = db.prepare(`UPDATE cliente SET nome = ?, email = ?, contato_1 = ?, contato_2 = ? WHERE id = ?`)
-        const info = statement.run(cliente.nome, cliente.email, cliente.contato_1, cliente.contato_2, cliente.id)
+        const statement = db.prepare(`UPDATE cliente SET cpf = ?, nome = ?, email = ?, contato_1 = ?, contato_2 = ? WHERE id = ?`)
+        const info = statement.run(cliente.cpf, cliente.nome, cliente.email, cliente.contato_1, cliente.contato_2, cliente.id)
         db.close();
         return info;
     }

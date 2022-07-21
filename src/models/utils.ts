@@ -20,6 +20,22 @@ const cpfRegex = (e: any) => {
         return e.target.value.substring(0, 14)
     }
 }
+
+const cepRegex = (e: any) => {
+    if (e.target.value.length <= 9 && e.target.value.length > 0) {
+        let temp = e.target.value
+        temp = temp.replace(/\D/g, '')
+        if (temp.length <= 5) {
+            temp = temp.replace(/^(\d{0,5})/g, '$1')
+        } else {
+            temp = temp.replace(/^(\d{5})(\d{0,3})/g, '$1-$2')
+        }
+        return temp
+    } else {
+        return e.target.value.substring(0, 9)
+    }
+}
+
 const phoneNumberRegex = (e: any) => {
     if (e.target.value.length < 16) {
         let temp = e.target.value
@@ -51,5 +67,5 @@ const InputsHandleFocusOut = ({ target }: { target: any }) => {
     }
 }
 
-const utils = { sleep, cpfRegex, phoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
+const utils = { sleep, cpfRegex, cepRegex, phoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
 export default utils

@@ -56,6 +56,7 @@ if (window.location.pathname.includes('formCadEndereco.html')) {
 
 */
 import './index.css';
+// import './public/images/back.svg'
 console.log('👋 This message is being logged by "script.js", included via webpack');
 
 import './app'

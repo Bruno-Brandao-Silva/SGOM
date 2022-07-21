@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import utils from "./../models/utils";
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function FormCadCliente() {
     const [cpf, setCpf] = React.useState("");
@@ -7,15 +8,46 @@ export default function FormCadCliente() {
     const [email, setEmail] = React.useState("");
     const [contato_1, setContato_1] = React.useState("");
     const [contato_2, setContato_2] = React.useState("");
-
-    // const formCadCliente = document.getElementById('formCadCliente') as any
+    const { id } = useParams();
+    useEffect(() => {
+        if (id) {
+            const inputs = document.getElementsByTagName('input');
+            const cliente = (window as any).api.Cliente.get(id);
+            let i = 0;
+            if (cliente.cpf) {
+                setCpf(cliente.cpf);
+                utils.InputsHandleFocus({ target: inputs[i] });
+            }
+            i++;
+            if (cliente.nome) {
+                setNome(cliente.nome);
+                utils.InputsHandleFocus({ target: inputs[i] });
+            }
+            i++;
+            if (cliente.email) {
+                setEmail(cliente.email);
+                utils.InputsHandleFocus({ target: inputs[i] });
+            }
+            i++;
+            if (cliente.contato_1) {
+                setContato_1(cliente.contato_1);
+                utils.InputsHandleFocus({ target: inputs[i] });
+            }
+            i++;
+            if (cliente.contato_2) {
+                setContato_2(cliente.contato_2);
+                utils.InputsHandleFocus({ target: inputs[i] });
+            }
+        }
+    }, []);
+    const navigate = useNavigate()
 
     return (<>
         <form id="formCadCliente" className="section-cad-cliente-pt1">
             <div id="close" className="container-btn-top">
                 <div></div>
                 <button type="button" className="btn-close" onClick={() => {
-                    // href="index.html"
+                    navigate('/')
                 }}>
                     <span>
                         <div></div>
@@ -23,7 +55,7 @@ export default function FormCadCliente() {
                     </span>
                 </button>
             </div>
-            <h1>Cadastro do Cliente</h1>
+            <h1>{id ? 'Editar Cliente' : 'Cadastrar do Cliente'}</h1>
             <label>
                 <span>CPF</span>
                 <input name="cpf" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} required pattern="\d{3}.\d{3}.\d{3}-\d{2}" value={cpf} onChange={e => setCpf(utils.cpfRegex(e))} />
@@ -56,19 +88,26 @@ export default function FormCadCliente() {
                         }
                         const data: any[] = []
                         for (let i = 0; i < formCadCliente.elements.length; i++) {
-                            if (formCadCliente.elements[i].name && formCadCliente.elements[i].name != 'cpf' && formCadCliente.elements[i].value != '') {
+                            if (formCadCliente.elements[i].name && formCadCliente.elements[i].value != '') {
                                 data.push(formCadCliente.elements[i].value)
                             }
                         }
-                        const cliente = (window as any).api.Cliente.cliente(undefined, ...data)
-                        const response = (window as any).api.Cliente.insert(cliente)
+                        let response
+                        if (!id) {
+                            const cliente = (window as any).api.Cliente.cliente(undefined, ...data)
+                            response = (window as any).api.Cliente.insert(cliente)
+                            navigate('/FormCadEndereco/' + response.id)
+                        } else {
+                            const cliente = (window as any).api.Cliente.cliente(id, ...data)
+                            response = (window as any).api.Cliente.update(cliente)
+                            navigate('/')
+                        }
                         console.log(response)
                         await utils.sleep(50)
-                        window.location.href = 'formCadEndereco.html'
                     } catch (error) {
                         console.log(error)
                     }
-                }}>CONTINUAR</button>
+                }}>{id ? 'SALVAR' : 'CONTINUAR'}</button>
             </div>
         </form>
     </>

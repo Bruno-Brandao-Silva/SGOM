@@ -16,11 +16,12 @@ const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 900,
     width: 1200,
+    thickFrame: true,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
     },
   });
-
+  mainWindow.maximize();
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
