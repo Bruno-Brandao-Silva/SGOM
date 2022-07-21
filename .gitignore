@@ -89,4 +89,4 @@ typings/
 out/
 
 # Database
-./database.db
+database.db
