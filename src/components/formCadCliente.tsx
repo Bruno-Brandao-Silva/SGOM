@@ -58,7 +58,17 @@ export default function FormCadCliente() {
             <h1>{id ? 'Editar Cliente' : 'Cadastrar do Cliente'}</h1>
             <label>
                 <span>CPF</span>
-                <input name="cpf" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} required pattern="\d{3}.\d{3}.\d{3}-\d{2}" value={cpf} onChange={e => setCpf(utils.cpfRegex(e))} />
+                <input name="cpf" id='cpf' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} required pattern="\d{3}.\d{3}.\d{3}-\d{2}" value={cpf} onChange={e => {
+                    setCpf(utils.cpfRegex(e))
+                    console.log(cpf)
+                    console.log(e.target.value.replace(/\D/g, '').length)
+                    console.log(utils.cpfValidator(e))
+                    if (!utils.cpfValidator(e)) {
+                        e.target.setCustomValidity("CPF inválido!");
+                    } else {
+                        e.target.setCustomValidity("");
+                    }
+                }} />
             </label>
             <label>
                 <span>NOME</span>
@@ -86,24 +96,17 @@ export default function FormCadCliente() {
                             formCadCliente.reportValidity()
                             return
                         }
-                        const data: any[] = []
-                        for (let i = 0; i < formCadCliente.elements.length; i++) {
-                            if (formCadCliente.elements[i].name && formCadCliente.elements[i].value != '') {
-                                data.push(formCadCliente.elements[i].value)
-                            }
-                        }
+
                         let response
                         if (!id) {
-                            const cliente = (window as any).api.Cliente.cliente(undefined, ...data)
+                            const cliente = (window as any).api.Cliente.cliente(undefined, cpf, nome, email, contato_1, contato_2)
                             response = (window as any).api.Cliente.insert(cliente)
                             navigate('/FormCadEndereco/' + response.id)
                         } else {
-                            const cliente = (window as any).api.Cliente.cliente(id, ...data)
+                            const cliente = (window as any).api.Cliente.cliente(id, cpf, nome, email, contato_1, contato_2)
                             response = (window as any).api.Cliente.update(cliente)
                             navigate('/')
                         }
-                        console.log(response)
-                        await utils.sleep(50)
                     } catch (error) {
                         console.log(error)
                     }

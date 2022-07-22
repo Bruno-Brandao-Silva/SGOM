@@ -21,6 +21,35 @@ const cpfRegex = (e: any) => {
     }
 }
 
+const cpfValidator = (e: any): boolean => {
+    let cpf = (e.target?.value!) ? e.target.value.replace(/\D/g, '').substring(0, 11) : e.replace(/\D/g, '')
+    console.log(cpf)
+    let digito_1 = 0
+    let digito_2 = 0
+    let peso = 10
+    if (cpf == '00000000000' || cpf == '11111111111' ||
+        cpf == '22222222222' || cpf == '33333333333' ||
+        cpf == '44444444444' || cpf == '55555555555' ||
+        cpf == '66666666666' || cpf == '77777777777' ||
+        cpf == '88888888888' || cpf == '99999999999') { return false }
+    if (cpf.length != 11) { return false }
+    for (let i = 0; i < 9; i++) {
+        digito_1 = digito_1 + parseInt(cpf[i]) * peso;
+        peso--;
+    }
+    digito_1 = digito_1 * 10;
+    peso = 11;
+    for (let i = 0; i < 10; i++) {
+        digito_2 = digito_2 + parseInt(cpf[i]) * peso;
+        peso--;
+    }
+    digito_2 = digito_2 * 10;
+    if (parseInt(cpf[9]) == (digito_1 % 11) && parseInt(cpf[10]) == (digito_2 % 11)) {
+        return true
+    } else {
+        return false
+    }
+}
 const cepRegex = (e: any) => {
     if (e.target.value.length <= 9 && e.target.value.length > 0) {
         let temp = e.target.value
@@ -67,5 +96,5 @@ const InputsHandleFocusOut = ({ target }: { target: any }) => {
     }
 }
 
-const utils = { sleep, cpfRegex, cepRegex, phoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
+const utils = { sleep, cpfRegex, cpfValidator, cepRegex, phoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
 export default utils

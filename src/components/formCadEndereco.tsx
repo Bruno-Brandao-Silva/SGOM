@@ -102,11 +102,10 @@ export default function FormCadEndereco() {
                 </label>
             </div>
             <div className="btn-submit">
-                {id ? <></> : <button id="salvar" type="submit" onClick={submitForm}>SALVAR</button>}
-                <button type="submit" onClick={() => {
+                {id ? <></> : <button id="salvar" type="button" onClick={submitForm}>SALVAR</button>}
+                <button type="button" onClick={() => {
                     try {
                         submitForm();
-                        id ? navigate('/') : navigate('/');
                     } catch (e) {
                         console.log(e);
                     }
@@ -114,7 +113,7 @@ export default function FormCadEndereco() {
             </div>
         </form>
     </>)
-    async function submitForm() {
+    function submitForm() {
         const formCadEndereco = document.getElementById('formCadEndereco') as any
         try {
             if (!formCadEndereco.checkValidity()) {
@@ -127,7 +126,6 @@ export default function FormCadEndereco() {
                     data[formCadEndereco.elements[i].name] = (formCadEndereco.elements[i].value)
                 }
             }
-            console.log(data)
             let response
             if (!id) {
                 const endereco = (window as any).api.Endereco.endereco(undefined, id_cliente, data['cep'], data['logradouro'], data['bairro'], data['cidade'], data['estado'], data['numero'], data['complemento'])
@@ -135,9 +133,8 @@ export default function FormCadEndereco() {
             } else {
                 const endereco = (window as any).api.Endereco.endereco(id, id_cliente, data['cep'], data['logradouro'], data['bairro'], data['cidade'], data['estado'], data['numero'], data['complemento'])
                 response = (window as any).api.Endereco.update(endereco)
+
             }
-            console.log(response)
-            await utils.sleep(50)
         } catch (error) {
             throw new Error(error)
         }
