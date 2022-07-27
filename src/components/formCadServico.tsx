@@ -4,7 +4,6 @@ import utils from "../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
 import Cliente from "../models/cliente";
 import UnitCliente from "./unitCliente";
-import Servico from "../models/servico";
 
 export default function FormCadServiço() {
     const date = new Date()
@@ -21,8 +20,8 @@ export default function FormCadServiço() {
     const navigate = useNavigate();
     const { id_cliente, id } = useParams();
     const clientes = (window as any).api.Cliente.getAll();
-    const servico = new Servico(1, 2, 'realizado...', 'detalhes...', 5, 2.25);
-    console.log(servico)
+    // const servico = new Servico(1, 2, 'realizado...', 'detalhes...', 5, 2.25);
+    // console.log(servico)
     // console.log(clientes)
     return (<>
         <form id="formCadEndereco" className="section-cad-cliente-pt1">

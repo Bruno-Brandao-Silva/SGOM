@@ -21,7 +21,7 @@ CREATE TABLE ordem_servico (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, placa
 
 -- Table: servico
 DROP TABLE IF EXISTS servico;
-CREATE TABLE servico (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_servico REFERENCES ordem_servico (id) NOT NULL, detalhes STRING NOT NULL, preco STRING NOT NULL, quantidade INTEGER NOT NULL);
+CREATE TABLE servico (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_servico REFERENCES ordem_servico (id) NOT NULL, servico STRING NOT NULL, detalhes STRING NOT NULL, precoUnitario NUMERIC NOT NULL, quantidade NUMERIC NOT NULL);
 
 -- Table: veiculo
 DROP TABLE IF EXISTS veiculo;
