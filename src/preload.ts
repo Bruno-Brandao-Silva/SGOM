@@ -1,8 +1,9 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge } from "electron";
 import Cliente from "./models/cliente";
 import Endereco from "./models/endereco";
+import Veiculo from "./models/veiculo";
+import Ordem_Servico from "./models/ordem_servico";
+import Servico from "./models/servico";
 
 contextBridge.exposeInMainWorld('api', {
     Cliente: {
@@ -22,5 +23,30 @@ contextBridge.exposeInMainWorld('api', {
         insert: (endereco: Endereco) => new Endereco().insertEndereco(endereco),
         update: (endereco: Endereco) => new Endereco().updateEndereco(endereco),
         delete: (endereco: Endereco) => new Endereco().deleteEndereco(endereco)
+    },
+    Veiculo: {
+        veiculo: (placa?: string, id_cliente?: number, marca?: string, modelo?: string, cor?: string,
+            ano?: number, km?: number) =>
+            new Veiculo(placa, id_cliente, marca, modelo, cor, ano, km),
+        get: (placa: string) => new Veiculo(placa).getVeiculo(),
+        insert: (veiculo: Veiculo) => new Veiculo().insertVeiculo(veiculo),
+        update: (veiculo: Veiculo) => new Veiculo().updateVeiculo(veiculo),
+        delete: (veiculo: Veiculo) => new Veiculo().deleteVeiculo(veiculo)
+    },
+    Ordem_Servico: {
+        ordem_servico: (id?: number, placa?: string, id_cliente?: number, data?: string) =>
+            new Ordem_Servico(id, placa, id_cliente, data),
+        get: (id: number) => new Ordem_Servico(id).getOrdem_Servico(),
+        insert: (ordem_servico: Ordem_Servico) => new Ordem_Servico().insertOrdem_Servico(ordem_servico),
+        update: (ordem_servico: Ordem_Servico) => new Ordem_Servico().updateOrdem_Servico(ordem_servico),
+        delete: (ordem_servico: Ordem_Servico) => new Ordem_Servico().deleteOrdem_Servico(ordem_servico)
+    },
+    Servico: {
+        servico: (id?: number, id_servico?: number, servico?: string, detalhes?: string, quantidade?: number, precoUnitario?: number) =>
+            new Servico(id, id_servico, servico, detalhes, quantidade, precoUnitario),
+        get: (id: number) => new Servico(id).getServico(),
+        insert: (servico: Servico) => new Servico().insertServico(servico),
+        update: (servico: Servico) => new Servico().updateServico(servico),
+        delete: (servico: Servico) => new Servico().deleteServico(servico)
     }
 })

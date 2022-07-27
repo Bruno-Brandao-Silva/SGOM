@@ -10,15 +10,15 @@ export default class Veiculo {
     km?: number;
     id_cliente?: number;
 
-    constructor(placa?: string, marca?: string, modelo?: string, cor?: string,
-        ano?: number, km?: number, id_cliente?: number) {
+    constructor(placa?: string, id_cliente?: number, marca?: string, modelo?: string, cor?: string,
+        ano?: number, km?: number) {
         this.placa = placa;
+        this.id_cliente = id_cliente;
         this.marca = marca;
         this.modelo = modelo;
         this.cor = cor;
         this.ano = ano;
         this.km = km;
-        this.id_cliente = id_cliente;
     }
 
     insertVeiculo(veiculo = this) {
