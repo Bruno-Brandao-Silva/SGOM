@@ -38,6 +38,14 @@ export default class Veiculo {
         return info;
     }
 
+    getAllByCliente(id_cliente: number): Veiculo[] {
+        const db = database();
+        const statement = db.prepare(`SELECT * FROM veiculo WHERE id_cliente = ?`)
+        const info = statement.all(id_cliente)
+        db.close();
+        return info;
+    }
+
     updateVeiculo(veiculo = this) {
         const db = database();
         const statement = db.prepare(`UPDATE veiculo SET id_cliente= ?, marca = ?, modelo = ?, cor = ?, ano = ?, km = ? WHERE placa = ?`)

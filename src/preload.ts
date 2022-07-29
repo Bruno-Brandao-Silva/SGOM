@@ -20,6 +20,7 @@ contextBridge.exposeInMainWorld('api', {
             estado?: string, numero?: string, complemento?: string) =>
             new Endereco(id, id_cliente, cep, logradouro, bairro, cidade, estado, numero, complemento),
         get: (id: number) => new Endereco(id).getEndereco(),
+        getAllByCliente: (id_cliente: number) => new Endereco().getAllByCliente(id_cliente),
         insert: (endereco: Endereco) => new Endereco().insertEndereco(endereco),
         update: (endereco: Endereco) => new Endereco().updateEndereco(endereco),
         delete: (endereco: Endereco) => new Endereco().deleteEndereco(endereco)
@@ -28,14 +29,15 @@ contextBridge.exposeInMainWorld('api', {
         veiculo: (placa?: string, id_cliente?: number, marca?: string, modelo?: string, cor?: string,
             ano?: number, km?: number) =>
             new Veiculo(placa, id_cliente, marca, modelo, cor, ano, km),
+        getAllByCliente: (id_cliente: number): Veiculo[] => new Veiculo().getAllByCliente(id_cliente),
         get: (placa: string) => new Veiculo(placa).getVeiculo(),
         insert: (veiculo: Veiculo) => new Veiculo().insertVeiculo(veiculo),
         update: (veiculo: Veiculo) => new Veiculo().updateVeiculo(veiculo),
         delete: (veiculo: Veiculo) => new Veiculo().deleteVeiculo(veiculo)
     },
     Ordem_Servico: {
-        ordem_servico: (id?: number, placa?: string, id_cliente?: number, data?: string) =>
-            new Ordem_Servico(id, placa, id_cliente, data),
+        ordem_servico: (id?: number, placa?: string, km?: number, id_cliente?: number, data?: string) =>
+            new Ordem_Servico(id, placa, km, id_cliente, data),
         get: (id: number) => new Ordem_Servico(id).getOrdem_Servico(),
         insert: (ordem_servico: Ordem_Servico) => new Ordem_Servico().insertOrdem_Servico(ordem_servico),
         update: (ordem_servico: Ordem_Servico) => new Ordem_Servico().updateOrdem_Servico(ordem_servico),

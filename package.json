@@ -1,9 +1,10 @@
 {
   "name": "sgom",
-  "productName": "sgom",
+  "productName": "SGOM",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
+  "icon": "C:/SGOM/src/public/images/favicon",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -19,12 +20,15 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "C:/SGOM/src/public/images/favicon"
+      },
+      
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "sgom"
+            "name": "SGOM"
           }
         },
         {

@@ -17,7 +17,7 @@ CREATE TABLE endereco (cep STRING (9) NOT NULL, logradouro STRING NOT NULL, bair
 
 -- Table: ordem_servico
 DROP TABLE IF EXISTS ordem_servico;
-CREATE TABLE ordem_servico (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, placa REFERENCES veiculo (placa) NOT NULL, id_cliente REFERENCES cliente (id) NOT NULL, data DATE NOT NULL);
+CREATE TABLE ordem_servico (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, placa REFERENCES veiculo (placa) NOT NULL, km DOUBLE, id_cliente REFERENCES cliente (id) NOT NULL, data DATE NOT NULL);
 
 -- Table: servico
 DROP TABLE IF EXISTS servico;

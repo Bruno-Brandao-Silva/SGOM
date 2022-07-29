@@ -28,7 +28,7 @@ export default class Cliente {
         return info;
     }
 
-    getCliente(cliente = this) {
+    getCliente(cliente = this): Cliente {
         const db = database();
         const statement = db.prepare(`SELECT * FROM cliente WHERE id = ?`)
         const info = statement.all([cliente.id])[0]
@@ -36,7 +36,7 @@ export default class Cliente {
         return info;
     }
 
-    getAllCliente() {
+    getAllCliente(): Cliente[] {
         const db = database();
         const statement = db.prepare(`SELECT * FROM cliente`)
         const info = statement.all()

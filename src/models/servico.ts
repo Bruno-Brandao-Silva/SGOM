@@ -29,7 +29,7 @@ export default class Servico {
         return info;
     }
 
-    getServico(servico = this) {
+    getServico(servico = this): Servico {
         const db = database();
         const statement = db.prepare(`SELECT * FROM servico WHERE id = ?`)
         const info = statement.all(servico.id)[0]

@@ -35,14 +35,20 @@ export default class Endereco {
         return info;
     }
 
-    getEndereco(endereco = this) {
+    getEndereco(endereco = this): Endereco {
         const db = database();
         const statement = db.prepare(`SELECT * FROM endereco WHERE id = ?`)
         const info = statement.all(endereco.id)[0]
         db.close();
         return info;
     }
-
+    getAllByCliente(id_cliente: number): Endereco[] {
+        const db = database();
+        const statement = db.prepare(`SELECT * FROM endereco WHERE id_cliente = ?`)
+        const info = statement.all(id_cliente)
+        db.close();
+        return info;
+    }
     updateEndereco(endereco = this) {
         const db = database();
         const statement = db.prepare(`UPDATE endereco SET id_cliente= ?, cep = ?, logradouro = ?, bairro = ?,

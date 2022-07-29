@@ -4,27 +4,82 @@ import utils from "../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
 import Cliente from "../models/cliente";
 import UnitCliente from "./unitCliente";
+import Veiculo from "../models/veiculo";
 
 export default function FormCadServiço() {
+    const navigate = useNavigate();
+    const { id_cliente, id } = useParams();
+
     const date = new Date()
     let dataAtual = date.toLocaleDateString()
     dataAtual = dataAtual.replace(/^(\d{2})\/(\d{2})\/(\d{4})/g, '$3-$2-$1')
-    const [cliente, setCliente] = React.useState("");
     const [data, setData] = React.useState(dataAtual);
+
     const [marca, setMarca] = React.useState("");
     const [modelo, setModelo] = React.useState("");
-    const [placa, setPlaca] = React.useState("");
+    const [placa, setPlaca] = React.useState(useParams().placa || "");
     const [cor, setCor] = React.useState("");
     const [ano, setAno] = React.useState("");
     const [km, setKm] = React.useState("");
-    const navigate = useNavigate();
-    const { id_cliente, id } = useParams();
-    const clientes = (window as any).api.Cliente.getAll();
-    // const servico = new Servico(1, 2, 'realizado...', 'detalhes...', 5, 2.25);
-    // console.log(servico)
-    // console.log(clientes)
+
+    const [quantidadeServicos, setQuantidadeServicos] = React.useState(0);
+    const [servico, setServico] = React.useState<string[]>([]);
+    const [detalhes, setDetalhes] = React.useState<string[]>([]);
+    const [precoUnitario, setPrecoUnitario] = React.useState<string[]>([]);
+    const [quantidade, setQuantidade] = React.useState<string[]>([]);
+
+    const cliente = (window as any).api.Cliente.get(id_cliente) as Cliente;
+    const veiculos = (window as any).api.Veiculo.getAllByCliente(id_cliente) as Veiculo[];
+
+    const inputs = document.getElementsByTagName('input');
+    useEffect(() => {
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].value != '') {
+                utils.InputsHandleFocus({ target: inputs[i] });
+            }
+        }
+    }, []);
+
+    const servicosForm: JSX.Element[] = []
+    for (let i = 0; i < quantidadeServicos; i++) {
+        servicosForm.push(<div key={i} className="content-double-label">
+            <label>
+                <span>SERVIÇO</span>
+                <input name="servico" list="servico" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={servico[i]} onChange={e => {
+                    let temp = servico;
+                    temp[i] = e.target.value;
+                    setServico(temp)
+                }} required />
+            </label>
+            <label>
+                <span>DETALHES</span>
+                <input name="detalhes" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={detalhes[i]} onChange={e => {
+                    let temp = detalhes;
+                    temp[i] = e.target.value;
+                    setDetalhes(temp)
+                }} required />
+            </label>
+            <label>
+                <span>QUANTIDADE</span>
+                <input name="quantidade" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={quantidade[i]} onChange={e => {
+                    let temp = quantidade
+                    temp[i] = e.target.value;
+                    setQuantidade(temp)
+                }} required />
+            </label>
+            <label>
+                <span>PREÇO UNITÁRIO</span>
+                <input name="precoUnitario" type="number" step='0.01' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={precoUnitario[i]} onChange={e => {
+                    let temp = precoUnitario
+                    temp[i] = e.target.value;
+                    setPrecoUnitario(temp)
+                }} required />
+            </label>
+        </div>)
+    }
+
     return (<>
-        <form id="formCadEndereco" className="section-cad-cliente-pt1">
+        <form id="formCadServico" >
             <div className="container-btn-top">
                 <div></div>
                 <button type="button" className="btn-close" onClick={() => navigate('/')}>
@@ -34,22 +89,22 @@ export default function FormCadServiço() {
                     </span>
                 </button>
             </div>
-            <h1>{id ? 'Editar Ordem de Serviço' : 'Cadastrar Ordem de Serviço'}</h1>
+            <h1>{'Cadastrar Ordem de Serviço'}</h1>
             <div className="content-double-label">
                 <label>
                     <span>CLIENTE</span>
-                    <input name="cliente" list="cliente" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={cliente} onChange={e => setCliente(e.target.value)} required />
-                    <datalist id="cliente" onClick={e => { console.log('afs') }}>
-                        {clientes.map((cliente: Cliente) => {
-                            return <option key={cliente.id} onClick={(e) => { console.log('OBA' + e) }} value={cliente.nome}>{cliente.cpf}</option>
-                        })}
-                    </datalist>
+                    <input name="cliente" list="cliente" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={cliente.nome} onChange={() => { }} disabled required />
+
                 </label>
                 <label>
-                    <span className="span-active">DATA</span>
-                    <input name="data" type="date" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={data} onChange={e => setData(e.target.value)} required />
+                    <span>CPF</span>
+                    <input name="cpf" list="cpf" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={cliente.cpf} onChange={() => { }} disabled required />
                 </label>
             </div>
+            <label>
+                <span className="span-active">DATA</span>
+                <input name="data" type="date" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={data} onChange={e => setData(e.target.value)} required />
+            </label>
             <div className="content-double-label">
                 <label>
                     <span>MARCA</span>
@@ -67,7 +122,29 @@ export default function FormCadServiço() {
             <div className="content-double-label">
                 <label>
                     <span>PLACA</span>
-                    <input name="placa" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={placa} onChange={e => setPlaca(e.target.value)} required />
+                    <input name="placa" list="placa" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={placa} onChange={async e => {
+                        setPlaca(e.target.value)
+                        veiculos.forEach(veiculo => {
+                            if (veiculo.placa == e.target.value) {
+                                setMarca(veiculo.marca || "")
+                                setModelo(veiculo.modelo || "")
+                                setCor(veiculo.cor || "")
+                                setAno(veiculo.ano.toString() || "")
+                            }
+                        })
+                        await utils.sleep(10)
+                        for (let i = 0; i < inputs.length; i++) {
+                            if (inputs[i].value != '') {
+                                utils.InputsHandleFocus({ target: inputs[i] });
+                            }
+                        }
+
+                    }} required />
+                    <datalist id="placa" >
+                        {veiculos.map((veiculo, index: number) => {
+                            return <option key={index} value={veiculo.placa}></option>
+                        })}
+                    </datalist>
                 </label>
                 <label>
                     <span>ANO</span>
@@ -78,36 +155,73 @@ export default function FormCadServiço() {
                     <input name="km" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={km} onChange={e => setKm(e.target.value)} required />
                 </label>
             </div>
+            <div>
+                <div >
+                    {servicosForm}
+                </div>
+            </div>
             <div className="btn-submit">
                 <button id="pt1" type="button" onClick={async () => {
-                    console.log(dataAtual)
-                    // const formCadCliente = document.getElementById('formCadCliente') as any
-                    // try {
-                    //     if (!formCadCliente.checkValidity()) {
-                    //         formCadCliente.reportValidity()
-                    //         return
-                    //     }
+                    const formCadServico = document.getElementById('formCadServico') as any
+                    try {
+                        if (!formCadServico.checkValidity()) {
+                            formCadServico.reportValidity()
+                            return
+                        }
+                        let response
+                        if (!id) {
+                            let include = false
+                            if (veiculos.length > 0) {
+                                veiculos.forEach(veiculo => {
+                                    if (veiculo.placa == placa) {
+                                        include = true
+                                    }
+                                })
+                            }
+                            const veiculo = new (window as any).api.Veiculo.veiculo(placa, id_cliente, marca, modelo, cor, ano, km)
+                            const veiculoR = !include ? (window as any).api.Veiculo.insert(veiculo) : (window as any).api.Veiculo.update(veiculo)
+                            console.log(veiculoR)
+                            const servicoTemp = (window as any).api.Ordem_Servico.ordem_servico(undefined, placa, km, id_cliente, data)
+                            const servicoR = (window as any).api.Ordem_Servico.insert(servicoTemp)
+                            console.log(servicoR)
+                            for (let i = 0; i < quantidadeServicos; i++) {
+                                console.log(servico[i], detalhes[i], quantidade[i], precoUnitario[i])
+                                const servicoRealizado = (window as any).api.Servico.servico(undefined, servicoR.lastInsertRowid, servico[i], detalhes[i], quantidade[i], precoUnitario[i])
+                                const servicoRealizadoR = (window as any).api.Servico.insert(servicoRealizado)
+                                console.log(servicoRealizadoR)
+                            }
 
-                    //     let response
-                    //     if (!id) {
-                    //         const cliente = (window as any).api.Cliente.cliente(undefined, cpf, nome, email, contato_1, contato_2)
-                    //         response = (window as any).api.Cliente.insert(cliente)
-                    //         navigate('/FormCadEndereco/' + response.id)
-                    //     } else {
-                    //         const cliente = (window as any).api.Cliente.cliente(id, cpf, nome, email, contato_1, contato_2)
-                    //         response = (window as any).api.Cliente.update(cliente)
-                    //         navigate('/')
-                    //     }
-                    // } catch (error) {
-                    //     console.log(error)
-                    // }
-                }}>{1 ? 'SALVAR' : 'CONTINUAR'}</button>
+                            alert('Ordem de Serviço cadastrada com sucesso!')
+                            // navigate('/FormCadEndereco/' + response.id)
+                        } else {
+                            // const servico = (window as any).api.Ordem_Servico.ordem_servico(id, cpf, nome, email, contato_1, contato_2)
+                            // response = (window as any).api.Cliente.update(cliente)
+                            // navigate('/')
+                        }
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }}>SALVAR</button>
+                <button type='button' onClick={() => {
+                    setQuantidadeServicos(quantidadeServicos + 1)
+                }}>ADD</button>
+                <button type='button' onClick={() => {
+                    if (quantidadeServicos > 0) {
+                        setQuantidadeServicos(quantidadeServicos - 1)
+                        servico.splice(quantidadeServicos, 1)
+                        setServico(servico)
+                        detalhes.splice(quantidadeServicos, 1)
+                        setDetalhes(detalhes)
+                        quantidade.splice(quantidadeServicos, 1)
+                        setQuantidade(quantidade)
+                        precoUnitario.splice(quantidadeServicos, 1)
+                        setPrecoUnitario(precoUnitario)
+                    }
+                }}>SUB</button>
+                <button type='button' onClick={() => {
+                    console.log(servico, detalhes, quantidade, precoUnitario)
+                }}>console.log</button>
             </div>
         </form>
-        <div>
-            {clientes!.map((cliente: Cliente, index: number) => {
-                return <UnitCliente key={index} cliente={cliente} />
-            })}
-        </div>
     </>);
 }

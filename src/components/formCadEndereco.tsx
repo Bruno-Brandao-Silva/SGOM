@@ -59,7 +59,7 @@ export default function FormCadEndereco() {
         <form id="formCadEndereco" className="section-cad-cliente-pt1">
             <div className="container-btn-top">
                 {!id ? <button className="btn-return" onClick={() => { navigate(`/FormCadEndereco/${id}`) }}>
-                    <img src="./public/images/back.svg" alt="Voltar" />
+                    <img src="../public/images/back.svg" alt="Voltar" />
                 </button> : <div></div>}
                 <button type="button" className="btn-close" onClick={() => navigate('/')}>
                     <span>
