@@ -31,7 +31,13 @@ export default class Ordem_Servico {
         db.close();
         return info;
     }
-
+    getAllOrdem_Servico(): Ordem_Servico[] {
+        const db = database();
+        const statement = db.prepare(`SELECT * FROM ordem_servico`)
+        const info = statement.all()
+        db.close();
+        return info;
+    }
     updateOrdem_Servico(ordem_servico = this) {
         const db = database();
         const statement = db.prepare(`UPDATE ordem_servico SET placa = ?, km = ?, id_cliente= ?, data = ? WHERE id = ?`)

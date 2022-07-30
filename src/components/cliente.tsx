@@ -8,9 +8,11 @@ export default function Cliente() {
     const cliente = (window as any).api.Cliente.get(id);
     const enderecos = (window as any).api.Endereco.getAllByCliente(id) as Endereco[];
     return (<>
-        <div className="todos-clientes">
+        <div className="todos">
             <div id="close" className="container-btn-top">
-                <div></div>
+                <button className="btn-return" onClick={() => { navigate(-1) }}>
+                    <img src="../public/images/back.svg" alt="Voltar" />
+                </button>
                 <button type="button" className="btn-close" onClick={() => {
                     navigate('/')
                 }}>
@@ -21,16 +23,18 @@ export default function Cliente() {
                 </button>
             </div>
             <h1 className="index-h1">CLIENTE</h1>
-                <Link to={`/FormCadServico/${id}`}>ADICIONAR SERVIÇO</Link>
-            <div className="todos-clientes-container">
-                {<div className="todos-clientes-sub-container">
+            <Link to={`/FormCadServico/${id}`}>ADICIONAR SERVIÇO</Link>
+            <Link to={`/FormCadVeiculo/${id}/1231213121`}>ADICIONAR VEíCULO</Link>
+
+            <div className="todos-container">
+                {<div className="todos-sub-container">
                     <h1>{cliente.nome}</h1>
                     <h3>{cliente.cpf}</h3>
                     <p>{cliente.email}</p>
                     <p>{cliente.contato_1}</p>
                     <p>{cliente.contato_2}</p>
                 </div>}
-                {enderecos.map((endereco, index: number) => (<div key={index} className="todos-clientes-sub-container">
+                {enderecos.map((endereco, index: number) => (<div key={index} className="todos-sub-container">
                     <p>{endereco.logradouro}</p>
                     <p>{endereco.complemento}</p>
                     <p>{endereco.bairro}</p>

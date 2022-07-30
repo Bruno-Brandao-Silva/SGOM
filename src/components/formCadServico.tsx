@@ -3,13 +3,15 @@ import React, { useEffect } from "react";
 import utils from "../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
 import Cliente from "../models/cliente";
-import UnitCliente from "./unitCliente";
 import Veiculo from "../models/veiculo";
+import Ordem_Servico from "../models/ordem_servico";
+import Servico from "../models/servico";
 
 export default function FormCadServiço() {
     const navigate = useNavigate();
     const { id_cliente, id } = useParams();
-
+    const editOrdemServico = (window as any).api.Ordem_Servico.get(id) as Ordem_Servico;
+    const editServico = (window as any).api.Servico.getAllByOrdem_Servico(Number(id)) as Servico[];
     const date = new Date()
     let dataAtual = date.toLocaleDateString()
     dataAtual = dataAtual.replace(/^(\d{2})\/(\d{2})\/(\d{4})/g, '$3-$2-$1')
@@ -22,22 +24,53 @@ export default function FormCadServiço() {
     const [ano, setAno] = React.useState("");
     const [km, setKm] = React.useState("");
 
-    const [quantidadeServicos, setQuantidadeServicos] = React.useState(0);
+    const [quantidadeServicos, setQuantidadeServicos] = React.useState(editServico.length || 0);
     const [servico, setServico] = React.useState<string[]>([]);
     const [detalhes, setDetalhes] = React.useState<string[]>([]);
     const [precoUnitario, setPrecoUnitario] = React.useState<string[]>([]);
     const [quantidade, setQuantidade] = React.useState<string[]>([]);
 
-    const cliente = (window as any).api.Cliente.get(id_cliente) as Cliente;
-    const veiculos = (window as any).api.Veiculo.getAllByCliente(id_cliente) as Veiculo[];
-
+    const cliente = (window as any).api.Cliente.get(id !== undefined ? editOrdemServico.id_cliente : id_cliente) as Cliente;
+    const veiculos = (window as any).api.Veiculo.getAllByCliente(id !== undefined ? editOrdemServico.id_cliente : id_cliente) as Veiculo[];
     const inputs = document.getElementsByTagName('input');
     useEffect(() => {
-        for (let i = 0; i < inputs.length; i++) {
-            if (inputs[i].value != '') {
-                utils.InputsHandleFocus({ target: inputs[i] });
+        const sF = async () => {
+            veiculos.forEach(veiculo => {
+                if (veiculo.placa == editOrdemServico.placa) {
+                    setPlaca(veiculo.placa);
+                    setMarca(veiculo.marca || "")
+                    setModelo(veiculo.modelo || "")
+                    setCor(veiculo.cor || "")
+                    setAno(veiculo.ano.toString() || "")
+
+                }
+            })
+            setKm(editOrdemServico.km.toString() || "")
+            setData(editOrdemServico.data.toString() || "")
+        }
+        if (id) {
+            const prom = sF()
+            prom.then(() => {
+                for (let i = 0; i < editServico.length; i++) {
+                    setServico(servico => [...servico, editServico[i].servico.toString()])
+                    setDetalhes(detalhes => [...detalhes, editServico[i].detalhes])
+                    setPrecoUnitario(precoUnitario => [...precoUnitario, editServico[i].precoUnitario.toString()])
+                    setQuantidade(quantidade => [...quantidade, editServico[i].quantidade.toString()])
+                }
+                for (let i = 0; i < inputs.length; i++) {
+                    if (inputs[i].value != '') {
+                        utils.InputsHandleFocus({ target: inputs[i] });
+                    }
+                }
+            })
+        } else {
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i].value != '') {
+                    utils.InputsHandleFocus({ target: inputs[i] });
+                }
             }
         }
+
     }, []);
 
     const servicosForm: JSX.Element[] = []
@@ -81,7 +114,9 @@ export default function FormCadServiço() {
     return (<>
         <form id="formCadServico" >
             <div className="container-btn-top">
-                <div></div>
+                <button className="btn-return" onClick={() => { navigate(-1) }}>
+                    <img src="../public/images/back.svg" alt="Voltar" />
+                </button>
                 <button type="button" className="btn-close" onClick={() => navigate('/')}>
                     <span>
                         <div></div>

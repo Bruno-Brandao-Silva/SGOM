@@ -33,7 +33,14 @@ export default class Veiculo {
     getVeiculo(veiculo = this) {
         const db = database();
         const statement = db.prepare(`SELECT * FROM veiculo WHERE placa = ?`)
-        const info = statement.all(veiculo.placa)
+        const info = statement.all(veiculo.placa)[0]
+        db.close();
+        return info;
+    }
+    getAllVeiculo(): Veiculo[] {
+        const db = database();
+        const statement = db.prepare(`SELECT * FROM veiculo`)
+        const info = statement.all()
         db.close();
         return info;
     }

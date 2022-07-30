@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cliente from "../models/cliente";
-export default function todosClientes() {
+import Veiculo from "../models/veiculo";
+export default function todosVeiculos() {
     const navigate = useNavigate();
-    const clientes = (window as any).api.Cliente.getAll() as Cliente[];
+    const veiculos = (window as any).api.Veiculo.getAll() as Veiculo[];
     return (<>
         <div className="todos">
             <div id="close" className="container-btn-top">
@@ -18,16 +18,15 @@ export default function todosClientes() {
                 </button>
             </div>
             <h1 className="index-h1">TODOS OS CLIENTES</h1>
-            <Link to='/FormCadCliente'><img src='../public/images/favicon.png'></img><span>CADASTRAR CLIENTE</span></Link>
             <div className="todos-container">
-                {clientes.map((cliente, index: number) =>
-                (<Link key={index} to={`/Cliente/${cliente.id}`} className="todos-a">
+                {veiculos.map((veiculo, index: number) =>
+                (<Link key={index} to={`/FormCadVeiculo/${veiculo.id_cliente}/${veiculo.placa}`} className="todos-a">
                     <div className="todos-sub-container">
-                        <h1>{cliente.nome}</h1>
-                        <h3>{cliente.cpf}</h3>
-                        <p>{cliente.email}</p>
-                        <p>{cliente.contato_1}</p>
-                        <p>{cliente.contato_2}</p>
+                        <h1>{veiculo.placa}</h1>
+                        <h3>{veiculo.marca}</h3>
+                        <p>{veiculo.modelo}</p>
+                        <p>{veiculo.cor}</p>
+                        <p>{veiculo.km}</p>
                     </div>
                 </Link>))}
             </div>

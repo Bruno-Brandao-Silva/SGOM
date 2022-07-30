@@ -286,7 +286,7 @@ label .span-active {
   padding-bottom: 2rem;
 }
 
-.todos-clientes {
+.todos {
   height: fit-content;
   width: 60rem;
   padding: 1rem 2rem 1rem 2rem;
@@ -296,7 +296,7 @@ label .span-active {
   margin: auto;
 }
 
-.todos-clientes-container {
+.todos-container {
   display: flex;
   width: 100%;
   gap: 2rem;
@@ -304,7 +304,7 @@ label .span-active {
   justify-content: flex-start;
 }
 
-.todos-clientes-sub-container {
+.todos-sub-container {
   background-color: var(--light-grey);
   width: 17.29rem;
   padding: 0.4rem;
@@ -314,17 +314,17 @@ label .span-active {
   cursor: pointer;
 }
 
-.todos-clientes-sub-container:hover {
+.todos-sub-container:hover {
   background-color: var(--whitesmoke);
 }
 
-.todos-clientes-sub-container h1 {
+.todos-sub-container h1 {
   font-size: 1.4rem;
 }
 
-.todos-clientes-sub-container h1,
-.todos-clientes-sub-container h3,
-.todos-clientes-sub-container p {
+.todos-sub-container h1,
+.todos-sub-container h3,
+.todos-sub-container p {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -334,15 +334,15 @@ label .span-active {
   padding: 0 0 0.12rem 0;
 }
 
-.todos-clientes-sub-container h3 {
+.todos-sub-container h3 {
   font-size: 1.15rem;
 
 }
 
-.todos-clientes-sub-container p {
+.todos-sub-container p {
   font-size: 1rem;
 }
-.todos-clientes-sub-container-a{
+.todos-a{
   text-decoration: none;
   color: var(--black);
 }

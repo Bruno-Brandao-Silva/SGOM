@@ -31,6 +31,7 @@ contextBridge.exposeInMainWorld('api', {
             new Veiculo(placa, id_cliente, marca, modelo, cor, ano, km),
         getAllByCliente: (id_cliente: number): Veiculo[] => new Veiculo().getAllByCliente(id_cliente),
         get: (placa: string) => new Veiculo(placa).getVeiculo(),
+        getAll: new Veiculo().getAllVeiculo,
         insert: (veiculo: Veiculo) => new Veiculo().insertVeiculo(veiculo),
         update: (veiculo: Veiculo) => new Veiculo().updateVeiculo(veiculo),
         delete: (veiculo: Veiculo) => new Veiculo().deleteVeiculo(veiculo)
@@ -39,14 +40,17 @@ contextBridge.exposeInMainWorld('api', {
         ordem_servico: (id?: number, placa?: string, km?: number, id_cliente?: number, data?: string) =>
             new Ordem_Servico(id, placa, km, id_cliente, data),
         get: (id: number) => new Ordem_Servico(id).getOrdem_Servico(),
+        getAll: new Ordem_Servico().getAllOrdem_Servico,
         insert: (ordem_servico: Ordem_Servico) => new Ordem_Servico().insertOrdem_Servico(ordem_servico),
         update: (ordem_servico: Ordem_Servico) => new Ordem_Servico().updateOrdem_Servico(ordem_servico),
         delete: (ordem_servico: Ordem_Servico) => new Ordem_Servico().deleteOrdem_Servico(ordem_servico)
     },
     Servico: {
-        servico: (id?: number, id_servico?: number, servico?: string, detalhes?: string, quantidade?: number, precoUnitario?: number) =>
+        servico: (id?: number, id_servico?: number, servico?: string, detalhes?: string,
+            quantidade?: number, precoUnitario?: number) =>
             new Servico(id, id_servico, servico, detalhes, quantidade, precoUnitario),
         get: (id: number) => new Servico(id).getServico(),
+        getAllByOrdem_Servico: (id_servico: number) => new Servico().getAllByOrdem_Servico(id_servico),
         insert: (servico: Servico) => new Servico().insertServico(servico),
         update: (servico: Servico) => new Servico().updateServico(servico),
         delete: (servico: Servico) => new Servico().deleteServico(servico)

@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cliente from "../models/cliente";
-export default function todosClientes() {
+import Ordem_Servico from "../models/ordem_servico";
+export default function todosOrdem_Servicos() {
     const navigate = useNavigate();
-    const clientes = (window as any).api.Cliente.getAll() as Cliente[];
+    const servicos = (window as any).api.Ordem_Servico.getAll() as Ordem_Servico[];
     return (<>
         <div className="todos">
             <div id="close" className="container-btn-top">
@@ -18,16 +18,15 @@ export default function todosClientes() {
                 </button>
             </div>
             <h1 className="index-h1">TODOS OS CLIENTES</h1>
-            <Link to='/FormCadCliente'><img src='../public/images/favicon.png'></img><span>CADASTRAR CLIENTE</span></Link>
             <div className="todos-container">
-                {clientes.map((cliente, index: number) =>
-                (<Link key={index} to={`/Cliente/${cliente.id}`} className="todos-a">
+                {servicos.map((servico, index: number) =>
+                (<Link key={index} to={`/EditServico/${servico.id}`} className="todos-a">
                     <div className="todos-sub-container">
-                        <h1>{cliente.nome}</h1>
-                        <h3>{cliente.cpf}</h3>
-                        <p>{cliente.email}</p>
-                        <p>{cliente.contato_1}</p>
-                        <p>{cliente.contato_2}</p>
+                        <h1>{servico.id}</h1>
+                        <h3>{servico.id_cliente}</h3>
+                        <p>{servico.placa}</p>
+                        <p>{servico.data}</p>
+                        <p>{servico.km}</p>
                     </div>
                 </Link>))}
             </div>
