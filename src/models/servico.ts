@@ -36,6 +36,7 @@ export default class Servico {
         db.close();
         return info;
     }
+    
     getAllByOrdem_Servico(id_servico: number): Servico[] {
         const db = database();
         const statement = db.prepare(`SELECT * FROM servico WHERE id_servico = ?`)
@@ -43,6 +44,7 @@ export default class Servico {
         db.close();
         return info;
     }
+    
     updateServico(servico = this) {
         const db = database();
         const statement = db.prepare(`UPDATE servico SET id_cliente= ?, cep = ?, logradouro = ?, bairro = ?,

@@ -23,8 +23,11 @@ export default function Cliente() {
                 </button>
             </div>
             <h1 className="index-h1">CLIENTE</h1>
-            <Link to={`/FormCadServico/${id}`}>ADICIONAR SERVIÇO</Link>
-            <Link to={`/FormCadVeiculo/${id}/1231213121`}>ADICIONAR VEíCULO</Link>
+            <div className="toolbar index-top-sub-container">
+                <Link to={`/FormCadVeiculo/${id}`}><img src='../public/images/favicon.png'></img><span>ADICIONAR VEíCULO</span></Link>
+                <Link to={`/FormCadEndereco/${id}`}><img src='../public/images/favicon.png'></img><span>ADICIONAR ENDEREÇO</span></Link>
+                <Link to={`/FormCadServico/${id}`}><img src='../public/images/favicon.png'></img><span>ADICIONAR SERVIÇO</span></Link>
+            </div>
 
             <div className="todos-container">
                 {<div className="todos-sub-container">
@@ -34,14 +37,14 @@ export default function Cliente() {
                     <p>{cliente.contato_1}</p>
                     <p>{cliente.contato_2}</p>
                 </div>}
-                {enderecos.map((endereco, index: number) => (<div key={index} className="todos-sub-container">
+                {enderecos.map((endereco, index: number) => (<Link to={`/FormCadEndereco/${id}/${endereco.id}`} key={index} className="todos-sub-container" >
                     <p>{endereco.logradouro}</p>
                     <p>{endereco.complemento}</p>
                     <p>{endereco.bairro}</p>
                     <p>{endereco.cidade}</p>
                     <p>{endereco.estado}</p>
                     <p>{endereco.cep}</p>
-                </div>))}
+                </Link>))}
             </div>
         </div>
     </>)

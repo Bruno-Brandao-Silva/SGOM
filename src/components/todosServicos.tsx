@@ -17,10 +17,10 @@ export default function todosOrdem_Servicos() {
                     </span>
                 </button>
             </div>
-            <h1 className="index-h1">TODOS OS CLIENTES</h1>
+            <h1 className="index-h1">TODOS OS SERVIÇOS</h1>
             <div className="todos-container">
                 {servicos.map((servico, index: number) =>
-                (<Link key={index} to={`/EditServico/${servico.id}`} className="todos-a">
+                (<div key={index} onClick={()=>navigate(`/EditServico/${servico.id}`)} className="todos-a">
                     <div className="todos-sub-container">
                         <h1>{servico.id}</h1>
                         <h3>{servico.id_cliente}</h3>
@@ -28,7 +28,7 @@ export default function todosOrdem_Servicos() {
                         <p>{servico.data}</p>
                         <p>{servico.km}</p>
                     </div>
-                </Link>))}
+                </div>))}
             </div>
         </div>
     </>)

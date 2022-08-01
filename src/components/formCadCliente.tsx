@@ -45,7 +45,7 @@ export default function FormCadCliente() {
     return (<>
         <form id="formCadCliente" className="section-cad-cliente-pt1">
             <div id="close" className="container-btn-top">
-                <button className="btn-return" onClick={() => { navigate(-1) }}>
+                <button className="btn-return" type="button" onClick={() => { navigate(-1) }}>
                     <img src="../public/images/back.svg" alt="Voltar" />
                 </button>
                 <button type="button" className="btn-close" onClick={() => {

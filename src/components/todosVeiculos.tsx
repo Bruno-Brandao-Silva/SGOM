@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Veiculo from "../models/veiculo";
 export default function todosVeiculos() {
     const navigate = useNavigate();
+    navigate
     const veiculos = (window as any).api.Veiculo.getAll() as Veiculo[];
     return (<>
         <div className="todos">
@@ -17,7 +18,7 @@ export default function todosVeiculos() {
                     </span>
                 </button>
             </div>
-            <h1 className="index-h1">TODOS OS CLIENTES</h1>
+            <h1 className="index-h1">TODOS OS VEÍCULOS</h1>
             <div className="todos-container">
                 {veiculos.map((veiculo, index: number) =>
                 (<Link key={index} to={`/FormCadVeiculo/${veiculo.id_cliente}/${veiculo.placa}`} className="todos-a">

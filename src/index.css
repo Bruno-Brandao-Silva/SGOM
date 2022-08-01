@@ -28,9 +28,9 @@ body {
   background-color: var(--light-grey);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif;
-    width: 100vw;
-    height: 100vh;
-    overflow-x: hidden;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
 }
 
 form {
@@ -342,7 +342,8 @@ label .span-active {
 .todos-sub-container p {
   font-size: 1rem;
 }
-.todos-a{
+
+.todos-a {
   text-decoration: none;
   color: var(--black);
 }

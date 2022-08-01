@@ -18,7 +18,9 @@ export default function todosClientes() {
                 </button>
             </div>
             <h1 className="index-h1">TODOS OS CLIENTES</h1>
-            <Link to='/FormCadCliente'><img src='../public/images/favicon.png'></img><span>CADASTRAR CLIENTE</span></Link>
+            <div className="toolbar index-top-sub-container">
+                <Link to='/FormCadCliente' className="todo-a"><img src='../public/images/favicon.png'></img><span>CADASTRAR CLIENTE</span></Link>
+            </div>
             <div className="todos-container">
                 {clientes.map((cliente, index: number) =>
                 (<Link key={index} to={`/Cliente/${cliente.id}`} className="todos-a">

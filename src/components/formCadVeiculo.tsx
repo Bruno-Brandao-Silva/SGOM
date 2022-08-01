@@ -36,11 +36,11 @@ export default function FormCadServiço() {
             }
         })()
     }, []);
-
+    console.log(placa)
     return (<>
         <form id="formCadVeiculo" >
             <div className="container-btn-top">
-                <button className="btn-return" onClick={() => { navigate(-1) }}>
+                <button className="btn-return" type="button" onClick={() => { navigate(-1) }}>
                     <img src="../public/images/back.svg" alt="Voltar" />
                 </button>
                 <button type="button" className="btn-close" onClick={() => navigate('/')}>
@@ -68,7 +68,7 @@ export default function FormCadServiço() {
             <div className="content-double-label">
                 <label>
                     <span>PLACA</span>
-                    <input name="placaInput" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={placaInput} onChange={placa ? () => { } : e => setPlacaInput(e.target.value)} required />
+                    <input name="placaInput" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={placaInput} onChange={placa !== undefined ? () => { } : e => setPlacaInput(e.target.value)} disabled={(placa !== undefined)} required />
                 </label>
                 <label>
                     <span>ANO</span>
