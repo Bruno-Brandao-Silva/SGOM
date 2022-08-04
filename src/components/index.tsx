@@ -8,7 +8,6 @@ export default function Index() {
     const [busca, setBusca] = React.useState("");
     const clientes = (window as any).api.Cliente.getAll() as Cliente[];
     const veiculos = (window as any).api.Veiculo.getAll() as Veiculo[];
-    const dialog = (window as any).api.Dialog.new();
     return (<div className="index-container">
         <h1 className="index-h1">SGOM</h1>
         <div className="index-top-container">
@@ -18,6 +17,10 @@ export default function Index() {
                 <Link to='/TodosServicos'><img src='../public/images/favicon.png'></img><span>SERVIÇO REALIZADOS</span></Link>
             </div>
         </div>
+        <button type="button" onClick={async () => {
+            const resp = await (window as any).api.Dialog.showMessageBox({ type: 'confirm', message: 'Hola?' })
+            console.log(resp)
+        }}>Hello World</button>
         <div>
             <label>
                 <span>BUSCAR CLIENTE E VEÍCULO</span>

@@ -4,7 +4,25 @@ import Endereco from "./models/endereco";
 import Veiculo from "./models/veiculo";
 import Ordem_Servico from "./models/ordem_servico";
 import Servico from "./models/servico";
-const { dialog } = require('electron')
+import { ipcRenderer } from "electron";
+
+// const { remote } = require('electron')
+// const { remote } = require('@electron/remote')
+// const dialog = remote.dialog
+
+// let WIN = remote.getCurrentWindow()
+
+// const dia = () => {
+//     let options: any = {}
+//     options.buttons = ["&Yes", "&No", "&Cancel"]
+//     options.message = "Do you really want to quit?"
+
+//     dialog.showMessageBox(WIN, options, (res: any, checked: any) => {
+//         console.log(res)
+//         console.log(checked)
+//     })
+// }
+// dia();
 
 contextBridge.exposeInMainWorld('api', {
     Cliente: {
@@ -59,7 +77,6 @@ contextBridge.exposeInMainWorld('api', {
         delete: (servico: Servico) => new Servico().deleteServico(servico)
     },
     Dialog: {
-        new: () => dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] })
-
+        showMessageBox: async (options: any) => await ipcRenderer.invoke("newDialog", options),
     }
 })
