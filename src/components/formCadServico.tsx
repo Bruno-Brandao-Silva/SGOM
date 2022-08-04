@@ -14,25 +14,24 @@ export default function FormCadServiço() {
     const { id_cliente, id } = useParams();
 
     const editOrdemServico = (window as any).api.Ordem_Servico.get(id) as Ordem_Servico;
-
-    const editServico = (window as any).api.Servico.getAllByOrdem_Servico(Number(id)) as Servico[];
-
+    const editServico = (window as any).api.Servico.getAllByOrdem_Servico(id) as Servico[];
     const cliente: Cliente = (window as any).api.Cliente.get(editOrdemServico ? editOrdemServico.id_cliente : id_cliente) as Cliente;
-    const veiculos = (window as any).api.Veiculo.getAllByCliente(1) as Veiculo[];
+    const veiculos = (window as any).api.Veiculo.getAllByCliente(id) as Veiculo[];
     const veiculo = (window as any).api.Veiculo.get(editOrdemServico?.placa) as Veiculo;
-    const date = new Date()
-    let dataAtual = date.toLocaleDateString()
-    dataAtual = dataAtual.replace(/^(\d{2})\/(\d{2})\/(\d{4})/g, '$3-$2-$1')
-    const [data, setData] = React.useState(dataAtual);
 
+    const date = new Date()
+    const dataAtual = date.toLocaleDateString().replace(/^(\d{2})\/(\d{2})\/(\d{4})/g, '$3-$2-$1')
+    const [, setReact] = React.useState({});
+    const [data, setData] = React.useState(editOrdemServico?.data || dataAtual);
     const [marca, setMarca] = React.useState(veiculo?.marca || "");
     const [modelo, setModelo] = React.useState(veiculo?.modelo || "");
     const [placa, setPlaca] = React.useState(veiculo?.placa || useParams().placa || "");
     const [cor, setCor] = React.useState(veiculo?.cor || "");
     const [ano, setAno] = React.useState(veiculo?.ano.toString() || "");
     const [km, setKm] = React.useState(editOrdemServico?.km.toString() || "");
-    console.log(veiculo?.ano.toString(), editOrdemServico?.km.toString())
     const [quantidadeServicos, setQuantidadeServicos] = React.useState(editServico?.length || 0);
+
+
     let tempServico: any = [], tempDetalhes: any = [], tempPrecoUnitario: any = [], tempQuantidade: any = []
     for (let i = 0; i < editServico?.length; i++) {
         tempServico[i] = editServico[i].servico
@@ -40,69 +39,74 @@ export default function FormCadServiço() {
         tempPrecoUnitario[i] = editServico[i].precoUnitario.toString()
         tempQuantidade[i] = editServico[i].quantidade.toString()
     }
+
     const [servico, setServico] = React.useState<string[]>(tempServico);
     const [detalhes, setDetalhes] = React.useState<string[]>(tempDetalhes);
     const [precoUnitario, setPrecoUnitario] = React.useState<string[]>(tempPrecoUnitario);
     const [quantidade, setQuantidade] = React.useState<string[]>(tempQuantidade);
-
+    useEffect(() => {
+        setDetalhes(detalhes)
+    }, [detalhes])
+    const servicosForm: JSX.Element[] = []
+    if (servico && servico.length > 0) {
+        for (let i = 0; i < quantidadeServicos; i++) {
+            servicosForm.push(<div key={i} className="content-double-label">
+                <label>
+                    <span>SERVIÇO</span>
+                    <input name="servico" list="servico" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={servico[i]} onChange={e => {
+                        servico[i] = e.target.value;
+                        setServico(servico)
+                        setReact({})
+                    }} required />
+                </label>
+                <label>
+                    <span>DETALHES</span>
+                    <input name="detalhes" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={detalhes[i]} onChange={e => {
+                        detalhes[i] = e.target.value;
+                        setDetalhes(detalhes)
+                        setReact({})
+                    }} required />
+                </label>
+                <label>
+                    <span>QUANTIDADE</span>
+                    <input name="quantidade" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={quantidade[i]} onChange={e => {
+                        quantidade[i] = e.target.value;
+                        setQuantidade(quantidade)
+                        setReact({})
+                    }} required />
+                </label>
+                <label>
+                    <span>PREÇO UNITÁRIO</span>
+                    <input name="precoUnitario" type="number" step='0.01' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={precoUnitario[i]} onChange={e => {
+                        precoUnitario[i] = e.target.value;
+                        setPrecoUnitario(precoUnitario)
+                        setReact({})
+                    }} required />
+                </label>
+            </div>)
+        }
+    }
     useEffect(() => {
         for (let i = 0; i < inputs.length; i++) {
             if (inputs[i].value != '') {
                 utils.InputsHandleFocus({ target: inputs[i] });
             }
         }
-    }, [])
-    const servicosForm: JSX.Element[] = []
-    for (let i = 0; i < quantidadeServicos; i++) {
-        servicosForm.push(<div key={i} className="content-double-label">
-            <label>
-                <span>SERVIÇO</span>
-                <input name="servico" list="servico" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={servico[i]} onChange={e => {
-                    let temp = servico;
-                    temp[i] = e.target.value;
-                    setServico(temp)
-                }} required />
-            </label>
-            <label>
-                <span>DETALHES</span>
-                <input name="detalhes" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={detalhes[i]} onChange={e => {
-                    let temp = detalhes;
-                    temp[i] = e.target.value;
-                    setDetalhes(temp)
-                }} required />
-            </label>
-            <label>
-                <span>QUANTIDADE</span>
-                <input name="quantidade" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={quantidade[i]} onChange={e => {
-                    let temp = quantidade
-                    temp[i] = e.target.value;
-                    setQuantidade(temp)
-                }} required />
-            </label>
-            <label>
-                <span>PREÇO UNITÁRIO</span>
-                <input name="precoUnitario" type="number" step='0.01' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={precoUnitario[i]} onChange={e => {
-                    let temp = precoUnitario
-                    temp[i] = e.target.value;
-                    setPrecoUnitario(temp)
-                }} required />
-            </label>
-        </div>)
-    }
+    }, [quantidadeServicos])
     return (<>
         <form id="formCadServico" >
             <div className="container-btn-top">
                 <button className="btn-return" type="button" onClick={async () => { navigate(-1) }}>
                     <img src="../public/images/back.svg" alt="Voltar" />
                 </button>
-                <button type="button" className="btn-close" onClick={() => navigate('/')}>
+                <button className="btn-close" type="button" onClick={() => navigate('/')}>
                     <span>
                         <div></div>
                         <div></div>
                     </span>
                 </button>
             </div>
-            <h1>{'Cadastrar Ordem de Serviço'}</h1>
+            <h1>{id ? 'Editar Ordem de Serviço' : 'Cadastrar Ordem de Serviço'}</h1>
             <div className="content-double-label">
                 <label>
                     <span>CLIENTE</span>
@@ -137,18 +141,19 @@ export default function FormCadServiço() {
                     <span>PLACA</span>
                     <input name="placa" list="placa" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={placa} onChange={async e => {
                         setPlaca(e.target.value)
-                        let veiculo = await (window as any).api.Veiculo.get(e.target.value)
-                        setMarca(veiculo?.marca || "")
-                        setModelo(veiculo?.modelo || "")
-                        setCor(veiculo?.cor || "")
-                        setAno(veiculo?.ano.toString() || "")
+                        const veiculo = await (window as any).api.Veiculo.get(e.target.value)
+                        if (veiculo) {
+                            setMarca(veiculo.marca || "")
+                            setModelo(veiculo.modelo || "")
+                            setCor(veiculo.cor || "")
+                            setAno(veiculo.ano.toString() || "")
+                        }
                         await utils.sleep(10)
                         for (let i = 0; i < inputs.length; i++) {
                             if (inputs[i].value != '') {
                                 utils.InputsHandleFocus({ target: inputs[i] });
                             }
                         }
-
                     }} required />
                     <datalist id="placa" >
                         {veiculos?.map((veiculo, index: number) => {
@@ -178,7 +183,6 @@ export default function FormCadServiço() {
                             formCadServico.reportValidity()
                             return
                         }
-                        let response
                         if (!id) {
                             let include = false
                             if (veiculos.length > 0) {
@@ -204,33 +208,58 @@ export default function FormCadServiço() {
                             alert('Ordem de Serviço cadastrada com sucesso!')
                             // navigate('/FormCadEndereco/' + response.id)
                         } else {
-                            // const servico = (window as any).api.Ordem_Servico.ordem_servico(id, cpf, nome, email, contato_1, contato_2)
-                            // response = (window as any).api.Cliente.update(cliente)
-                            // navigate('/')
+                            const veiculo = new (window as any).api.Veiculo.veiculo(placa, editOrdemServico.id_cliente, marca, modelo, cor, ano, km)
+                            const veiculoR = (window as any).api.Veiculo.update(veiculo)
+                            if (veiculoR.changes == 0) {
+                                throw new Error("Não foi possível atualizar o veículo");
+                            }
+                            const servicoTemp = (window as any).api.Ordem_Servico.ordem_servico(id, placa, km, editOrdemServico.id_cliente, data)
+                            const servicoR = (window as any).api.Ordem_Servico.update(servicoTemp)
+                            if (servicoR.changes == 0) {
+                                throw new Error("Não foi possível atualizar a ordem de serviço");
+                            }
+                            editServico.forEach(servico => {
+                                const toBeDeleted = (window as any).api.Servico.delete({ id: servico.id })
+                                if (toBeDeleted.changes == 0) {
+                                    throw new Error("Não foi possível excluir o serviço antigo");
+                                }
+                            });
+                            for (let i = 0; i < quantidadeServicos; i++) {
+                                const servicoRealizado = (window as any).api.Servico.servico(undefined, id, servico[i], detalhes[i], quantidade[i], precoUnitario[i])
+                                const servicoRealizadoR = (window as any).api.Servico.insert(servicoRealizado)
+                                if (servicoRealizadoR.changes == 0) {
+                                    throw new Error("Não foi possível inserir o serviço");
+                                }
+                            }
+
+                            alert('Ordem de Serviço cadastrada com sucesso!')
+                            // navigate('/FormCadEndereco/' + response.id)
                         }
+                        // navigate(-1)
                     } catch (error) {
-                        console.log(error)
+                        alert(error.message)
                     }
                 }}>SALVAR</button>
                 <button type='button' onClick={() => {
+                    setServico([...servico, ''])
+                    setDetalhes([...detalhes, ''])
+                    setQuantidade([...quantidade, ""])
+                    setPrecoUnitario([...precoUnitario, ""])
                     setQuantidadeServicos(quantidadeServicos + 1)
                 }}>ADD</button>
                 <button type='button' onClick={() => {
                     if (quantidadeServicos > 0) {
                         setQuantidadeServicos(quantidadeServicos - 1)
-                        servico.splice(quantidadeServicos, 1)
+                        servico.splice(servico.length - 1, 1)
                         setServico(servico)
-                        detalhes.splice(quantidadeServicos, 1)
+                        detalhes.splice(detalhes.length - 1, 1)
                         setDetalhes(detalhes)
-                        quantidade.splice(quantidadeServicos, 1)
+                        quantidade.splice(quantidade.length - 1, 1)
                         setQuantidade(quantidade)
-                        precoUnitario.splice(quantidadeServicos, 1)
+                        precoUnitario.splice(precoUnitario.length - 1, 1)
                         setPrecoUnitario(precoUnitario)
                     }
                 }}>SUB</button>
-                <button type='button' onClick={() => {
-                    console.log(typeof ano, typeof km);
-                }}>LOG</button>
             </div>
         </form>
     </>);

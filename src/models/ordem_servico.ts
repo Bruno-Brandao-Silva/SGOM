@@ -38,6 +38,13 @@ export default class Ordem_Servico {
         db.close();
         return info;
     }
+    getByPlaca(placa: string): Ordem_Servico[] {
+        const db = database();
+        const statement = db.prepare(`SELECT * FROM ordem_servico WHERE placa = ?`)
+        const info = statement.all(placa)
+        db.close();
+        return info;
+    }
     updateOrdem_Servico(ordem_servico = this) {
         const db = database();
         const statement = db.prepare(`UPDATE ordem_servico SET placa = ?, km = ?, id_cliente= ?, data = ? WHERE id = ?`)

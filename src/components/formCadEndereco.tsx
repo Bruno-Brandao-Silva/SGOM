@@ -3,57 +3,27 @@ import utils from "./../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
 
 export default function FormCadEndereco() {
-    const [cep, setCep] = React.useState("");
-    const [numero, setNumero] = React.useState("");
-    const [complemento, setComplemento] = React.useState("");
-    const [logradouro, setLogradouro] = React.useState("");
-    const [bairro, setBairro] = React.useState("");
-    const [cidade, setCidade] = React.useState("");
-    const [estado, setEstado] = React.useState("");
+    const navigate = useNavigate()
     const { id_cliente, id } = useParams();
-    useEffect(() => {
-        if (id) {
-            const inputs = document.getElementsByTagName('input');
-            const endereco = (window as any).api.Endereco.get(id);
-            let i = 0;
-            if (endereco.cep) {
-                setCep(endereco.cep);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (endereco.numero) {
-                setNumero(endereco.numero);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (endereco.complemento) {
-                setComplemento(endereco.complemento);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (endereco.logradouro) {
-                setLogradouro(endereco.logradouro);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (endereco.bairro) {
-                setBairro(endereco.bairro);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (endereco.cidade) {
-                setCidade(endereco.cidade);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (endereco.estado) {
-                setEstado(endereco.estado);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
+    const inputs = document.getElementsByTagName('input');
 
+    const endereco = (window as any).api.Endereco.get(id);
+
+    const [cep, setCep] = React.useState(endereco?.cep || "");
+    const [numero, setNumero] = React.useState(endereco?.numero || "");
+    const [complemento, setComplemento] = React.useState(endereco?.complemento || "");
+    const [logradouro, setLogradouro] = React.useState(endereco?.logradouro || "");
+    const [bairro, setBairro] = React.useState(endereco?.bairro || "");
+    const [cidade, setCidade] = React.useState(endereco?.cidade || "");
+    const [estado, setEstado] = React.useState(endereco?.estado || "");
+
+    useEffect(() => {
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].value != '') {
+                utils.InputsHandleFocus({ target: inputs[i] });
+            }
         }
     }, []);
-    const navigate = useNavigate()
 
     return (<>
         <form id="formCadEndereco" className="section-cad-cliente-pt1">
@@ -63,16 +33,11 @@ export default function FormCadEndereco() {
                         <img src="../public/images/back.svg" alt="Voltar" />
                     </button>
                     :
-                    <button className="btn-return" onClick={() => { navigate(`/FormCadEndereco/${id_cliente}`) }}>
+                    <button className="btn-return" type="button" onClick={() => { navigate(`/FormCadEndereco/${id_cliente}`) }}>
                         <img src="../public/images/back.svg" alt="Voltar" />
                     </button>
                 }
-                <button type="button" className="btn-close" onClick={() => navigate('/')}>
-                    <span>
-                        <div></div>
-                        <div></div>
-                    </span>
-                </button>
+                <button className="btn-close" type="button" onClick={() => navigate('/')}><span><div></div><div></div></span></button>
             </div>
             <h1>{id ? 'Editar Endereço' : 'Cadastrar Endereço'}</h1>
             <div className="content-double-label">
@@ -108,41 +73,35 @@ export default function FormCadEndereco() {
                 </label>
             </div>
             <div className="btn-submit">
-                {id ? <></> : <button id="salvar" type="button" onClick={submitForm}>SALVAR</button>}
                 <button type="button" onClick={() => {
+                    const formCadEndereco = document.getElementById('formCadEndereco') as any
                     try {
-                        submitForm();
-                    } catch (e) {
-                        console.log(e);
+                        if (!formCadEndereco.checkValidity()) {
+                            formCadEndereco.reportValidity()
+                            return
+                        }
+                        const endereco = (window as any).api.Endereco.endereco(id, id_cliente, cep, logradouro, bairro, cidade, estado, numero, complemento);
+                        if (!id) {
+                            const response = (window as any).api.Endereco.insert(endereco)
+                            if (response.changes == 0) {
+                                throw new Error('Não foi possível cadastrar o endereço')
+                            } else {
+                                alert('Endereço cadastrado com sucesso')
+                            }
+                        } else {
+                            const response = (window as any).api.Endereco.update(endereco)
+                            if (response.changes == 0) {
+                                throw new Error('Não foi possível atualizar o endereço')
+                            } else {
+                                alert('Endereço atualizado com sucesso')
+                            }
+                        }
+                    } catch (error) {
+                        alert(error.message)
                     }
-                }}>{id ? 'SALVAR' : 'SALVAR E ADICIONAR UM SERVIÇO'}</button>
+                    navigate(-1) //TO DO - Ir para a pagina do cliente
+                }}>SALVAR</button>
             </div>
         </form>
     </>)
-    function submitForm() {
-        const formCadEndereco = document.getElementById('formCadEndereco') as any
-        try {
-            if (!formCadEndereco.checkValidity()) {
-                formCadEndereco.reportValidity()
-                return
-            }
-            const data: any[string] = []
-            for (let i = 0; i < formCadEndereco.elements.length; i++) {
-                if (formCadEndereco.elements[i].name && formCadEndereco.elements[i].value != '') {
-                    data[formCadEndereco.elements[i].name] = (formCadEndereco.elements[i].value)
-                }
-            }
-            let response
-            if (!id) {
-                const endereco = (window as any).api.Endereco.endereco(undefined, id_cliente, data['cep'], data['logradouro'], data['bairro'], data['cidade'], data['estado'], data['numero'], data['complemento'])
-                response = (window as any).api.Endereco.insert(endereco)
-            } else {
-                const endereco = (window as any).api.Endereco.endereco(id, id_cliente, data['cep'], data['logradouro'], data['bairro'], data['cidade'], data['estado'], data['numero'], data['complemento'])
-                response = (window as any).api.Endereco.update(endereco)
-
-            }
-        } catch (error) {
-            throw new Error(error)
-        }
-    }
 }

@@ -16,7 +16,7 @@ export default class Servico {
         this.detalhes = detalhes;
         this.quantidade = quantidade;
         this.precoUnitario = precoUnitario;
-        this.precoTotal = this.precoUnitario * this.quantidade;
+        this.precoTotal = Number(this.precoUnitario) * Number(this.quantidade);
     }
 
     insertServico(servico = this) {
@@ -36,7 +36,7 @@ export default class Servico {
         db.close();
         return info;
     }
-    
+
     getAllByOrdem_Servico(id_servico: number): Servico[] {
         const db = database();
         const statement = db.prepare(`SELECT * FROM servico WHERE id_servico = ?`)
@@ -44,7 +44,15 @@ export default class Servico {
         db.close();
         return info;
     }
-    
+
+    getAll(): Servico[] {
+        const db = database();
+        const statement = db.prepare(`SELECT * FROM servico`)
+        const info = statement.all()
+        db.close();
+        return info;
+    }
+
     updateServico(servico = this) {
         const db = database();
         const statement = db.prepare(`UPDATE servico SET id_cliente= ?, cep = ?, logradouro = ?, bairro = ?,

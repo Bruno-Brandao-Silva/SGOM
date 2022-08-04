@@ -23,7 +23,6 @@
       "packagerConfig": {
         "icon": "C:/SGOM/src/public/images/favicon"
       },
-      
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -76,6 +75,8 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.64",
     "@electron-forge/maker-zip": "^6.0.0-beta.64",
     "@electron-forge/plugin-webpack": "6.0.0-beta.64",
+    "@types/blob-stream": "^0.1.30",
+    "@types/pdfkit": "^0.12.6",
     "@types/react": "^17.0.47",
     "@types/react-dom": "^17.0.17",
     "@types/webpack": "^5.28.0",
@@ -83,6 +84,7 @@
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.0",
+    "blob-stream": "^0.1.3",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.0.0",
     "electron": "19.0.8",
@@ -98,6 +100,7 @@
   "dependencies": {
     "better-sqlite3-with-prebuilds": "^7.4.3",
     "electron-squirrel-startup": "^1.0.0",
+    "pdfkit": "^0.13.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.3.0"

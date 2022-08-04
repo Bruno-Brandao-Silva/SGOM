@@ -4,6 +4,7 @@ import Endereco from "./models/endereco";
 import Veiculo from "./models/veiculo";
 import Ordem_Servico from "./models/ordem_servico";
 import Servico from "./models/servico";
+const { dialog } = require('electron')
 
 contextBridge.exposeInMainWorld('api', {
     Cliente: {
@@ -41,6 +42,7 @@ contextBridge.exposeInMainWorld('api', {
             new Ordem_Servico(id, placa, km, id_cliente, data),
         get: (id: number) => new Ordem_Servico(id).getOrdem_Servico(),
         getAll: new Ordem_Servico().getAllOrdem_Servico,
+        getByPlaca: (placa: string) => new Ordem_Servico().getByPlaca(placa),
         insert: (ordem_servico: Ordem_Servico) => new Ordem_Servico().insertOrdem_Servico(ordem_servico),
         update: (ordem_servico: Ordem_Servico) => new Ordem_Servico().updateOrdem_Servico(ordem_servico),
         delete: (ordem_servico: Ordem_Servico) => new Ordem_Servico().deleteOrdem_Servico(ordem_servico)
@@ -50,9 +52,14 @@ contextBridge.exposeInMainWorld('api', {
             quantidade?: number, precoUnitario?: number) =>
             new Servico(id, id_servico, servico, detalhes, quantidade, precoUnitario),
         get: (id: number) => new Servico(id).getServico(),
+        getAll: new Servico().getAll,
         getAllByOrdem_Servico: (id_servico: number) => new Servico().getAllByOrdem_Servico(id_servico),
         insert: (servico: Servico) => new Servico().insertServico(servico),
         update: (servico: Servico) => new Servico().updateServico(servico),
         delete: (servico: Servico) => new Servico().deleteServico(servico)
+    },
+    Dialog: {
+        new: () => dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] })
+
     }
 })

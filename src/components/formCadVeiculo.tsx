@@ -6,44 +6,32 @@ import Veiculo from "../models/veiculo";
 
 export default function FormCadServiço() {
     const navigate = useNavigate();
+    const inputs = document.getElementsByTagName('input');
     const { id_cliente, placa } = useParams();
 
-    const [marca, setMarca] = React.useState("");
-    const [modelo, setModelo] = React.useState("");
-    const [placaInput, setPlacaInput] = React.useState(placa || "");
-    const [cor, setCor] = React.useState("");
-    const [ano, setAno] = React.useState("");
-    const [km, setKm] = React.useState("");
+    const veiculo = (window as any).api.Veiculo.get(placa) as Veiculo;
 
-    const inputs = document.getElementsByTagName('input');
+    const [marca, setMarca] = React.useState(veiculo?.marca || "");
+    const [modelo, setModelo] = React.useState(veiculo?.modelo || "");
+    const [placaInput, setPlacaInput] = React.useState(placa || "");
+    const [cor, setCor] = React.useState(veiculo?.cor || "");
+    const [ano, setAno] = React.useState(veiculo?.ano.toString() || "");
+    const [km, setKm] = React.useState(veiculo?.km.toString() || "");
 
     useEffect(() => {
-        (async () => {
-            const veiculo = (window as any).api.Veiculo.get(placa) as Veiculo;
-            if (veiculo) {
-                setMarca(veiculo.marca);
-                setModelo(veiculo.modelo);
-                setCor(veiculo.cor);
-                setAno(veiculo.ano.toString());
-                setKm(veiculo.km.toString());
-
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].value != '') {
+                utils.InputsHandleFocus({ target: inputs[i] });
             }
-            await utils.sleep(10)
-            for (let i = 0; i < inputs.length; i++) {
-                if (inputs[i].value != '') {
-                    utils.InputsHandleFocus({ target: inputs[i] });
-                }
-            }
-        })()
+        }
     }, []);
-    console.log(placa)
     return (<>
         <form id="formCadVeiculo" >
             <div className="container-btn-top">
                 <button className="btn-return" type="button" onClick={() => { navigate(-1) }}>
                     <img src="../public/images/back.svg" alt="Voltar" />
                 </button>
-                <button type="button" className="btn-close" onClick={() => navigate('/')}>
+                <button className="btn-close" type="button" onClick={() => navigate('/')}>
                     <span>
                         <div></div>
                         <div></div>
@@ -90,21 +78,25 @@ export default function FormCadServiço() {
                             }
                             const veiculo = new (window as any).api.Veiculo.veiculo(placaInput, id_cliente, marca, modelo, cor, ano, km)
                             if (!placa) {
-                                const veiculoR = (window as any).api.Veiculo.insert(veiculo)
-                                console.log(veiculoR)
+                                const response = (window as any).api.Veiculo.insert(veiculo)
 
-                                alert('Veículo cadastrado com sucesso!')
-                                // navigate('/FormCadEndereco/' + response.id)
+                                if (response.changes == 0) {
+                                    throw new Error('Não foi possível cadastrar o veículo')
+                                } else {
+                                    alert('Veículo cadastrado com sucesso!')
+                                }
                             } else {
-                                const veiculoR = (window as any).api.Veiculo.update(veiculo)
-                                console.log(veiculoR)
+                                const response = (window as any).api.Veiculo.update(veiculo)
 
-                                alert('Veículo cadastrado com sucesso!')
-                                // navigate('/')
+                                if (response.changes == 0) {
+                                    throw new Error('Não foi possível editar o veículo')
+                                } else {
+                                    alert('Veículo cadastrado com sucesso!')
+                                }
                             }
+                            navigate(-1)
                         } catch (error) {
-                            alert('Erro ao cadastrar veículo!')
-                            console.log(error)
+                            alert(error.message)
                         }
                     }}>SALVAR</button>
                 </div>

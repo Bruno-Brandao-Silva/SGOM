@@ -30,13 +30,13 @@ export default function Cliente() {
             </div>
 
             <div className="todos-container">
-                {<div className="todos-sub-container">
+                {<Link to={`/FormCadCliente/${id}`} className="todos-sub-container">
                     <h1>{cliente.nome}</h1>
                     <h3>{cliente.cpf}</h3>
                     <p>{cliente.email}</p>
                     <p>{cliente.contato_1}</p>
                     <p>{cliente.contato_2}</p>
-                </div>}
+                </Link>}
                 {enderecos.map((endereco, index: number) => (<Link to={`/FormCadEndereco/${id}/${endereco.id}`} key={index} className="todos-sub-container" >
                     <p>{endereco.logradouro}</p>
                     <p>{endereco.complemento}</p>

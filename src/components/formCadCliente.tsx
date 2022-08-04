@@ -3,44 +3,24 @@ import utils from "./../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
 
 export default function FormCadCliente() {
-    const [cpf, setCpf] = React.useState("");
-    const [nome, setNome] = React.useState("");
-    const [email, setEmail] = React.useState("");
-    const [contato_1, setContato_1] = React.useState("");
-    const [contato_2, setContato_2] = React.useState("");
+    const navigate = useNavigate()
     const { id } = useParams();
+
+    const inputs = document.getElementsByTagName('input');
+    const cliente = (window as any).api.Cliente.get(id);
+
+    const [cpf, setCpf] = React.useState(cliente?.cpf || "");
+    const [nome, setNome] = React.useState(cliente?.nome || "");
+    const [email, setEmail] = React.useState(cliente?.email || "");
+    const [contato_1, setContato_1] = React.useState(cliente?.contato_1 || "");
+    const [contato_2, setContato_2] = React.useState(cliente?.contato_2 || "");
     useEffect(() => {
-        if (id) {
-            const inputs = document.getElementsByTagName('input');
-            const cliente = (window as any).api.Cliente.get(id);
-            let i = 0;
-            if (cliente.cpf) {
-                setCpf(cliente.cpf);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (cliente.nome) {
-                setNome(cliente.nome);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (cliente.email) {
-                setEmail(cliente.email);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (cliente.contato_1) {
-                setContato_1(cliente.contato_1);
-                utils.InputsHandleFocus({ target: inputs[i] });
-            }
-            i++;
-            if (cliente.contato_2) {
-                setContato_2(cliente.contato_2);
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].value != '') {
                 utils.InputsHandleFocus({ target: inputs[i] });
             }
         }
     }, []);
-    const navigate = useNavigate()
 
     return (<>
         <form id="formCadCliente" className="section-cad-cliente-pt1">
@@ -60,17 +40,16 @@ export default function FormCadCliente() {
             <h1>{id ? 'Editar Cliente' : 'Cadastrar do Cliente'}</h1>
             <label>
                 <span>CPF</span>
-                <input name="cpf" id='cpf' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} required pattern="\d{3}.\d{3}.\d{3}-\d{2}" value={cpf} onChange={e => {
-                    setCpf(utils.cpfRegex(e))
-                    console.log(cpf)
-                    console.log(e.target.value.replace(/\D/g, '').length)
-                    console.log(utils.cpfValidator(e))
-                    if (!utils.cpfValidator(e)) {
-                        e.target.setCustomValidity("CPF inválido!");
-                    } else {
-                        e.target.setCustomValidity("");
+                <input name="cpf" id='cpf' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} required pattern="(\d{3}.\d{3}.\d{3}-\d{2})|(\d{2}.\d{3}.\d{3}/\d{4}-\d{2})" value={cpf} onChange={e => {
+                    if (e.target.value.length <= 18) {
+                        setCpf(e.target.value.length > 14 ? utils.CNPJRegex(e) : utils.cpfRegex(e))
+                        if (!(e.target.value.length > 14 ? utils.CNPJValidator(e) : utils.cpfValidator(e))) {
+                            e.target.setCustomValidity("CPF/CNPJ inválido!");
+                        } else {
+                            e.target.setCustomValidity("");
+                        }
                     }
-                }} />
+                }} disabled={id ? true : false} />
             </label>
             <label>
                 <span>NOME</span>
@@ -98,21 +77,29 @@ export default function FormCadCliente() {
                             formCadCliente.reportValidity()
                             return
                         }
+                        const cliente = (window as any).api.Cliente.cliente(id, cpf, nome, email, contato_1, contato_2)
 
-                        let response
                         if (!id) {
-                            const cliente = (window as any).api.Cliente.cliente(undefined, cpf, nome, email, contato_1, contato_2)
-                            response = (window as any).api.Cliente.insert(cliente)
-                            navigate('/FormCadEndereco/' + response.id)
+                            const response = (window as any).api.Cliente.insert(cliente)
+                            if (response.changes == 0) {
+                                throw new Error('Não foi possível cadastrar o cliente!')
+                            } else {
+                                alert('Cliente cadastrado com sucesso!')
+                                navigate('/FormCadEndereco/' + response.id)
+                            }
                         } else {
-                            const cliente = (window as any).api.Cliente.cliente(id, cpf, nome, email, contato_1, contato_2)
-                            response = (window as any).api.Cliente.update(cliente)
-                            navigate('/')
+                            const response = (window as any).api.Cliente.update(cliente)
+                            if (response.changes == 0) {
+                                throw new Error('Não foi possível editar o cliente!')
+                            } else {
+                                alert('Cliente editado com sucesso!')
+                                navigate(-1)
+                            }
                         }
                     } catch (error) {
-                        console.log(error)
+                        alert(error.message)
                     }
-                }}>{id ? 'SALVAR' : 'CONTINUAR'}</button>
+                }}>{id ? 'SALVAR' : 'CONTINUAR COM O CADASTRO'}</button>
             </div>
         </form>
     </>
