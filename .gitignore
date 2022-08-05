@@ -90,3 +90,6 @@ out/
 
 # Database
 database.db
+
+# Output dir
+output/**

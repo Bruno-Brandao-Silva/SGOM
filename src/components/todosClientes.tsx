@@ -21,7 +21,7 @@ export default function todosClientes() {
             </div>
             <h1 className="index-h1">TODOS OS CLIENTES</h1>
             <div className="toolbar index-top-sub-container">
-                <Link to='/FormCadCliente' className="todo-a"><img src='../public/images/favicon.png'></img><span>CADASTRAR CLIENTE</span></Link>
+                <Link to='/FormCadCliente' className="todo-a"><img src='../public/images/add-user.png'></img><span>CADASTRAR CLIENTE</span></Link>
             </div>
             <div>
                 <label>

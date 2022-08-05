@@ -12,15 +12,12 @@ export default function Index() {
         <h1 className="index-h1">SGOM</h1>
         <div className="index-top-container">
             <div className="index-top-sub-container">
-                <Link to='/TodosClientes'><img src='../public/images/favicon.png'></img><span>CLIENTES</span></Link>
-                <Link to='/TodosVeiculos'><img src='../public/images/favicon.png'></img><span>VEÍCULOS</span></Link>
-                <Link to='/TodosServicos'><img src='../public/images/favicon.png'></img><span>SERVIÇO REALIZADOS</span></Link>
+                <Link to='/TodosClientes'><img src='../public/images/user.png'></img><span>CLIENTES</span></Link>
+                <Link to='/TodosVeiculos'><img src='../public/images/sedan.png'></img><span>VEÍCULOS</span></Link>
+                <Link to='/TodosServicos'><img src='../public/images/service.png'></img><span>SERVIÇO REALIZADOS</span></Link>
             </div>
         </div>
-        <button type="button" onClick={async () => {
-            const resp = await (window as any).api.Dialog.showMessageBox({ type: 'confirm', message: 'Hola?' })
-            console.log(resp)
-        }}>Hello World</button>
+        <button onClick={() => { (window as any).api.func() }}>Func</button>
         <div>
             <label>
                 <span>BUSCAR CLIENTE E VEÍCULO</span>

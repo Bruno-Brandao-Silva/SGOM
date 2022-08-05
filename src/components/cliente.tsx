@@ -24,19 +24,19 @@ export default function Cliente() {
             </div>
             <h1 className="index-h1">CLIENTE</h1>
             <div className="toolbar index-top-sub-container">
-                <Link to={`/FormCadVeiculo/${id}`}><img src='../public/images/favicon.png'></img><span>ADICIONAR VEíCULO</span></Link>
-                <Link to={`/FormCadEndereco/${id}`}><img src='../public/images/favicon.png'></img><span>ADICIONAR ENDEREÇO</span></Link>
-                <Link to={`/FormCadServico/${id}`}><img src='../public/images/favicon.png'></img><span>ADICIONAR SERVIÇO</span></Link>
+                <Link to={`/FormCadCliente/${id}`}><img src='../public/images/user.png'></img><span>ADICIONAR SERVIÇO</span></Link>
+                <Link to={`/FormCadVeiculo/${id}`}><img src='../public/images/sedan.png'></img><span>ADICIONAR VEíCULO</span></Link>
+                <Link to={`/FormCadEndereco/${id}`}><img src='../public/images/address.png'></img><span>ADICIONAR ENDEREÇO</span></Link>
+                <Link to={`/FormCadServico/${id}`}><img src='../public/images/service.png'></img><span>ADICIONAR SERVIÇO</span></Link>
             </div>
-
+            <div className="cliente-info">
+                <h1>NOME: {cliente.nome}</h1>
+                <h3>CPF/CNPJ: {cliente.cpf}</h3>
+                <p>E-MAIL: {cliente.email}</p>
+                <p>CONTATO 1: {cliente.contato_1}</p>
+                <p>CONTATO 2: {cliente.contato_2}</p>
+            </div>
             <div className="todos-container">
-                {<Link to={`/FormCadCliente/${id}`} className="todos-sub-container">
-                    <h1>{cliente.nome}</h1>
-                    <h3>{cliente.cpf}</h3>
-                    <p>{cliente.email}</p>
-                    <p>{cliente.contato_1}</p>
-                    <p>{cliente.contato_2}</p>
-                </Link>}
                 {enderecos.map((endereco, index: number) => (<Link to={`/FormCadEndereco/${id}/${endereco.id}`} key={index} className="todos-sub-container" >
                     <p>{endereco.logradouro}</p>
                     <p>{endereco.complemento}</p>

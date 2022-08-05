@@ -16,7 +16,7 @@ export default function FormCadServiço() {
     const editOrdemServico = (window as any).api.Ordem_Servico.get(id) as Ordem_Servico;
     const editServico = (window as any).api.Servico.getAllByOrdem_Servico(id) as Servico[];
     const cliente: Cliente = (window as any).api.Cliente.get(editOrdemServico ? editOrdemServico.id_cliente : id_cliente) as Cliente;
-    const veiculos = (window as any).api.Veiculo.getAllByCliente(id) as Veiculo[];
+    const veiculos = (window as any).api.Veiculo.getAllByCliente(id_cliente) as Veiculo[];
     const veiculo = (window as any).api.Veiculo.get(editOrdemServico?.placa) as Veiculo;
 
     const date = new Date()
@@ -96,7 +96,7 @@ export default function FormCadServiço() {
     return (<>
         <form id="formCadServico" >
             <div className="container-btn-top">
-                <button className="btn-return" type="button" onClick={async () => { navigate(-1) }}>
+                <button className="btn-return" type="button" onClick={() => { navigate(-1) }}>
                     <img src="../public/images/back.svg" alt="Voltar" />
                 </button>
                 <button className="btn-close" type="button" onClick={() => navigate('/')}>
@@ -194,18 +194,22 @@ export default function FormCadServiço() {
                             }
                             const veiculo = new (window as any).api.Veiculo.veiculo(placa, id_cliente, marca, modelo, cor, ano, km)
                             const veiculoR = !include ? (window as any).api.Veiculo.insert(veiculo) : (window as any).api.Veiculo.update(veiculo)
-                            console.log(veiculoR)
+                            if (veiculoR.changes == 0) {
+                                throw new Error("Não foi possível atualizar o veículo");
+                            }
                             const servicoTemp = (window as any).api.Ordem_Servico.ordem_servico(undefined, placa, km, id_cliente, data)
                             const servicoR = (window as any).api.Ordem_Servico.insert(servicoTemp)
-                            console.log(servicoR)
                             for (let i = 0; i < quantidadeServicos; i++) {
-                                console.log(servico[i], detalhes[i], quantidade[i], precoUnitario[i])
                                 const servicoRealizado = (window as any).api.Servico.servico(undefined, servicoR.lastInsertRowid, servico[i], detalhes[i], quantidade[i], precoUnitario[i])
                                 const servicoRealizadoR = (window as any).api.Servico.insert(servicoRealizado)
-                                console.log(servicoRealizadoR)
+                                if (servicoRealizadoR.changes == 0) {
+                                    throw new Error("Não foi possível inserir o serviço");
+                                }
                             }
-
-                            alert('Ordem de Serviço cadastrada com sucesso!')
+                            (async () => {
+                                await (window as any).api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso!' })
+                                navigate(-1)
+                            })();
                             // navigate('/FormCadEndereco/' + response.id)
                         } else {
                             const veiculo = new (window as any).api.Veiculo.veiculo(placa, editOrdemServico.id_cliente, marca, modelo, cor, ano, km)
@@ -231,13 +235,18 @@ export default function FormCadServiço() {
                                     throw new Error("Não foi possível inserir o serviço");
                                 }
                             }
-
-                            alert('Ordem de Serviço cadastrada com sucesso!')
                             // navigate('/FormCadEndereco/' + response.id)
+                            (async () => {
+                                console.log('funcao')
+                                await (window as any).api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso!' })
+                                navigate(-1)
+                            })();
                         }
                         // navigate(-1)
                     } catch (error) {
-                        alert(error.message)
+                        (async () => {
+                            await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })
+                        })();
                     }
                 }}>SALVAR</button>
                 <button type='button' onClick={() => {

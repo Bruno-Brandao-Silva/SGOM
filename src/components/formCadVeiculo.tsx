@@ -83,7 +83,10 @@ export default function FormCadServiço() {
                                 if (response.changes == 0) {
                                     throw new Error('Não foi possível cadastrar o veículo')
                                 } else {
-                                    alert('Veículo cadastrado com sucesso!')
+                                    (async () => {
+                                        await (window as any).api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
+                                        navigate(-1)
+                                    })()
                                 }
                             } else {
                                 const response = (window as any).api.Veiculo.update(veiculo)
@@ -91,12 +94,16 @@ export default function FormCadServiço() {
                                 if (response.changes == 0) {
                                     throw new Error('Não foi possível editar o veículo')
                                 } else {
-                                    alert('Veículo cadastrado com sucesso!')
+                                    (async () => {
+                                        await (window as any).api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
+                                        navigate(-1)
+                                    })()
                                 }
                             }
-                            navigate(-1)
                         } catch (error) {
-                            alert(error.message)
+                            (async () => {
+                                await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })
+                            })()
                         }
                     }}>SALVAR</button>
                 </div>

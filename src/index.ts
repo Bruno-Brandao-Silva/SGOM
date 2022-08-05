@@ -30,28 +30,8 @@ const createWindow = (): void => {
     mainWindow.webContents.openDevTools();
 
     ipcMain.handle('newDialog', async (event: any, arg: any) => {
-        let options: Electron.MessageBoxOptions = (() => {
-            switch (arg.type) {
-                case 'confirm':
-                    return {
-                        buttons: ["Confirmar", "Cancelar"],
-                        message: arg.message,
-                    }
-                case 'alert':
-                    return {
-                        buttons: ["OK"],
-                        message: arg.message,
-                    }
-                default:
-                    return {
-                        buttons: arg.buttons,
-                        message: arg.message,
-                    }
-            }
-        })()
+        let options: Electron.MessageBoxOptions = { ...arg }
         const response = await dialog.showMessageBox(mainWindow, options).then((value: MessageBoxReturnValue) => {
-            console.log(value)
-            event.sender.send('newDialog', value);
             return value
         })
         return response

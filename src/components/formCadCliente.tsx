@@ -84,20 +84,26 @@ export default function FormCadCliente() {
                             if (response.changes == 0) {
                                 throw new Error('Não foi possível cadastrar o cliente!')
                             } else {
-                                alert('Cliente cadastrado com sucesso!')
-                                navigate('/FormCadEndereco/' + response.id)
+                                (async () => {
+                                    await (window as any).api.Dialog.showMessageBox({ message: 'Cliente cadastrado com sucesso!' })
+                                    navigate('/FormCadEndereco/' + response.lastInsertRowid)
+                                })();
                             }
                         } else {
                             const response = (window as any).api.Cliente.update(cliente)
                             if (response.changes == 0) {
                                 throw new Error('Não foi possível editar o cliente!')
                             } else {
-                                alert('Cliente editado com sucesso!')
-                                navigate(-1)
+                                (async () => {
+                                    await (window as any).api.Dialog.showMessageBox({ message: 'Cliente cadastrado com sucesso!' })
+                                    navigate(-1)
+                                })();
                             }
                         }
                     } catch (error) {
-                        alert(error.message)
+                        (async () => {
+                            await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })
+                        })();
                     }
                 }}>{id ? 'SALVAR' : 'CONTINUAR COM O CADASTRO'}</button>
             </div>

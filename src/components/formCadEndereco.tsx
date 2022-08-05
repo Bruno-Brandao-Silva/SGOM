@@ -86,20 +86,27 @@ export default function FormCadEndereco() {
                             if (response.changes == 0) {
                                 throw new Error('Não foi possível cadastrar o endereço')
                             } else {
-                                alert('Endereço cadastrado com sucesso')
+                                (async () => {
+                                    await (window as any).api.Dialog.showMessageBox({ message: 'Endereço cadastrado com sucesso' })
+                                    navigate(`/Cliente/${id_cliente}`)
+                                })();
                             }
                         } else {
                             const response = (window as any).api.Endereco.update(endereco)
                             if (response.changes == 0) {
                                 throw new Error('Não foi possível atualizar o endereço')
                             } else {
-                                alert('Endereço atualizado com sucesso')
+                                (async () => {
+                                    await (window as any).api.Dialog.showMessageBox({ message: 'Endereço atualizado com sucesso' })
+                                    navigate(-1)
+                                })()
                             }
                         }
                     } catch (error) {
-                        alert(error.message)
+                        (async () => {
+                            await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })
+                        })();
                     }
-                    navigate(-1) //TO DO - Ir para a pagina do cliente
                 }}>SALVAR</button>
             </div>
         </form>
