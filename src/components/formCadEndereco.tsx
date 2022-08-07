@@ -69,7 +69,34 @@ export default function FormCadEndereco() {
                 </label>
                 <label>
                     <span>Estado</span>
-                    <input name="estado" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={estado} onChange={e => setEstado(e.target.value)} />
+                    <input name="estado" list="estado" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={estado} onChange={e => setEstado(e.target.value)} />
+                    {/* <datalist id="estado" className="datalist">
+                        <option value={'Acre'}>AC</option>
+                        <option value={'Alagoas'}>AL</option>
+                        <option value={'Amapá'}>AP</option>
+                        <option value={'Amazonas'}>AM</option>
+                        <option value={'Bahia'}>BA</option>
+                        <option value={'Ceará'}>CE</option>
+                        <option value={'Distrito Federal'}>DF</option>
+                        <option value={'Espírito Santo'}>ES</option>
+                        <option value={'Goiás'}>GO</option>
+                        <option value={'Maranhão'}>MA</option>
+                        <option value={'Mato Grosso'}>MT</option>
+                        <option value={'Mato Grosso do Sul'}>MS</option>
+                        <option value={'Minas Gerais'}>MG</option>
+                        <option value={'Pará'}>PA</option>
+                        <option value={'Paraíba'}>PB</option>
+                        <option value={'Pernambuco'}>PE</option>
+                        <option value={'Piauí'}>PI</option>
+                        <option value={'Rio de Janeiro'}>RJ</option>
+                        <option value={'Rio Grande do Norte'}>RN</option>
+                        <option value={'Rio Grande do Sul'}>RS</option>
+                        <option value={'Rondônia'}>RO</option>
+                        <option value={'Santa Catarina'}>SC</option>
+                        <option value={'São Paulo'}>SP</option>
+                        <option value={'Sergipe'}>SE</option>
+                        <option value={'Tocantins'}>TO</option>
+                    </datalist> */}
                 </label>
             </div>
             <div className="btn-submit">

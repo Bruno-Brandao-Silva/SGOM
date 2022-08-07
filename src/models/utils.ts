@@ -201,6 +201,19 @@ const InputsHandleFocusOut = ({ target }: { target: any }) => {
         span.classList.remove('span-active');
     }
 }
+// 456,4
+const monetaryMask = (e: number | string): string => {
+    let temp = e.toString()
+    if (temp.includes('.')) {
+        temp = temp.replace('.', ',')
+        temp = temp.replace(/(?=(\d{3})+(\D))\B/g, '.')
+        if (temp.indexOf(',') == temp.length - 2) { temp += '0' }
+        return `R$ ${temp}`
+    }
+    temp = temp + ',00'
+    temp = temp.replace(/(?=(\d{3})+(\D))\B/g, '.')
+    return `R$ ${temp}`;
+}
 
-const utils = { sleep, cpfRegex, cpfValidator, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
+const utils = { monetaryMask, sleep, cpfRegex, cpfValidator, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
 export default utils

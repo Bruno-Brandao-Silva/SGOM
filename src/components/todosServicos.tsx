@@ -58,7 +58,7 @@ export default function todosOrdem_Servicos() {
                                 <th>{cliente.nome}</th>
                                 <th>{cliente.cpf}</th>
                                 <th>{servico.data.replace(/\D/g, "").replace(/(\d{4})(\d{2})(\d{2})/, "$3/$2/$1")}</th>
-                                <th>{`R$ ${total}`}</th>
+                                <th>{`${utils.monetaryMask(total)}`}</th>
                             </tr>)
                         } else if (servico.placa.toString().toLowerCase().startsWith(busca.toLowerCase())) {
                             return (<tr key={index} onClick={() => navigate(`/EditServico/${servico.id}`)} >
@@ -66,7 +66,7 @@ export default function todosOrdem_Servicos() {
                                 <th>{cliente.nome}</th>
                                 <th>{cliente.cpf}</th>
                                 <th>{servico.data.replace(/\D/g, "").replace(/(\d{4})(\d{2})(\d{2})/, "$3/$2/$1")}</th>
-                                <th>{`R$ ${total}`}</th>
+                                <th>{`${utils.monetaryMask(total)}`}</th>
                             </tr>)
                         }
                     })}

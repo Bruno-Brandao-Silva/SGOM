@@ -206,11 +206,11 @@ export default function FormCadServiço() {
                                     throw new Error("Não foi possível inserir o serviço");
                                 }
                             }
+                            (window as any).api.Pdf.create(servicoR.lastInsertRowid);
                             (async () => {
                                 await (window as any).api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso!' })
                                 navigate(-1)
                             })();
-                            // navigate('/FormCadEndereco/' + response.id)
                         } else {
                             const veiculo = new (window as any).api.Veiculo.veiculo(placa, editOrdemServico.id_cliente, marca, modelo, cor, ano, km)
                             const veiculoR = (window as any).api.Veiculo.update(veiculo)
@@ -235,14 +235,16 @@ export default function FormCadServiço() {
                                     throw new Error("Não foi possível inserir o serviço");
                                 }
                             }
-                            // navigate('/FormCadEndereco/' + response.id)
                             (async () => {
-                                console.log('funcao')
+                                (window as any).api.Pdf.create(id);
+                                const printer = await (window as any).api.Printer.getPrinter();
+                                (window as any).api.Printer.printer('./output/1.pdf', { printer: printer });
+                            })();
+                            (async () => {
                                 await (window as any).api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso!' })
                                 navigate(-1)
                             })();
                         }
-                        // navigate(-1)
                     } catch (error) {
                         (async () => {
                             await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })

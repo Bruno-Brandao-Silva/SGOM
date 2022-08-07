@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Cliente from "../models/cliente";
 import Veiculo from "../models/veiculo";
@@ -17,7 +17,6 @@ export default function Index() {
                 <Link to='/TodosServicos'><img src='../public/images/service.png'></img><span>SERVIÇO REALIZADOS</span></Link>
             </div>
         </div>
-        <button onClick={() => { (window as any).api.func() }}>Func</button>
         <div>
             <label>
                 <span>BUSCAR CLIENTE E VEÍCULO</span>

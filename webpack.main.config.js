@@ -1,3 +1,4 @@
+const CopyPlugin = require('copy-webpack-plugin')
 module.exports = {
   /**
    * This is the main entry point for your application, it's the first file
@@ -11,4 +12,14 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'node_modules/pdf-to-printer/dist/SumatraPDF.exe',
+          to: './',
+        },
+      ]
+    })
+  ],
 };

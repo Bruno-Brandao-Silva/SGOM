@@ -354,13 +354,16 @@ label .span-active {
   border-collapse: collapse;
   border-radius: 5px;
 }
-.table-ordem-servicos thead tr{
+
+.table-ordem-servicos thead tr {
   background-color: rgba(0, 0, 0, .35);
 }
-.table-ordem-servicos thead tr th{
+
+.table-ordem-servicos thead tr th {
   border: 1px solid var(--black);
   padding: 10px;
 }
+
 .table-ordem-servicos tbody th,
 .table-ordem-servicos tbody td {
   border: 1px solid var(--black);
@@ -371,16 +374,18 @@ label .span-active {
 .table-ordem-servicos tbody tr:nth-child(even) {
   background-color: rgba(0, 0, 0, .15);
 }
+
 .table-ordem-servicos tbody tr:nth-child(odd) {
   background-color: var(--whitesmoke);
 }
+
 .table-ordem-servicos tbody tr:hover {
   background-color: rgba(0, 0, 0, .25);
 }
 
-.cliente-info{
+.cliente-info {
   display: flex;
   flex-direction: column;
   width: 100%;
-  
+
 }

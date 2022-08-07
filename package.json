@@ -21,7 +21,10 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "C:/SGOM/src/public/images/favicon"
+        "icon": "C:/SGOM/src/public/images/favicon",
+        "extraResource": [
+          "node_modules/pdf-to-printer/dist/SumatraPDF.exe"
+        ]
       },
       "makers": [
         {
@@ -100,6 +103,8 @@
   "dependencies": {
     "better-sqlite3-with-prebuilds": "^7.4.3",
     "electron-squirrel-startup": "^1.0.0",
+    "fix-path": "^4.0.0",
+    "pdf-to-printer": "^5.3.0",
     "pdfkit": "^0.13.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
