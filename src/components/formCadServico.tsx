@@ -29,7 +29,7 @@ export default function FormCadServiço() {
     const [cor, setCor] = React.useState(veiculo?.cor || "");
     const [ano, setAno] = React.useState(veiculo?.ano.toString() || "");
     const [km, setKm] = React.useState(editOrdemServico?.km.toString() || "");
-    const [quantidadeServicos, setQuantidadeServicos] = React.useState(editServico?.length || 0);
+    const [quantidadeServicos, setQuantidadeServicos] = React.useState(editServico?.length || 1);
 
 
     let tempServico: any = [], tempDetalhes: any = [], tempPrecoUnitario: any = [], tempQuantidade: any = []
@@ -48,44 +48,44 @@ export default function FormCadServiço() {
         setDetalhes(detalhes)
     }, [detalhes])
     const servicosForm: JSX.Element[] = []
-    if (servico && servico.length > 0) {
-        for (let i = 0; i < quantidadeServicos; i++) {
-            servicosForm.push(<div key={i} className="content-double-label">
-                <label>
-                    <span>SERVIÇO</span>
-                    <input name="servico" list="servico" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={servico[i]} onChange={e => {
-                        servico[i] = e.target.value;
-                        setServico(servico)
-                        setReact({})
-                    }} required />
-                </label>
-                <label>
-                    <span>DETALHES</span>
-                    <input name="detalhes" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={detalhes[i]} onChange={e => {
-                        detalhes[i] = e.target.value;
-                        setDetalhes(detalhes)
-                        setReact({})
-                    }} required />
-                </label>
-                <label>
-                    <span>QUANTIDADE</span>
-                    <input name="quantidade" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={quantidade[i]} onChange={e => {
-                        quantidade[i] = e.target.value;
-                        setQuantidade(quantidade)
-                        setReact({})
-                    }} required />
-                </label>
-                <label>
-                    <span>PREÇO UNITÁRIO</span>
-                    <input name="precoUnitario" type="number" step='0.01' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={precoUnitario[i]} onChange={e => {
-                        precoUnitario[i] = e.target.value;
-                        setPrecoUnitario(precoUnitario)
-                        setReact({})
-                    }} required />
-                </label>
-            </div>)
-        }
+    // if (servico && servico.length > 0) {
+    for (let i = 0; i < quantidadeServicos; i++) {
+        servicosForm.push(<div key={i} className="content-double-label">
+            <label>
+                <span>SERVIÇO</span>
+                <input name="servico" list="servico" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={servico[i]} onChange={e => {
+                    servico[i] = e.target.value;
+                    setServico(servico)
+                    setReact({})
+                }} required />
+            </label>
+            <label>
+                <span>DETALHES</span>
+                <input name="detalhes" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={detalhes[i]} onChange={e => {
+                    detalhes[i] = e.target.value;
+                    setDetalhes(detalhes)
+                    setReact({})
+                }} required />
+            </label>
+            <label>
+                <span>QUANTIDADE</span>
+                <input name="quantidade" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={quantidade[i]} onChange={e => {
+                    quantidade[i] = e.target.value;
+                    setQuantidade(quantidade)
+                    setReact({})
+                }} required />
+            </label>
+            <label>
+                <span>PREÇO UNITÁRIO</span>
+                <input name="precoUnitario" type="number" step='0.01' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={precoUnitario[i]} onChange={e => {
+                    precoUnitario[i] = e.target.value;
+                    setPrecoUnitario(precoUnitario)
+                    setReact({})
+                }} required />
+            </label>
+        </div>)
     }
+    // }
     useEffect(() => {
         for (let i = 0; i < inputs.length; i++) {
             if (inputs[i].value != '') {
@@ -139,14 +139,14 @@ export default function FormCadServiço() {
             <div className="content-double-label">
                 <label>
                     <span>PLACA</span>
-                    <input name="placa" list="placa" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={placa} onChange={async e => {
-                        setPlaca(e.target.value)
+                    <input name="placa" pattern="([A-Z]{3}-\d{4})|([A-Z]{3}\d{1}[A-Z]{1}\d{3})" list="placa" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={placa} onChange={async e => {
+                        setPlaca(utils.placaRegex(e))
                         const veiculo = await (window as any).api.Veiculo.get(e.target.value)
                         if (veiculo) {
-                            setMarca(veiculo.marca || "")
-                            setModelo(veiculo.modelo || "")
-                            setCor(veiculo.cor || "")
-                            setAno(veiculo.ano.toString() || "")
+                            setMarca(veiculo.marca)
+                            setModelo(veiculo.modelo)
+                            setCor(veiculo.cor)
+                            setAno(veiculo.ano.toString())
                         }
                         await utils.sleep(10)
                         for (let i = 0; i < inputs.length; i++) {
@@ -208,8 +208,14 @@ export default function FormCadServiço() {
                             }
                             (window as any).api.Pdf.create(servicoR.lastInsertRowid);
                             (async () => {
-                                await (window as any).api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso!' })
-                                navigate(-1)
+                                const response = await (window as any).api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso. Deseja imprimir?', buttons: ['Sim', 'Não'] })
+                                if (response.response == 0) {
+                                    (async () => {
+                                        const printer = await (window as any).api.Printer.getPrinter();
+                                        await (window as any).api.Printer.printer(`./output/${servicoR.lastInsertRowid}.pdf`, { printer: printer });
+                                        navigate(-1)
+                                    })();
+                                } else { navigate(-1) }
                             })();
                         } else {
                             const veiculo = new (window as any).api.Veiculo.veiculo(placa, editOrdemServico.id_cliente, marca, modelo, cor, ano, km)
@@ -235,14 +241,16 @@ export default function FormCadServiço() {
                                     throw new Error("Não foi possível inserir o serviço");
                                 }
                             }
+                            (window as any).api.Pdf.create(id);
                             (async () => {
-                                (window as any).api.Pdf.create(id);
-                                const printer = await (window as any).api.Printer.getPrinter();
-                                (window as any).api.Printer.printer('./output/1.pdf', { printer: printer });
-                            })();
-                            (async () => {
-                                await (window as any).api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso!' })
-                                navigate(-1)
+                                const response = await (window as any).api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso. Deseja imprimir?', buttons: ['Sim', 'Não'] })
+                                if (response.response == 0) {
+                                    (async () => {
+                                        const printer = await (window as any).api.Printer.getPrinter();
+                                        await (window as any).api.Printer.printer(`./output/${id}.pdf`, { printer: printer });
+                                        navigate(-1)
+                                    })();
+                                } else { navigate(-1) }
                             })();
                         }
                     } catch (error) {
@@ -257,7 +265,7 @@ export default function FormCadServiço() {
                     setQuantidade([...quantidade, ""])
                     setPrecoUnitario([...precoUnitario, ""])
                     setQuantidadeServicos(quantidadeServicos + 1)
-                }}>ADD</button>
+                }}>ADICIONAR SERVIÇO</button>
                 <button type='button' onClick={() => {
                     if (quantidadeServicos > 0) {
                         setQuantidadeServicos(quantidadeServicos - 1)
@@ -270,7 +278,7 @@ export default function FormCadServiço() {
                         precoUnitario.splice(precoUnitario.length - 1, 1)
                         setPrecoUnitario(precoUnitario)
                     }
-                }}>SUB</button>
+                }}>REMOVER SERVIÇO</button>
             </div>
         </form>
     </>);

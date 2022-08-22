@@ -20,14 +20,14 @@ export default function todosClientes() {
                 </button>
             </div>
             <h1 className="index-h1">TODOS OS CLIENTES</h1>
-            <div className="toolbar index-top-sub-container">
-                <Link to='/FormCadCliente' className="todo-a"><img src='../public/images/add-user.png'></img><span>CADASTRAR CLIENTE</span></Link>
-            </div>
-            <div>
+            <div className="clienteHeader">
                 <label>
                     <span>BUSCAR CLIENTE POR NOME OU CPF/CNPJ</span>
                     <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={busca} onChange={e => { setBusca(e.target.value); }}></input>
                 </label>
+                <div className="add">
+                    <Link to='/FormCadCliente' className="todo-a"><img src='../public/images/add-user.png'></img><span>CADASTRAR CLIENTE</span></Link>
+                </div>
             </div>
             <table className="table-ordem-servicos">
                 <thead>

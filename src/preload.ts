@@ -85,7 +85,7 @@ const createPdf = (id: number) => {
         .rect(doc.x - 3, doc.y - 9, maxWidth - 80, 25).stroke()
     y = y + 10
     doc.fontSize(12)
-        .text(`${endereco?.[0]?.logradouro}, ${endereco?.[0]?.numero} - ${endereco?.[0]?.bairro} - ${endereco?.[0]?.cidade} - ${endereco?.[0]?.estado} - CEP: ${endereco?.[0]?.cep}`, 43, y, { align: 'left' })
+        .text(`${endereco![0]!.logradouro!}, ${endereco![0]!.numero!}, ${endereco![0]!.complemento!} - ${endereco![0]!.bairro!} - ${endereco![0]!.cidade!} - ${endereco![0]!.estado} - CEP: ${endereco![0]!.cep!}`, 43, y, { align: 'left' })
 
     const carInfoWidth = (maxWidth - 80) / 6;
     y = y + 20

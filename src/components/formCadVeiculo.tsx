@@ -56,7 +56,9 @@ export default function FormCadServiço() {
             <div className="content-double-label">
                 <label>
                     <span>PLACA</span>
-                    <input name="placaInput" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={placaInput} onChange={placa !== undefined ? () => { } : e => setPlacaInput(e.target.value)} disabled={(placa !== undefined)} required />
+                    <input name="placaInput" pattern="([A-Z]{3}-\d{4})|([A-Z]{3}\d{1}[A-Z]{1}\d{3})" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={placaInput} onChange={placa !== undefined ? () => { } : e => {
+                        setPlacaInput(utils.placaRegex(e));
+                    }} disabled={(placa !== undefined)} required />
                 </label>
                 <label>
                     <span>ANO</span>
@@ -67,46 +69,44 @@ export default function FormCadServiço() {
                     <input name="km" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={km} onChange={e => setKm(e.target.value)} required />
                 </label>
             </div>
-            <div className="content-double-label">
-                <div className="btn-submit">
-                    <button id="pt1" type="button" onClick={async () => {
-                        const formCadVeiculo = document.getElementById('formCadVeiculo') as any
-                        try {
-                            if (!formCadVeiculo.checkValidity()) {
-                                formCadVeiculo.reportValidity()
-                                return
-                            }
-                            const veiculo = new (window as any).api.Veiculo.veiculo(placaInput, id_cliente, marca, modelo, cor, ano, km)
-                            if (!placa) {
-                                const response = (window as any).api.Veiculo.insert(veiculo)
-
-                                if (response.changes == 0) {
-                                    throw new Error('Não foi possível cadastrar o veículo')
-                                } else {
-                                    (async () => {
-                                        await (window as any).api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
-                                        navigate(-1)
-                                    })()
-                                }
-                            } else {
-                                const response = (window as any).api.Veiculo.update(veiculo)
-
-                                if (response.changes == 0) {
-                                    throw new Error('Não foi possível editar o veículo')
-                                } else {
-                                    (async () => {
-                                        await (window as any).api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
-                                        navigate(-1)
-                                    })()
-                                }
-                            }
-                        } catch (error) {
-                            (async () => {
-                                await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })
-                            })()
+            <div className="btn-submit">
+                <button id="pt1" type="button" onClick={async () => {
+                    const formCadVeiculo = document.getElementById('formCadVeiculo') as any
+                    try {
+                        if (!formCadVeiculo.checkValidity()) {
+                            formCadVeiculo.reportValidity()
+                            return
                         }
-                    }}>SALVAR</button>
-                </div>
+                        const veiculo = new (window as any).api.Veiculo.veiculo(placaInput, id_cliente, marca, modelo, cor, ano, km)
+                        if (!placa) {
+                            const response = (window as any).api.Veiculo.insert(veiculo)
+
+                            if (response.changes == 0) {
+                                throw new Error('Não foi possível cadastrar o veículo')
+                            } else {
+                                (async () => {
+                                    await (window as any).api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
+                                    navigate(-1)
+                                })()
+                            }
+                        } else {
+                            const response = (window as any).api.Veiculo.update(veiculo)
+
+                            if (response.changes == 0) {
+                                throw new Error('Não foi possível editar o veículo')
+                            } else {
+                                (async () => {
+                                    await (window as any).api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
+                                    navigate(-1)
+                                })()
+                            }
+                        }
+                    } catch (error) {
+                        (async () => {
+                            await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })
+                        })()
+                    }
+                }}>SALVAR</button>
             </div>
         </form>
     </>);

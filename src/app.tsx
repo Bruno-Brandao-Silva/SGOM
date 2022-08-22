@@ -10,6 +10,7 @@ import Cliente from './components/cliente';
 import FormCadVeiculo from './components/formCadVeiculo';
 import TodosVeiculos from './components/todosVeiculos';
 import TodosServicos from './components/todosServicos';
+import Veiculo from './components/veiculo';
 
 function render() {
     ReactDOM.render(<>
@@ -33,6 +34,7 @@ function render() {
                 </Route>
                 <Route path='/TodosVeiculos' element={<TodosVeiculos />} />
                 <Route path='/TodosServicos' element={<TodosServicos />} />
+                <Route path='/Veiculo/:placa' element={<Veiculo />} />
             </Routes>
         </HashRouter>
     </>, document.getElementById('root'));

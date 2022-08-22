@@ -215,5 +215,21 @@ const monetaryMask = (e: number | string): string => {
     return `R$ ${temp}`;
 }
 
-const utils = { monetaryMask, sleep, cpfRegex, cpfValidator, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
+const placaRegex = (e: any) => {
+
+    let temp = typeof e == 'string' ? e : e.target.value;
+    temp = temp.toUpperCase();
+    temp = temp.replace(/[^A-Z0-9]/g, '');
+
+    if (temp.length <= 7) {
+        let regEx = new RegExp(/[\d]/)
+        if (regEx.test(temp[4]) || temp.length <= 4) {
+            temp = temp.replace(/([A-Z]{3})(\d{0,4})/g, '$1-$2');
+        }
+    } else {
+        temp = temp.substring(0, 7)
+    }
+    return temp
+}
+const utils = { placaRegex, monetaryMask, sleep, cpfRegex, cpfValidator, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
 export default utils
