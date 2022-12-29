@@ -1,7 +1,4 @@
 {
-  "rules": {
-    "no-unused-vars": "off",
-  },
   "env": {
     "browser": true,
     "es6": true,

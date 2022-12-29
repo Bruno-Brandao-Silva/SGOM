@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import Index from './components';
 import FormCadCliente from './components/formCadCliente';
@@ -11,8 +10,8 @@ import FormCadVeiculo from './components/formCadVeiculo';
 import TodosVeiculos from './components/todosVeiculos';
 import TodosServicos from './components/todosServicos';
 
-function render() {
-    ReactDOM.render(<>
+export default function App(): React.ReactNode {
+    return (<React.StrictMode>
         <HashRouter>
             <Routes>
                 <Route path="/" element={<Index />} />
@@ -35,7 +34,6 @@ function render() {
                 <Route path='/TodosServicos' element={<TodosServicos />} />
             </Routes>
         </HashRouter>
-    </>, document.getElementById('root'));
+    </React.StrictMode>
+    );
 }
-
-render();
