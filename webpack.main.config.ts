@@ -12,6 +12,7 @@ export const mainConfig: Configuration = {
   module: {
     rules,
   },
+  externals: ['better-sqlite3'],
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },

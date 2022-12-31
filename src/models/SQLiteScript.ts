@@ -1,84 +1,140 @@
-const script = `
+const script = `--
+-- Arquivo gerado com SQLiteStudio v3.4.1 em sex dez 30 20:53:53 2022
 --
--- File generated with SQLiteStudio v3.3.3 on dom jul 31 00:00:41 2022
---
--- Text encoding used: System
+-- Codificação de texto usada: System
 --
 PRAGMA foreign_keys = off;
 BEGIN TRANSACTION;
 
--- Table: cliente
-CREATE TABLE cliente (
-    id        INTEGER PRIMARY KEY AUTOINCREMENT
-                      NOT NULL,
-    cpf       STRING  NOT NULL,
-    nome      STRING  NOT NULL,
-    email     STRING,
-    contato_1 STRING,
-    contato_2 STRING
-);
+-- Tabela: ADDRESS
+DROP TABLE IF EXISTS ADDRESS;
 
-
--- Table: endereco
-CREATE TABLE endereco (
-    cep         STRING (9) NOT NULL,
-    logradouro  STRING     NOT NULL,
-    bairro      STRING     NOT NULL,
-    cidade      STRING     NOT NULL,
-    estado      STRING     NOT NULL,
-    numero      STRING     NOT NULL,
-    complemento STRING,
-    id          INTEGER    PRIMARY KEY AUTOINCREMENT
-                           NOT NULL,
-    id_cliente  INTEGER    REFERENCES cliente (id) 
-                           NOT NULL
-);
-
-
--- Table: ordem_servico
-CREATE TABLE ordem_servico (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT
-                       NOT NULL,
-    placa      STRING  REFERENCES veiculo (placa) 
-                       NOT NULL,
-    id_cliente INTEGER REFERENCES cliente (id) 
-                       NOT NULL,
-    data       DATE    NOT NULL,
-    km         DOUBLE
-);
-
-
--- Table: servico
-CREATE TABLE servico (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT
-                          NOT NULL,
-    id_servico    INTEGER REFERENCES ordem_servico (id) 
-                          NOT NULL,
-    servico       STRING  NOT NULL,
-    detalhes      STRING  NOT NULL,
-    precoUnitario NUMERIC NOT NULL,
-    quantidade    NUMERIC NOT NULL
-);
-
-
--- Table: veiculo
-CREATE TABLE veiculo (
-    placa      STRING  PRIMARY KEY
-                       UNIQUE
-                       NOT NULL,
-    marca      STRING,
-    modelo     STRING,
-    cor        STRING,
-    ano        INTEGER,
-    km         DOUBLE,
-    id_cliente INTEGER REFERENCES cliente (id) 
+CREATE TABLE IF NOT EXISTS ADDRESS (
+    ID         INTEGER PRIMARY KEY AUTOINCREMENT
                        NOT NULL
+                       UNIQUE,
+    CEP        TEXT    NOT NULL,
+    STREET     TEXT    NOT NULL,
+    DISTRICT   TEXT    NOT NULL,
+    CITY       TEXT    NOT NULL,
+    STATE      TEXT    NOT NULL,
+    NUMBER     TEXT    NOT NULL,
+    COMPLEMENT TEXT,
+    CPF_CNPJ   TEXT    REFERENCES CLIENT (CPF_CNPJ) 
+                       NOT NULL
+);
+
+
+-- Tabela: CLIENT
+DROP TABLE IF EXISTS CLIENT;
+
+CREATE TABLE IF NOT EXISTS CLIENT (
+    CPF_CNPJ TEXT PRIMARY KEY
+                  NOT NULL
+                  UNIQUE,
+    NAME     TEXT NOT NULL
+);
+
+
+-- Tabela: CONTACT
+DROP TABLE IF EXISTS CONTACT;
+
+CREATE TABLE IF NOT EXISTS CONTACT (
+    ID       INTEGER PRIMARY KEY AUTOINCREMENT
+                     NOT NULL
+                     UNIQUE,
+    TYPE     TEXT    NOT NULL,
+    CONTACT  TEXT    NOT NULL,
+    CPF_CNPJ TEXT    REFERENCES CLIENT (CPF_CNPJ) 
+                     NOT NULL
+);
+
+
+-- Tabela: PRODUCT
+DROP TABLE IF EXISTS PRODUCT;
+
+CREATE TABLE IF NOT EXISTS PRODUCT (
+    ID          INTEGER PRIMARY KEY AUTOINCREMENT
+                        UNIQUE
+                        NOT NULL,
+    NAME        TEXT    NOT NULL,
+    PRICE       NUMERIC NOT NULL,
+    DESCRIPTION TEXT
+);
+
+
+-- Tabela: PURCHASE
+DROP TABLE IF EXISTS PURCHASE;
+
+CREATE TABLE IF NOT EXISTS PURCHASE (
+    ID       INTEGER PRIMARY KEY AUTOINCREMENT
+                     NOT NULL
+                     UNIQUE,
+    CPF_CNPJ TEXT    REFERENCES CLIENT (CPF_CNPJ) 
+                     NOT NULL,
+    DATE     TEXT    NOT NULL
+);
+
+
+-- Tabela: PURCHASE_LIST
+DROP TABLE IF EXISTS PURCHASE_LIST;
+
+CREATE TABLE IF NOT EXISTS PURCHASE_LIST (
+    ID_PURCHASE INTEGER REFERENCES PURCHASE (ID) 
+                        NOT NULL,
+    ID_PRODUCT  INTEGER REFERENCES PRODUCT (ID) 
+                        NOT NULL,
+    AMOUNT      INTEGER NOT NULL
+);
+
+
+-- Tabela: REQUIRE_LIST
+DROP TABLE IF EXISTS REQUIRE_LIST;
+
+CREATE TABLE IF NOT EXISTS REQUIRE_LIST (
+    ID_SERVICE INTEGER REFERENCES SERVICE (ID) 
+                       NOT NULL,
+    ID_PRODUCT INTEGER REFERENCES PRODUCT (ID) 
+                       NOT NULL,
+    AMOUNT     INTEGER NOT NULL
+);
+
+
+-- Tabela: SERVICE
+DROP TABLE IF EXISTS SERVICE;
+
+CREATE TABLE IF NOT EXISTS SERVICE (
+    ID       INTEGER PRIMARY KEY AUTOINCREMENT
+                     UNIQUE
+                     NOT NULL,
+    ID_PLATE TEXT    REFERENCES VEHICLE (ID_PLATE) 
+                     NOT NULL,
+    CPF_CNPJ TEXT    REFERENCES CLIENT (CPF_CNPJ) 
+                     NOT NULL,
+    DATE     TEXT    NOT NULL,
+    SERVICE  TEXT    NOT NULL,
+    PRICE    NUMERIC NOT NULL
+);
+
+
+-- Tabela: VEHICLE
+DROP TABLE IF EXISTS VEHICLE;
+
+CREATE TABLE IF NOT EXISTS VEHICLE (
+    ID_PLATE TEXT    PRIMARY KEY
+                     UNIQUE
+                     NOT NULL,
+    BRAND    TEXT    NOT NULL,
+    MODEL    TEXT    NOT NULL,
+    COLOR    TEXT    NOT NULL,
+    YEAR     INTEGER NOT NULL,
+    KM       NUMERIC NOT NULL,
+    CPF_CNPJ TEXT    REFERENCES CLIENT (CPF_CNPJ) 
+                     NOT NULL
 );
 
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;
-
 `
 export default script;
-

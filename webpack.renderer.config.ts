@@ -7,7 +7,18 @@ rules.push({
   test: /\.css$/,
   use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
 });
-
+rules.push({
+  test: /\.(png|jpg|svg|jpeg|gif)$/i,
+  use: [
+    {
+      loader: 'file-loader',
+      options: {
+        name: './public/images/[name].[ext]',
+        publicPath: '../.'
+      }
+    },
+  ],
+});
 export const rendererConfig: Configuration = {
   module: {
     rules,

@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import Cliente from "../models/cliente";
-import Veiculo from "../models/veiculo";
+// import Client from "./../models/Client";
+import Client from "../models/Client";
+// import Cliente from "../models/cliente";
+// import Veiculo from "../models/veiculo";
 import utils from "../models/utils";
-
 export default function Index() {
     const [busca, setBusca] = React.useState("");
-    const clientes = (window as any).api.Cliente.getAll() as Cliente[];
-    const veiculos = (window as any).api.Veiculo.getAll() as Veiculo[];
+    const clientes = [] as any[]; //(window as any).api.Cliente.getAll() as any[];
+    const veiculos = [] as any[]; // (window as any).api.Veiculo.getAll() as any[];
     return (<div className="index-container">
         <h1 className="index-h1">SGOM</h1>
         <div className="index-top-container">
@@ -54,5 +55,16 @@ export default function Index() {
                 })}
             </div>
         </div>
-    </div>)
+        <button onClick={async () => {
+            console.log("TESTE");
+            const client = (window as any).api.Client({ cpf_cnpj: 'asd211211', name: 'Bruno' }) as Client;
+            // const client = new Client({ cpf_cnpj: 'asd', name: 'Bruno' })
+            console.log(client);
+            console.log(await client.insert());
+            // console.log((window as any).api.insert(client));
+            // console.log(await (window as any).api.database({ method: 'run', query: 'INSERT INTO CLIENT VALUES (?, ?)', params: ['5679', 'Bruno'] }));
+            // console.log(await (window as any).api.database({ method: 'get', query: 'SELECT * FROM CLIENT WHERE NAME = ?', params: 'Bruno' }));
+            // console.log(await (window as any).api.database({ method: 'all', query: 'SELECT * FROM CLIENT WHERE NAME = ? AND CPF_CNPJ = ?', params: ['Bruno', '5679'] }));
+        }}>TESTE</button>
+    </div >)
 }
