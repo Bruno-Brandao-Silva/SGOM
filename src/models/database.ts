@@ -1,5 +1,5 @@
 import script from './SQLiteScript';
-import * as fs from 'fs';
+import fs from 'fs';
 import sqlite from 'better-sqlite3';
 
 const file = './database.db';
