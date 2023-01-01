@@ -1,19 +1,20 @@
 
 export default class Vehicle {
-    placa: string;
-    marca?: string;
-    modelo?: string;
-    cor?: string;
-    ano?: number;
-    km?: number;
+    id_plate: string;
+    brand: string;
+    model: string;
+    year: number;
+    color: string;
+    km: number;
+    cpf_cnpj: string;
 
-    constructor({ placa, marca, modelo, cor, ano, km }: { placa: string, marca?: string, modelo?: string, cor?: string, ano?: number, km?: number }) {
-        this.placa = placa;
-        this.marca = marca;
-        this.modelo = modelo;
-        this.cor = cor;
-        this.ano = ano;
+    constructor({ id_plate, brand, model, year, color, km, cpf_cnpj }: Vehicle) {
+        this.id_plate = id_plate;
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+        this.color = color;
         this.km = km;
+        this.cpf_cnpj = cpf_cnpj;
     }
-
 }
