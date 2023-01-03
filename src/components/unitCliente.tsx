@@ -1,14 +1,14 @@
 import React from "react";
-import Cliente from "../models/cliente";
+import Client from "../models/Client";
 
-export default function unitCliente({ cliente }: { cliente: Cliente }) {
+export default function unitCliente({ client }: { client: Client }) {
     return (<>
         <div className="unitCliente-Container">
             <div className="unitCliente-Horizontal-Div">
-            <h1>Nome: {cliente.nome}</h1>
+                <h1>Nome: {client.name}</h1>
             </div>
-            
-            <h1>CPF: {cliente.cpf}</h1>
+
+            <h1>CPF: {client.cpf_cnpj}</h1>
         </div>
     </>)
 }

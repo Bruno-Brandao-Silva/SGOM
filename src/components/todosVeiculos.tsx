@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cliente from "../models/cliente";
+import Client from "../models/Client";
 import utils from "../models/utils";
-import Veiculo from "../models/veiculo";
+import Vehicle from "../models/Vehicle";
 export default function todosVeiculos() {
     const navigate = useNavigate();
-    navigate
-    const veiculos = (window as any).api.Veiculo.getAll() as Veiculo[];
-    const clientes = (window as any).api.Cliente.getAll() as Cliente[];
+    const [veiculos, setVeiculos] = useState<Vehicle[]>([]);
+    const [clientes, setClientes] = useState<Client[]>([]);
+    useEffect(() => {
+        window.api.Vehicle().getAll().then((veiculos) => {
+            setVeiculos(veiculos);
+        });
+        window.api.Client().getAll().then((clientes) => {
+            setClientes(clientes);
+        });
+    }, []);
+
     const [busca, setBusca] = React.useState("");
     return (<>
         <div className="todos">
@@ -42,24 +50,24 @@ export default function todosVeiculos() {
                 </thead>
                 <tbody>
                     {veiculos.map((veiculo, index: number) => {
-                        const cliente = clientes.find(c => c.id == veiculo.id_cliente)
+                        const cliente = clientes.find(c => c.cpf_cnpj == veiculo.cpf_cnpj)
                         if (busca == '') {
-                            return (<tr key={index} onClick={() => navigate(`/FormCadVeiculo/${veiculo.id_cliente}/${veiculo.placa}`)} >
-                                <th>{veiculo.placa}</th>
-                                <th>{veiculo.marca}</th>
-                                <th>{veiculo.modelo}</th>
-                                <th>{veiculo.ano}</th>
-                                <th>{cliente.nome}</th>
-                                <th>{cliente.cpf}</th>
+                            return (<tr key={index} onClick={() => navigate(`/FormCadVeiculo/${veiculo.cpf_cnpj}/${veiculo.id_plate}`)} >
+                                <th>{veiculo.id_plate}</th>
+                                <th>{veiculo.brand}</th>
+                                <th>{veiculo.model}</th>
+                                <th>{veiculo.year}</th>
+                                <th>{cliente.name}</th>
+                                <th>{cliente.cpf_cnpj}</th>
                             </tr>)
-                        } else if (veiculo.placa.toString().toLowerCase().startsWith(busca.toLowerCase())) {
-                            return (<tr key={index} onClick={() => navigate(`/FormCadVeiculo/${veiculo.id_cliente}/${veiculo.placa}`)} >
-                                <th>{veiculo.placa}</th>
-                                <th>{veiculo.marca}</th>
-                                <th>{veiculo.modelo}</th>
-                                <th>{veiculo.ano}</th>
-                                <th>{cliente.nome}</th>
-                                <th>{cliente.cpf}</th>
+                        } else if (veiculo.id_plate.toString().toLowerCase().startsWith(busca.toLowerCase())) {
+                            return (<tr key={index} onClick={() => navigate(`/FormCadVeiculo/${veiculo.cpf_cnpj}/${veiculo.id_plate}`)} >
+                                <th>{veiculo.id_plate}</th>
+                                <th>{veiculo.brand}</th>
+                                <th>{veiculo.model}</th>
+                                <th>{veiculo.year}</th>
+                                <th>{cliente.name}</th>
+                                <th>{cliente.cpf_cnpj}</th>
                             </tr>)
                         }
                     })}

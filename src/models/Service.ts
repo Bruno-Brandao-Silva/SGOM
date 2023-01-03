@@ -8,15 +8,6 @@ export default class Service {
     service: string;
     price: number;
 
-    constructor({ id, id_plate, cpf_cnpj, date, service, price }: Service) {
-        this.id = id;
-        this.id_plate = id_plate;
-        this.cpf_cnpj = cpf_cnpj;
-        this.date = date;
-        this.service = service;
-        this.price = price;
-    }
-
     insert = () => {
         try {
             const response = ipcRenderer.invoke('database', {
@@ -29,7 +20,17 @@ export default class Service {
             throw e
         }
     }
-
+    getAll = () => {
+        try {
+            const response = ipcRenderer.invoke('database', {
+                method: 'all',
+                query: 'SELECT * FROM SERVICE'
+            });
+            return response;
+        } catch (e) {
+            throw e
+        }
+    }
     getByCpfCnpj = () => {
         try {
             const response = ipcRenderer.invoke('database', {
@@ -56,12 +57,13 @@ export default class Service {
         }
     }
 
-    getById = () => {
+    getById = (id = this.id) => {
+        if (!id) throw new Error('ID not defined');
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
                 query: 'SELECT * FROM SERVICE WHERE ID = ?',
-                params: [this.id]
+                params: [id]
             });
             return response;
         } catch (e) {

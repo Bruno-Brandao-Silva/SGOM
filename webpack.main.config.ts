@@ -12,7 +12,10 @@ export const mainConfig: Configuration = {
   module: {
     rules,
   },
-  externals: ['better-sqlite3'],
+  //add better-sqlite3 to externals
+  externals: {
+    better_sqlite3: 'better-sqlite3',
+  },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },

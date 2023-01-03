@@ -1,22 +1,25 @@
 // react component for a form to create a new service
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import utils from "../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
-import Veiculo from "../models/veiculo";
+import Vehicle from "../models/Vehicle";
 
 export default function FormCadServiço() {
     const navigate = useNavigate();
     const inputs = document.getElementsByTagName('input');
     const { id_cliente, placa } = useParams();
-
-    const veiculo = (window as any).api.Veiculo.get(placa) as Veiculo;
-
-    const [marca, setMarca] = React.useState(veiculo?.marca || "");
-    const [modelo, setModelo] = React.useState(veiculo?.modelo || "");
+    const [vehicle, setVehicle] = useState<Vehicle>();
+    useEffect(() => {
+        window.api.Vehicle().getByPlate(placa).then((vehicle: Vehicle) => {
+            setVehicle(vehicle);
+        });
+    }, []);
+    const [marca, setMarca] = React.useState(vehicle?.brand || "");
+    const [modelo, setModelo] = React.useState(vehicle?.model || "");
     const [placaInput, setPlacaInput] = React.useState(placa || "");
-    const [cor, setCor] = React.useState(veiculo?.cor || "");
-    const [ano, setAno] = React.useState(veiculo?.ano.toString() || "");
-    const [km, setKm] = React.useState(veiculo?.km.toString() || "");
+    const [cor, setCor] = React.useState(vehicle?.color || "");
+    const [ano, setAno] = React.useState(vehicle?.year.toString() || "");
+    const [km, setKm] = React.useState(vehicle?.km.toString() || "");
 
     useEffect(() => {
         for (let i = 0; i < inputs.length; i++) {
@@ -76,33 +79,33 @@ export default function FormCadServiço() {
                                 formCadVeiculo.reportValidity()
                                 return
                             }
-                            const veiculo = new (window as any).api.Veiculo.veiculo(placaInput, id_cliente, marca, modelo, cor, ano, km)
+                            const veiculo = window.api.Vehicle() //veiculo(placaInput, id_cliente, marca, modelo, cor, ano, km)
                             if (!placa) {
-                                const response = (window as any).api.Veiculo.insert(veiculo)
+                                const response = await veiculo.insert();
 
                                 if (response.changes == 0) {
                                     throw new Error('Não foi possível cadastrar o veículo')
                                 } else {
                                     (async () => {
-                                        await (window as any).api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
+                                        // await window.api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
                                         navigate(-1)
                                     })()
                                 }
                             } else {
-                                const response = (window as any).api.Veiculo.update(veiculo)
+                                const response = await veiculo.update();
 
                                 if (response.changes == 0) {
                                     throw new Error('Não foi possível editar o veículo')
                                 } else {
                                     (async () => {
-                                        await (window as any).api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
+                                        // await window.api.Dialog.showMessageBox({ message: 'Veículo cadastrado com sucesso!' })
                                         navigate(-1)
                                     })()
                                 }
                             }
                         } catch (error) {
                             (async () => {
-                                await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })
+                                // await window.api.Dialog.showMessageBox({ type: 'error', message: error.message })
                             })()
                         }
                     }}>SALVAR</button>

@@ -10,13 +10,13 @@ import Service from "./models/Service";
 import Vehicle from "./models/Vehicle";
 
 contextBridge.exposeInMainWorld('api', {
-    Client: (props: Client) => new Client(props),
-    Address: (props: Address) => new Address(props),
-    Contact: (props: Contact) => new Contact(props),
-    Product: (props: Product) => new Product(props),
-    Purchase: (props: Purchase) => new Purchase(props),
-    PurchaseList: (props: PurchaseList) => new PurchaseList(props),
-    RequireList: (props: RequireList) => new RequireList(props),
-    Service: (props: Service) => new Service(props),
-    Vehicle: (props: Vehicle) => new Vehicle(props),
+    Client: () => new Client(),
+    Address: () => new Address(),
+    Contact: () => new Contact(),
+    Product: () => new Product(),
+    Purchase: () => new Purchase(),
+    PurchaseList: () => new PurchaseList(),
+    RequireList: () => new RequireList(),
+    Service: () => new Service(),
+    Vehicle: () => new Vehicle(),
 })

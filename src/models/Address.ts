@@ -11,18 +11,6 @@ export default class Address {
     complement?: string;
     cpf_cnpj: string;
 
-    constructor({ id, cep, street, district, city, state, number, complement, cpf_cnpj }: Address) {
-        this.id = id;
-        this.cep = cep;
-        this.street = street;
-        this.district = district;
-        this.city = city;
-        this.state = state;
-        this.number = number;
-        this.complement = complement;
-        this.cpf_cnpj = cpf_cnpj;
-    }
-
     insert = () => {
         try {
             if (this.complement) {
@@ -45,12 +33,14 @@ export default class Address {
         }
     }
 
-    getByCpfCnpj = () => {
+    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj) => {
+        if (!cpf_cnpj) throw new Error('CPF/CNPJ not defined');
+
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM ADDRESS WHERE CPF_CNPJ = ?',
-                params: [this.cpf_cnpj]
+                params: [cpf_cnpj]
             });
             return response;
         } catch (e) {

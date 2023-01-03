@@ -1,19 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import utils from "./../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
+import Client from "../models/Client";
 
 export default function FormCadCliente() {
     const navigate = useNavigate()
-    const { id } = useParams();
+    const { id: cpf_cnpj } = useParams();
 
     const inputs = document.getElementsByTagName('input');
-    const cliente = (window as any).api.Cliente.get(id);
+    // const cliente = window.api.Client().getByCpfCnpj(cpf_cnpj);
+    const [cliente, setCliente] = useState<Client>();
+    useEffect(() => {
+        window.api.Client().getByCpfCnpj(cpf_cnpj).then((cliente) => {
+            setCliente(cliente);
+        });
+    }, []);
 
-    const [cpf, setCpf] = React.useState(cliente?.cpf || "");
-    const [nome, setNome] = React.useState(cliente?.nome || "");
-    const [email, setEmail] = React.useState(cliente?.email || "");
-    const [contato_1, setContato_1] = React.useState(cliente?.contato_1 || "");
-    const [contato_2, setContato_2] = React.useState(cliente?.contato_2 || "");
+    const [cpf, setCpf] = React.useState(cliente?.cpf_cnpj || "");
+    const [nome, setNome] = React.useState(cliente?.name || "");
+    const [email, setEmail] = React.useState("");
+    const [contato_1, setContato_1] = React.useState("");
+    const [contato_2, setContato_2] = React.useState("");
     useEffect(() => {
         for (let i = 0; i < inputs.length; i++) {
             if (inputs[i].value != '') {
@@ -37,7 +44,7 @@ export default function FormCadCliente() {
                     </span>
                 </button>
             </div>
-            <h1>{id ? 'Editar Cliente' : 'Cadastrar do Cliente'}</h1>
+            <h1>{cpf_cnpj ? 'Editar Cliente' : 'Cadastrar do Cliente'}</h1>
             <label>
                 <span>CPF</span>
                 <input name="cpf" id='cpf' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} required pattern="(\d{3}.\d{3}.\d{3}-\d{2})|(\d{2}.\d{3}.\d{3}/\d{4}-\d{2})" value={cpf} onChange={e => {
@@ -49,7 +56,7 @@ export default function FormCadCliente() {
                             e.target.setCustomValidity("");
                         }
                     }
-                }} disabled={id ? true : false} />
+                }} disabled={cpf_cnpj ? true : false} />
             </label>
             <label>
                 <span>NOME</span>
@@ -77,35 +84,36 @@ export default function FormCadCliente() {
                             formCadCliente.reportValidity()
                             return
                         }
-                        const cliente = (window as any).api.Cliente.cliente(id, cpf, nome, email, contato_1, contato_2)
+                        const cliente = window.api.Client()
+                        // .cliente(cpf_cnpj, cpf, nome, email, contato_1, contato_2)
 
-                        if (!id) {
-                            const response = (window as any).api.Cliente.insert(cliente)
+                        if (!cpf_cnpj) {
+                            const response = await cliente.insert()
                             if (response.changes == 0) {
                                 throw new Error('Não foi possível cadastrar o cliente!')
                             } else {
                                 (async () => {
-                                    await (window as any).api.Dialog.showMessageBox({ message: 'Cliente cadastrado com sucesso!' })
+                                    // await window.api.Dialog.showMessageBox({ message: 'Cliente cadastrado com sucesso!' })
                                     navigate('/FormCadEndereco/' + response.lastInsertRowid)
                                 })();
                             }
                         } else {
-                            const response = (window as any).api.Cliente.update(cliente)
+                            const response = await cliente.update()
                             if (response.changes == 0) {
                                 throw new Error('Não foi possível editar o cliente!')
                             } else {
                                 (async () => {
-                                    await (window as any).api.Dialog.showMessageBox({ message: 'Cliente cadastrado com sucesso!' })
+                                    // await window.api.Dialog.showMessageBox({ message: 'Cliente cadastrado com sucesso!' })
                                     navigate(-1)
                                 })();
                             }
                         }
                     } catch (error) {
                         (async () => {
-                            await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })
+                            // await window.api.Dialog.showMessageBox({ type: 'error', message: error.message })
                         })();
                     }
-                }}>{id ? 'SALVAR' : 'CONTINUAR COM O CADASTRO'}</button>
+                }}>{cpf_cnpj ? 'SALVAR' : 'CONTINUAR COM O CADASTRO'}</button>
             </div>
         </form>
     </>

@@ -4,11 +4,9 @@ export default class Client {
     cpf_cnpj: string;
     name: string;
 
-    constructor({ cpf_cnpj, name }: Client) {
-        this.cpf_cnpj = cpf_cnpj;
-        this.name = name;
-    }
-    getByName = () => {
+    getByName = (name = this.name) => {
+        if (!name) throw new Error('Name not defined');
+
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
@@ -21,12 +19,14 @@ export default class Client {
         }
 
     }
-    getByCpfCnpj = () => {
+    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj) => {
+        if (!cpf_cnpj) throw new Error('CPF/CNPJ not defined');
+
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
                 query: 'SELECT * FROM CLIENT WHERE CPF_CNPJ = ?',
-                params: [this.cpf_cnpj]
+                params: [cpf_cnpj]
             });
             return response;
         } catch (e) {

@@ -5,12 +5,6 @@ export default class RequireList {
     id_product: number;
     amount: number;
 
-    constructor({ id_service, id_product, amount }: RequireList) {
-        this.id_service = id_service;
-        this.id_product = id_product;
-        this.amount = amount;
-    }
-
     insert = () => {
         try {
             const response = ipcRenderer.invoke('database', {

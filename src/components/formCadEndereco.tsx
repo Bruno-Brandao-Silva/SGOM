@@ -1,21 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import utils from "./../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
+import Address from "../models/Address";
 
 export default function FormCadEndereco() {
     const navigate = useNavigate()
     const { id_cliente, id } = useParams();
     const inputs = document.getElementsByTagName('input');
 
-    const endereco = (window as any).api.Endereco.get(id);
+    // const address = window.api.Address().getByCpfCnpj(id);
+    const [address, setAddress] = useState<Address>();
 
-    const [cep, setCep] = React.useState(endereco?.cep || "");
-    const [numero, setNumero] = React.useState(endereco?.numero || "");
-    const [complemento, setComplemento] = React.useState(endereco?.complemento || "");
-    const [logradouro, setLogradouro] = React.useState(endereco?.logradouro || "");
-    const [bairro, setBairro] = React.useState(endereco?.bairro || "");
-    const [cidade, setCidade] = React.useState(endereco?.cidade || "");
-    const [estado, setEstado] = React.useState(endereco?.estado || "");
+    const [cep, setCep] = React.useState(address?.cep || "");
+    const [numero, setNumero] = React.useState(address?.number || "");
+    const [complemento, setComplemento] = React.useState(address?.complement || "");
+    const [logradouro, setLogradouro] = React.useState(address?.street || "");
+    const [bairro, setBairro] = React.useState(address?.district || "");
+    const [cidade, setCidade] = React.useState(address?.city || "");
+    const [estado, setEstado] = React.useState(address?.state || "");
 
     useEffect(() => {
         for (let i = 0; i < inputs.length; i++) {
@@ -100,38 +102,39 @@ export default function FormCadEndereco() {
                 </label>
             </div>
             <div className="btn-submit">
-                <button type="button" onClick={() => {
+                <button type="button" onClick={async () => {
                     const formCadEndereco = document.getElementById('formCadEndereco') as any
                     try {
                         if (!formCadEndereco.checkValidity()) {
                             formCadEndereco.reportValidity()
                             return
                         }
-                        const endereco = (window as any).api.Endereco.endereco(id, id_cliente, cep, logradouro, bairro, cidade, estado, numero, complemento);
+                        const address = window.api.Address()
+                        //.endereco(id, id_cliente, cep, logradouro, bairro, cidade, estado, numero, complemento);
                         if (!id) {
-                            const response = (window as any).api.Endereco.insert(endereco)
+                            const response = await address.insert()
                             if (response.changes == 0) {
                                 throw new Error('Não foi possível cadastrar o endereço')
                             } else {
                                 (async () => {
-                                    await (window as any).api.Dialog.showMessageBox({ message: 'Endereço cadastrado com sucesso' })
+                                    // await window.api.Dialog.showMessageBox({ message: 'Endereço cadastrado com sucesso' })
                                     navigate(`/Cliente/${id_cliente}`)
                                 })();
                             }
                         } else {
-                            const response = (window as any).api.Endereco.update(endereco)
+                            const response = await address.update()
                             if (response.changes == 0) {
                                 throw new Error('Não foi possível atualizar o endereço')
                             } else {
                                 (async () => {
-                                    await (window as any).api.Dialog.showMessageBox({ message: 'Endereço atualizado com sucesso' })
+                                    // await window.api.Dialog.showMessageBox({ message: 'Endereço atualizado com sucesso' })
                                     navigate(-1)
                                 })()
                             }
                         }
                     } catch (error) {
                         (async () => {
-                            await (window as any).api.Dialog.showMessageBox({ type: 'error', message: error.message })
+                            // await window.api.Dialog.showMessageBox({ type: 'error', message: error.message })
                         })();
                     }
                 }}>SALVAR</button>

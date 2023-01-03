@@ -57,7 +57,7 @@ export default function Index() {
         </div>
         <button onClick={async () => {
             console.log("TESTE");
-            const client = (window as any).api.Client({ cpf_cnpj: 'asd21111211', name: 'Bruno' }) as Client;
+            const client = window.api.Client();
             // const client = new Client({ cpf_cnpj: 'asd', name: 'Bruno' })
             console.log(client);
             console.log(await client.insert());

@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import utils from "../models/utils";
-import Cliente from "../models/cliente";
+import Client from "../models/Client";
 export default function todosClientes() {
     const navigate = useNavigate();
-    const clientes = (window as any).api.Cliente.getAll() as Cliente[];
+    const [clients, setClients] = useState<Client[]>([]);
+    useEffect(() => {
+        window.api.Client().getAll().then((clients) => {
+            setClients(clients);
+        });
+    }, []);
     const [busca, setBusca] = React.useState("");
     return (<>
         <div className="todos">
@@ -40,23 +45,23 @@ export default function todosClientes() {
                     </tr>
                 </thead>
                 <tbody>
-                    {clientes.map((cliente, index: number) => {
+                    {clients.map((cliente, index: number) => {
                         if (busca == '') {
-                            return (<tr key={index} onClick={() => navigate(`/Cliente/${cliente.id}`)} >
-                                <th>{cliente.nome}</th>
-                                <th>{cliente.cpf}</th>
-                                <th>{cliente.email}</th>
+                            return (<tr key={index} onClick={() => navigate(`/Cliente/${cliente.cpf_cnpj}`)} >
+                                <th>{cliente.name}</th>
+                                <th>{cliente.cpf_cnpj}</th>
+                                {/* <th>{cliente.email}</th>
                                 <th>{cliente.contato_1}</th>
-                                <th>{cliente.contato_2}</th>
+                                <th>{cliente.contato_2}</th> */}
                             </tr>)
-                        } else if (cliente.cpf.toString().toLowerCase().startsWith(busca.toLowerCase())
-                            || cliente.nome.toString().toLowerCase().startsWith(busca.toLowerCase())) {
-                            return (<tr key={index} onClick={() => navigate(`/Cliente/${cliente.id}`)} >
-                                <th>{cliente.nome}</th>
-                                <th>{cliente.cpf}</th>
-                                <th>{cliente.email}</th>
+                        } else if (cliente.cpf_cnpj.toString().toLowerCase().startsWith(busca.toLowerCase())
+                            || cliente.name.toString().toLowerCase().startsWith(busca.toLowerCase())) {
+                            return (<tr key={index} onClick={() => navigate(`/Cliente/${cliente.cpf_cnpj}`)} >
+                                <th>{cliente.name}</th>
+                                <th>{cliente.cpf_cnpj}</th>
+                                {/* <th>{cliente.email}</th>
                                 <th>{cliente.contato_1}</th>
-                                <th>{cliente.contato_2}</th>
+                                <th>{cliente.contato_2}</th> */}
                             </tr>)
                         }
                     })}

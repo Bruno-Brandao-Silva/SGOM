@@ -11,15 +11,15 @@ import Vehicle from "./models/Vehicle";
 declare global {
   interface Window {
     api: {
-      Client: (props: Client) => Client;
-      Address: (props: Address) => Address;
-      Contact: (props: Contact) => Contact;
-      Product: (props: Product) => Product;
-      Purchase: (props: Purchase) => Purchase;
-      PurchaseList: (props: PurchaseList) => PurchaseList;
-      RequireList: (props: RequireList) => RequireList;
-      Service: (props: Service) => Service;
-      Vehicle: (props: Vehicle) => Vehicle;
+      Client: () => Client;
+      Address: () => Address;
+      Contact: () => Contact;
+      Product: () => Product;
+      Purchase: () => Purchase;
+      PurchaseList: () => PurchaseList;
+      RequireList: () => RequireList;
+      Service: () => Service;
+      Vehicle: () => Vehicle;
     }
   }
 }

@@ -9,16 +9,7 @@ export default class Vehicle {
     km: number;
     cpf_cnpj: string;
 
-    constructor({ id_plate, brand, model, year, color, km, cpf_cnpj }: Vehicle) {
-        this.id_plate = id_plate;
-        this.brand = brand;
-        this.model = model;
-        this.year = year;
-        this.color = color;
-        this.km = km;
-        this.cpf_cnpj = cpf_cnpj;
-    }
-    insere = () => {
+    insert = () => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -30,7 +21,10 @@ export default class Vehicle {
             throw e
         }
     }
-    getByPlate = () => {
+    getByPlate = (id_plate = this.id_plate): Promise<Vehicle> => {
+        if (!id_plate) {
+            throw new Error('Plate not defined');
+        }
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
@@ -42,18 +36,33 @@ export default class Vehicle {
             throw e
         }
     }
-    getByCpfCnpj = () => {
+    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj) => {
+        if (!cpf_cnpj) {
+            throw new Error('CPF/CNPJ not defined');
+        }
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM VEHICLE WHERE CPF_CNPJ = ?',
-                params: [this.cpf_cnpj]
+                params: [cpf_cnpj]
             });
             return response;
         } catch (e) {
             throw e
         }
     }
+    getAll = () => {
+        try {
+            const response = ipcRenderer.invoke('database', {
+                method: 'all',
+                query: 'SELECT * FROM VEHICLE'
+            });
+            return response;
+        } catch (e) {
+            throw e
+        }
+    }
+
     update = () => {
         try {
             const response = ipcRenderer.invoke('database', {

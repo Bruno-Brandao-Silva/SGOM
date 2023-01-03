@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import utils from "../models/utils";
-import Ordem_Servico from "../models/ordem_servico";
-import Cliente from "../models/cliente";
-import Servico from "../models/servico";
+import Client from "../models/Client";
+import Service from "../models/Service";
 
 export default function todosOrdem_Servicos() {
     const navigate = useNavigate();
-    const ordem_servicos = (window as any).api.Ordem_Servico.getAll() as Ordem_Servico[]
-    const clientes = (window as any).api.Cliente.getAll() as Cliente[]
-    const servicos = (window as any).api.Servico.getAll() as Servico[]
-    const [busca, setBusca] = React.useState("");
+    const [clients, setClients] = useState<Client[]>();
+    const [services, setServices] = useState<Service[]>();
+    const [search, setSearch] = useState("");
+    useEffect(() => {
+        window.api.Client().getAll().then((clients) => {
+            setClients(clients);
+        });
+        window.api.Service().getAll().then((services) => {
+            setServices(services);
+        });
+    }, []);
 
     return (<>
         <div className="todos">
@@ -29,7 +35,7 @@ export default function todosOrdem_Servicos() {
             <div>
                 <label>
                     <span>BUSCAR SERVIÇO POR PLACA</span>
-                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={busca} onChange={e => { setBusca(e.target.value); }}></input>
+                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={search} onChange={e => { setSearch(e.target.value); }}></input>
                 </label>
             </div>
             <table className="table-ordem-servicos">
@@ -43,29 +49,29 @@ export default function todosOrdem_Servicos() {
                     </tr>
                 </thead>
                 <tbody>
-                    {ordem_servicos.map((servico, index: number) => {
-                        const cliente = clientes.find(c => c.id == servico.id_cliente)
+                    {services.map((servico, index: number) => {
+                        const client = clients.find(c => c.cpf_cnpj == servico.cpf_cnpj)
                         let total = 0;
-                        servicos.forEach(s => {
-                            if (s.id_servico == servico.id) {
-                                total += s.quantidade * s.precoUnitario
-                            }
-                        })
+                        // services.forEach(s => {
+                        //     // if (s.id_servico == servico.id) {
+                        //     //     total += s.quantidade * s.precoUnitario
+                        //     // }
+                        // })
 
-                        if (busca == '') {
+                        if (search == '') {
                             return (<tr key={index} onClick={() => navigate(`/EditServico/${servico.id}`)} >
-                                <th>{servico.placa}</th>
-                                <th>{cliente.nome}</th>
-                                <th>{cliente.cpf}</th>
-                                <th>{servico.data.replace(/\D/g, "").replace(/(\d{4})(\d{2})(\d{2})/, "$3/$2/$1")}</th>
+                                <th>{servico.id_plate}</th>
+                                <th>{client.name}</th>
+                                <th>{client.cpf_cnpj}</th>
+                                <th>{servico.date.toString().replace(/\D/g, "").replace(/(\d{4})(\d{2})(\d{2})/, "$3/$2/$1")}</th>
                                 <th>{`${utils.monetaryMask(total)}`}</th>
                             </tr>)
-                        } else if (servico.placa.toString().toLowerCase().startsWith(busca.toLowerCase())) {
+                        } else if (servico.id_plate.toString().toLowerCase().startsWith(search.toLowerCase())) {
                             return (<tr key={index} onClick={() => navigate(`/EditServico/${servico.id}`)} >
-                                <th>{servico.placa}</th>
-                                <th>{cliente.nome}</th>
-                                <th>{cliente.cpf}</th>
-                                <th>{servico.data.replace(/\D/g, "").replace(/(\d{4})(\d{2})(\d{2})/, "$3/$2/$1")}</th>
+                                <th>{servico.id_plate}</th>
+                                <th>{client.name}</th>
+                                <th>{client.cpf_cnpj}</th>
+                                <th>{servico.date.toString().replace(/\D/g, "").replace(/(\d{4})(\d{2})(\d{2})/, "$3/$2/$1")}</th>
                                 <th>{`${utils.monetaryMask(total)}`}</th>
                             </tr>)
                         }
