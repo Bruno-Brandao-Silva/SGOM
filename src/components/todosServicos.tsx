@@ -49,7 +49,7 @@ export default function todosOrdem_Servicos() {
                     </tr>
                 </thead>
                 <tbody>
-                    {services.map((servico, index: number) => {
+                    {services?.map((servico, index: number) => {
                         const client = clients.find(c => c.cpf_cnpj == servico.cpf_cnpj)
                         let total = 0;
                         // services.forEach(s => {

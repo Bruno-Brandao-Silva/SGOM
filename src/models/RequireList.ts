@@ -1,3 +1,4 @@
+import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class RequireList {
@@ -5,7 +6,7 @@ export default class RequireList {
     id_product: number;
     amount: number;
 
-    insert = () => {
+    insert = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -18,7 +19,7 @@ export default class RequireList {
         }
     }
 
-    getByServiceId = () => {
+    getByServiceId = (): Promise<RequireList[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
@@ -31,7 +32,7 @@ export default class RequireList {
         }
     }
 
-    update = () => {
+    update = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -44,7 +45,7 @@ export default class RequireList {
         }
     }
 
-    delete = () => {
+    delete = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -57,7 +58,7 @@ export default class RequireList {
         }
     }
 
-    deleteAllByServiceId = () => {
+    deleteAllByServiceId = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

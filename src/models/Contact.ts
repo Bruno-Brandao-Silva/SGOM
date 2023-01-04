@@ -1,3 +1,4 @@
+import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Contact {
@@ -6,7 +7,7 @@ export default class Contact {
     contact: string;
     cpf_cnpj: string;
 
-    insert = () => {
+    insert = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -19,7 +20,7 @@ export default class Contact {
         }
     }
 
-    getByCpfCnpj = () => {
+    getByCpfCnpj = (): Promise<Contact[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
@@ -32,7 +33,7 @@ export default class Contact {
         }
     }
 
-    update = () => {
+    update = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -45,7 +46,7 @@ export default class Contact {
         }
     }
 
-    delete = () => {
+    delete = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

@@ -1,15 +1,16 @@
+import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Client {
     cpf_cnpj: string;
     name: string;
 
-    getByName = (name = this.name) => {
+    getByName = (name = this.name): Promise<Client[]> => {
         if (!name) throw new Error('Name not defined');
 
         try {
             const response = ipcRenderer.invoke('database', {
-                method: 'get',
+                method: 'all',
                 query: 'SELECT * FROM CLIENT WHERE NAME = ?',
                 params: [this.name]
             });
@@ -19,7 +20,7 @@ export default class Client {
         }
 
     }
-    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj) => {
+    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj): Promise<Client> => {
         if (!cpf_cnpj) throw new Error('CPF/CNPJ not defined');
 
         try {
@@ -33,7 +34,7 @@ export default class Client {
             throw e
         }
     }
-    getAll = () => {
+    getAll = (): Promise<Client[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
@@ -45,7 +46,7 @@ export default class Client {
             throw e
         }
     }
-    insert = () => {
+    insert = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -57,7 +58,7 @@ export default class Client {
             throw e
         }
     }
-    update = () => {
+    update = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -70,7 +71,7 @@ export default class Client {
             throw e
         }
     }
-    delete = () => {
+    delete = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

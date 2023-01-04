@@ -1,3 +1,4 @@
+import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Vehicle {
@@ -9,7 +10,7 @@ export default class Vehicle {
     km: number;
     cpf_cnpj: string;
 
-    insert = () => {
+    insert = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -36,7 +37,7 @@ export default class Vehicle {
             throw e
         }
     }
-    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj) => {
+    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj): Promise<Vehicle[]> => {
         if (!cpf_cnpj) {
             throw new Error('CPF/CNPJ not defined');
         }
@@ -51,11 +52,12 @@ export default class Vehicle {
             throw e
         }
     }
-    getAll = () => {
+    getAll = (): Promise<Vehicle[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM VEHICLE'
+                query: 'SELECT * FROM VEHICLE',
+                params: []
             });
             return response;
         } catch (e) {
@@ -63,7 +65,7 @@ export default class Vehicle {
         }
     }
 
-    update = () => {
+    update = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -75,7 +77,7 @@ export default class Vehicle {
             throw e
         }
     }
-    delete = () => {
+    delete = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

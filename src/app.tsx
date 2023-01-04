@@ -16,19 +16,19 @@ export default function App(): React.ReactNode {
             <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/FormCadCliente/" element={<FormCadCliente />}>
-                    <Route path="/FormCadCliente/:id" element={<FormCadCliente />} />
+                    <Route path="/FormCadCliente/:cpf_cnpj" element={<FormCadCliente />} />
                 </Route>
-                <Route path="/FormCadEndereco/:id_cliente" element={<FormCadEndereco />}>
-                    <Route path="/FormCadEndereco/:id_cliente/:id" element={<FormCadEndereco />} />
+                <Route path="/FormCadEndereco/:cpf_cnpj" element={<FormCadEndereco />}>
+                    <Route path="/FormCadEndereco/:cpf_cnpj/:id" element={<FormCadEndereco />} />
                 </Route>
-                <Route path="/FormCadServico/:id_cliente" element={<FormCadServico />} >
-                    <Route path="/FormCadServico/:id_cliente/:id_veiculo" element={<FormCadServico />} />
+                <Route path="/FormCadServico/:cpf_cnpj" element={<FormCadServico />} >
+                    <Route path="/FormCadServico/:cpf_cnpj/:id_veiculo" element={<FormCadServico />} />
                 </Route>
                 <Route path="/EditServico/:id" element={<FormCadServico />} />
                 <Route path='/TodosClientes' element={<TodosClientes />} />
-                <Route path='/Cliente/:id' element={<Cliente />} />
-                <Route path='/FormCadVeiculo/:id_cliente' element={<FormCadVeiculo />} >
-                    <Route path='/FormCadVeiculo/:id_cliente/:placa' element={<FormCadVeiculo />} />
+                <Route path='/Cliente/:cpf_cnpj' element={<Cliente />} />
+                <Route path='/FormCadVeiculo/:cpf_cnpj' element={<FormCadVeiculo />} >
+                    <Route path='/FormCadVeiculo/:cpf_cnpj/:id_plate' element={<FormCadVeiculo />} />
                 </Route>
                 <Route path='/TodosVeiculos' element={<TodosVeiculos />} />
                 <Route path='/TodosServicos' element={<TodosServicos />} />

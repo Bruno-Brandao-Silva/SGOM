@@ -1,6 +1,6 @@
 import script from './SQLiteScript';
 import fs from 'fs';
-import sqlite from 'better-sqlite3';
+import sqlite, { RunResult } from 'better-sqlite3';
 
 const file = './database.db';
 
@@ -19,7 +19,7 @@ function getDatabase() {
     return new sqlite(file);
 }
 
-export default (arg: { method: 'all' | 'run' | 'get', query: string, params: any[] }) => {
+export default (arg: { method: 'all' | 'run' | 'get', query: string, params?: any[] }): RunResult => {
     console.log(arg)
     const db = getDatabase();
     try {

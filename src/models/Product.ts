@@ -1,3 +1,4 @@
+import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Product {
@@ -6,7 +7,7 @@ export default class Product {
     price: number;
     description: string;
 
-    insert = () => {
+    insert = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -19,7 +20,7 @@ export default class Product {
         }
     }
 
-    getAll = () => {
+    getAll = (): Promise<Product[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
@@ -32,7 +33,7 @@ export default class Product {
         }
     }
 
-    getById = () => {
+    getById = (): Promise<Product> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
@@ -45,10 +46,10 @@ export default class Product {
         }
     }
 
-    getByName = () => {
+    getByName = (): Promise<Product[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
-                method: 'get',
+                method: 'all',
                 query: 'SELECT * FROM PRODUCT WHERE NAME = ?',
                 params: [this.name]
             });
@@ -58,7 +59,7 @@ export default class Product {
         }
     }
 
-    update = () => {
+    update = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -71,7 +72,7 @@ export default class Product {
         }
     }
 
-    delete = () => {
+    delete = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

@@ -1,3 +1,4 @@
+import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Purchase {
@@ -5,7 +6,7 @@ export default class Purchase {
     cpf_cnpj: string;
     date: Date;
 
-    insert = () => {
+    insert = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -18,7 +19,7 @@ export default class Purchase {
         }
     }
 
-    getByCpfCnpj = () => {
+    getByCpfCnpj = (): Promise<Purchase[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
@@ -31,7 +32,7 @@ export default class Purchase {
         }
     }
 
-    getById = () => {
+    getById = (): Promise<Purchase> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
@@ -44,7 +45,7 @@ export default class Purchase {
         }
     }
 
-    update = () => {
+    update = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -57,7 +58,7 @@ export default class Purchase {
         }
     }
 
-    delete = () => {
+    delete = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

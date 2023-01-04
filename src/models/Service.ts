@@ -1,3 +1,4 @@
+import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Service {
@@ -8,7 +9,7 @@ export default class Service {
     service: string;
     price: number;
 
-    insert = () => {
+    insert = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -20,18 +21,19 @@ export default class Service {
             throw e
         }
     }
-    getAll = () => {
+    getAll = (): Promise<Service[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM SERVICE'
+                query: 'SELECT * FROM SERVICE',
+                params: []
             });
             return response;
         } catch (e) {
             throw e
         }
     }
-    getByCpfCnpj = () => {
+    getByCpfCnpj = (): Promise<Service[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
@@ -44,7 +46,7 @@ export default class Service {
         }
     }
 
-    getByPlate = () => {
+    getByPlate = (): Promise<Service[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
@@ -57,7 +59,7 @@ export default class Service {
         }
     }
 
-    getById = (id = this.id) => {
+    getById = (id = this.id): Promise<Service> => {
         if (!id) throw new Error('ID not defined');
         try {
             const response = ipcRenderer.invoke('database', {
@@ -71,7 +73,7 @@ export default class Service {
         }
     }
 
-    update = () => {
+    update = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
@@ -84,7 +86,7 @@ export default class Service {
         }
     }
 
-    delete = () => {
+    delete = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

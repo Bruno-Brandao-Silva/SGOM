@@ -1,3 +1,4 @@
+import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Address {
@@ -11,7 +12,7 @@ export default class Address {
     complement?: string;
     cpf_cnpj: string;
 
-    insert = () => {
+    insert = (): Promise<RunResult> => {
         try {
             if (this.complement) {
                 const response = ipcRenderer.invoke('database', {
@@ -33,7 +34,7 @@ export default class Address {
         }
     }
 
-    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj) => {
+    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj): Promise<Address[]> => {
         if (!cpf_cnpj) throw new Error('CPF/CNPJ not defined');
 
         try {
@@ -48,7 +49,7 @@ export default class Address {
         }
     }
 
-    update = () => {
+    update = (): Promise<RunResult> => {
         try {
             if (this.complement) {
                 const response = ipcRenderer.invoke('database', {
@@ -70,7 +71,7 @@ export default class Address {
         }
     }
 
-    delete = () => {
+    delete = (): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
