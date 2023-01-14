@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import utils from "./../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
-import Address from "../models/Address";
 
 export default function FormCadEndereco() {
     const navigate = useNavigate()

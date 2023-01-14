@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Client from "../models/Client";
 import utils from "../models/utils";
-import Vehicle from "../models/Vehicle";
+
 export default function todosVeiculos() {
     const navigate = useNavigate();
     const [veiculos, setVeiculos] = useState<Vehicle[]>([]);

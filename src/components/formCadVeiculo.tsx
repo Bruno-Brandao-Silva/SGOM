@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import utils from "../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
-import Vehicle from "../models/Vehicle";
 
 export default function FormCadServiço() {
     const navigate = useNavigate();
@@ -10,7 +9,7 @@ export default function FormCadServiço() {
     const { id_cliente, placa } = useParams();
     const [vehicle, setVehicle] = useState<Vehicle>();
     useEffect(() => {
-        window.api.Vehicle().getByPlate(placa).then((vehicle: Vehicle) => {
+        window.api.Vehicle().getByPlate(placa).then((vehicle) => {
             setVehicle(vehicle);
         });
     }, []);

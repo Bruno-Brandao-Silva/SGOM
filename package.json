@@ -1,6 +1,6 @@
 {
   "name": "sgom",
-  "productName": "sgom",
+  "productName": "SGOM - SISTEMA DE GERENCIAMENTO DE OFICINA MECÂNICA",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",

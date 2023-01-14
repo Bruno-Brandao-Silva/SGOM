@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import utils from "../models/utils";
-import Client from "../models/Client";
-import Service from "../models/Service";
 
 export default function todosOrdem_Servicos() {
     const navigate = useNavigate();

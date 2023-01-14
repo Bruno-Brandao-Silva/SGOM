@@ -1,5 +1,4 @@
 import React from "react";
-import Client from "../models/Client";
 
 export default function unitCliente({ client }: { client: Client }) {
     return (<>

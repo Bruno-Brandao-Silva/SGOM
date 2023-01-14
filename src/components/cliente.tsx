@@ -1,8 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Address from "../models/Address";
-import Client from "../models/Client";
 
 export default function Cliente() {
     const navigate = useNavigate();
@@ -10,10 +8,10 @@ export default function Cliente() {
     const [client, setClient] = useState<Client>();
     const [addresses, setAddresses] = useState<Address[]>();
     useEffect(() => {
-        window.api.Client().getByCpfCnpj(cpf_cnpj).then((client: Client) => {
+        window.api.Client().getByCpfCnpj(cpf_cnpj).then((client) => {
             setClient(client);
         });
-        window.api.Address().getByCpfCnpj(cpf_cnpj).then((addresses: Address[]) => {
+        window.api.Address().getByCpfCnpj(cpf_cnpj).then((addresses) => {
             setAddresses(addresses);
         });
     }, []);
@@ -42,9 +40,6 @@ export default function Cliente() {
             <div className="cliente-info">
                 <h1>NOME: {client.name}</h1>
                 <h3>CPF/CNPJ: {client.cpf_cnpj}</h3>
-                {/* <p>E-MAIL: {client.email}</p>
-                <p>CONTATO 1: {client.contato_1}</p>
-                <p>CONTATO 2: {client.contato_2}</p> */}
             </div>
             <div className="todos-container">
                 {addresses.map((address, index: number) => (<Link to={`/FormCadAddress/${cpf_cnpj}/${address.cpf_cnpj}`} key={index} className="todos-sub-container" >

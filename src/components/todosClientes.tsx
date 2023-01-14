@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import utils from "../models/utils";
-import Client from "../models/Client";
+
 export default function todosClientes() {
     const navigate = useNavigate();
     const [clients, setClients] = useState<Client[]>([]);

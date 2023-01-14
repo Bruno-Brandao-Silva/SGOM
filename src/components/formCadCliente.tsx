@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import utils from "./../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
-import Client from "../models/Client";
 
 export default function FormCadCliente() {
     const navigate = useNavigate()
     const { id: cpf_cnpj } = useParams();
 
     const inputs = document.getElementsByTagName('input');
-    // const cliente = window.api.Client().getByCpfCnpj(cpf_cnpj);
     const [cliente, setCliente] = useState<Client>();
     useEffect(() => {
-        window.api.Client().getByCpfCnpj(cpf_cnpj).then((cliente) => {
-            setCliente(cliente);
-        });
-    }, []);
+        if (cpf_cnpj?.length > 0) {
+            window.api.Client().getByCpfCnpj(cpf_cnpj).then((cliente) => {
+                setCliente(cliente);
+            });
+        }
+    }, [cpf_cnpj]);
 
     const [cpf, setCpf] = React.useState(cliente?.cpf_cnpj || "");
     const [nome, setNome] = React.useState(cliente?.name || "");

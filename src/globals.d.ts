@@ -1,25 +1,35 @@
-import Address from "./models/Address";
-import Client from "./models/Client";
-import Contact from "./models/Contact";
-import Product from "./models/Product";
-import Purchase from "./models/Purchase";
-import PurchaseList from "./models/PurchaseList";
-import RequireList from "./models/RequireList";
-import Service from "./models/Service";
-import Vehicle from "./models/Vehicle";
+import AddressClass from "./models/Address";
+import ClientClass from "./models/Client";
+import ContactClass from "./models/Contact";
+import ProductClass from "./models/Product";
+import PurchaseClass from "./models/Purchase";
+import PurchaseListClass from "./models/PurchaseList";
+import RequireListClass from "./models/RequireList";
+import ServiceClass from "./models/Service";
+import VehicleClass from "./models/Vehicle";
 
 declare global {
+  type Address = AddressClass;
+  type Client = ClientClass;
+  type Contact = ContactClass;
+  type Product = ProductClass;
+  type Purchase = PurchaseClass;
+  type PurchaseList = PurchaseListClass;
+  type RequireList = RequireListClass;
+  type Service = ServiceClass;
+  type Vehicle = VehicleClass;
+
   interface Window {
     api: {
-      Client: () => Client;
-      Address: () => Address;
-      Contact: () => Contact;
-      Product: () => Product;
-      Purchase: () => Purchase;
-      PurchaseList: () => PurchaseList;
-      RequireList: () => RequireList;
-      Service: () => Service;
-      Vehicle: () => Vehicle;
+      Client: () => ClientClass;
+      Address: () => AddressClass;
+      Contact: () => ContactClass;
+      Product: () => ProductClass;
+      Purchase: () => PurchaseClass;
+      PurchaseList: () => PurchaseListClass;
+      RequireList: () => RequireListClass;
+      Service: () => ServiceClass;
+      Vehicle: () => VehicleClass;
     }
   }
 }
