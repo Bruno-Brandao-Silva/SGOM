@@ -1,4 +1,3 @@
-import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class RequireList {
@@ -6,12 +5,12 @@ export default class RequireList {
     id_product: number;
     amount: number;
 
-    insert = (): Promise<RunResult> => {
+    insert = (RequireList = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'INSERT INTO REQUIRE_LIST (ID_SERVICE, ID_PRODUCT, AMOUNT) VALUES (?, ?, ?)',
-                params: [this.id_service, this.id_product, this.amount]
+                params: [RequireList.id_service, RequireList.id_product, RequireList.amount]
             });
             return response;
         } catch (e) {
@@ -19,12 +18,12 @@ export default class RequireList {
         }
     }
 
-    getByServiceId = (): Promise<RequireList[]> => {
+    getByServiceId = (id_service = this.id_service): Promise<RequireList[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM REQUIRE_LIST WHERE ID_SERVICE = ?',
-                params: [this.id_service]
+                params: [id_service]
             });
             return response;
         } catch (e) {
@@ -32,12 +31,12 @@ export default class RequireList {
         }
     }
 
-    update = (): Promise<RunResult> => {
+    update = (RequireList = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'UPDATE REQUIRE_LIST SET AMOUNT = ? WHERE ID_SERVICE = ? AND ID_PRODUCT = ?',
-                params: [this.amount, this.id_service, this.id_product]
+                params: [RequireList.amount, RequireList.id_service, RequireList.id_product]
             });
             return response;
         } catch (e) {
@@ -45,12 +44,12 @@ export default class RequireList {
         }
     }
 
-    delete = (): Promise<RunResult> => {
+    delete = (id_service = this.id_service, id_product = this.id_product): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM REQUIRE_LIST WHERE ID_SERVICE = ? AND ID_PRODUCT = ?',
-                params: [this.id_service, this.id_product]
+                params: [id_service, id_product]
             });
             return response;
         } catch (e) {
@@ -58,12 +57,12 @@ export default class RequireList {
         }
     }
 
-    deleteAllByServiceId = (): Promise<RunResult> => {
+    deleteAllByServiceId = (id_service = this.id_service): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM REQUIRE_LIST WHERE ID_SERVICE = ?',
-                params: [this.id_service]
+                params: [id_service]
             });
             return response;
         } catch (e) {

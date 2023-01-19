@@ -1,4 +1,3 @@
-import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Purchase {
@@ -6,12 +5,12 @@ export default class Purchase {
     cpf_cnpj: string;
     date: Date;
 
-    insert = (): Promise<RunResult> => {
+    insert = (purchase = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'INSERT INTO PURCHASE (CPF_CNPJ, DATE) VALUES (?, ?)',
-                params: [this.cpf_cnpj, this.date]
+                params: [purchase.cpf_cnpj, purchase.date]
             });
             return response;
         } catch (e) {
@@ -19,12 +18,12 @@ export default class Purchase {
         }
     }
 
-    getByCpfCnpj = (): Promise<Purchase[]> => {
+    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj): Promise<Purchase[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM PURCHASE WHERE CPF_CNPJ = ?',
-                params: [this.cpf_cnpj]
+                params: [cpf_cnpj]
             });
             return response;
         } catch (e) {
@@ -32,12 +31,12 @@ export default class Purchase {
         }
     }
 
-    getById = (): Promise<Purchase> => {
+    getById = (id = this.id): Promise<Purchase> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
                 query: 'SELECT * FROM PURCHASE WHERE ID = ?',
-                params: [this.id]
+                params: [id]
             });
             return response;
         } catch (e) {
@@ -45,12 +44,12 @@ export default class Purchase {
         }
     }
 
-    update = (): Promise<RunResult> => {
+    update = (purchase = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'UPDATE PURCHASE SET DATE = ? WHERE ID = ?',
-                params: [this.date, this.id]
+                params: [purchase.date, purchase.id]
             });
             return response;
         } catch (e) {
@@ -58,12 +57,12 @@ export default class Purchase {
         }
     }
 
-    delete = (): Promise<RunResult> => {
+    delete = (id = this.id): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM PURCHASE WHERE ID = ?',
-                params: [this.id]
+                params: [id]
             });
             return response;
         } catch (e) {

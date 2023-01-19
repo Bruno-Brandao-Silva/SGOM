@@ -1,4 +1,3 @@
-import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Vehicle {
@@ -10,12 +9,12 @@ export default class Vehicle {
     km: number;
     cpf_cnpj: string;
 
-    insert = (): Promise<RunResult> => {
+    insert = (vehicle = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'INSERT INTO VEHICLE (ID_PLATE, BRAND, MODEL, YEAR, COLOR, KM, CPF_CNPJ) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                params: [this.id_plate, this.brand, this.model, this.year, this.color, this.km, this.cpf_cnpj]
+                params: [vehicle.id_plate, vehicle.brand, vehicle.model, vehicle.year, vehicle.color, vehicle.km, vehicle.cpf_cnpj]
             });
             return response;
         } catch (e) {
@@ -30,7 +29,7 @@ export default class Vehicle {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
                 query: 'SELECT * FROM VEHICLE WHERE ID_PLATE = ?',
-                params: [this.id_plate]
+                params: [id_plate]
             });
             return response;
         } catch (e) {
@@ -65,24 +64,24 @@ export default class Vehicle {
         }
     }
 
-    update = (): Promise<RunResult> => {
+    update = (vehicle = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'UPDATE VEHICLE SET BRAND = ?, MODEL = ?, YEAR = ?, COLOR = ?, KM = ?, CPF_CNPJ = ? WHERE ID_PLATE = ?',
-                params: [this.brand, this.model, this.year, this.color, this.km, this.cpf_cnpj, this.id_plate]
+                params: [vehicle.brand, vehicle.model, vehicle.year, vehicle.color, vehicle.km, vehicle.cpf_cnpj, vehicle.id_plate]
             });
             return response;
         } catch (e) {
             throw e
         }
     }
-    delete = (): Promise<RunResult> => {
+    delete = (id_plate = this.id_plate): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM VEHICLE WHERE ID_PLATE = ?',
-                params: [this.id_plate]
+                params: [id_plate]
             });
             return response;
         } catch (e) {

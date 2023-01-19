@@ -1,4 +1,3 @@
-import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class PurchaseList {
@@ -6,12 +5,12 @@ export default class PurchaseList {
     id_product: number;
     amount: number;
 
-    insert = (): Promise<RunResult> => {
+    insert = (PurchaseList = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'INSERT INTO PURCHASE_LIST (ID_PURCHASE, ID_PRODUCT, AMOUNT) VALUES (?, ?, ?)',
-                params: [this.id_purchase, this.id_product, this.amount]
+                params: [PurchaseList.id_purchase, PurchaseList.id_product, PurchaseList.amount]
             });
             return response;
         } catch (e) {
@@ -19,12 +18,12 @@ export default class PurchaseList {
         }
     }
 
-    getByPurchaseId = (): Promise<PurchaseList[]> => {
+    getByPurchaseId = (id_purchase = this.id_purchase): Promise<PurchaseList[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM PURCHASE_LIST WHERE ID_PURCHASE = ?',
-                params: [this.id_purchase]
+                params: [id_purchase]
             });
             return response;
         } catch (e) {
@@ -32,12 +31,12 @@ export default class PurchaseList {
         }
     }
 
-    update = (): Promise<RunResult> => {
+    update = (PurchaseList = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'UPDATE PURCHASE_LIST SET AMOUNT = ? WHERE ID_PURCHASE = ? AND ID_PRODUCT = ?',
-                params: [this.amount, this.id_purchase, this.id_product]
+                params: [PurchaseList.amount, PurchaseList.id_purchase, PurchaseList.id_product]
             });
             return response;
         } catch (e) {
@@ -45,12 +44,12 @@ export default class PurchaseList {
         }
     }
 
-    delete = (): Promise<RunResult> => {
+    delete = (id_product = this.id_product, id_purchase = this.id_purchase): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM PURCHASE_LIST WHERE ID_PURCHASE = ? AND ID_PRODUCT = ?',
-                params: [this.id_purchase, this.id_product]
+                params: [id_purchase, id_product]
             });
             return response;
         } catch (e) {
@@ -58,12 +57,12 @@ export default class PurchaseList {
         }
     }
 
-    deleteAllByPurchaseId = (): Promise<RunResult> => {
+    deleteAllByPurchaseId = (id_purchase = this.id_purchase): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM PURCHASE_LIST WHERE ID_PURCHASE = ?',
-                params: [this.id_purchase]
+                params: [id_purchase]
             });
             return response;
         } catch (e) {

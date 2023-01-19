@@ -1,4 +1,3 @@
-import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Service {
@@ -9,12 +8,12 @@ export default class Service {
     service: string;
     price: number;
 
-    insert = (): Promise<RunResult> => {
+    insert = (service = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'INSERT INTO SERVICE (ID_PLATE, CPF_CNPJ, DATE, SERVICE, PRICE) VALUES (?, ?, ?, ?, ?)',
-                params: [this.id_plate, this.cpf_cnpj, this.date, this.service, this.price]
+                params: [service.id_plate, service.cpf_cnpj, service.date, service.service, service.price]
             });
             return response;
         } catch (e) {
@@ -33,12 +32,12 @@ export default class Service {
             throw e
         }
     }
-    getByCpfCnpj = (): Promise<Service[]> => {
+    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj): Promise<Service[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM SERVICE WHERE CPF_CNPJ = ?',
-                params: [this.cpf_cnpj]
+                params: [cpf_cnpj]
             });
             return response;
         } catch (e) {
@@ -46,12 +45,12 @@ export default class Service {
         }
     }
 
-    getByPlate = (): Promise<Service[]> => {
+    getByPlate = (id_plate = this.id_plate): Promise<Service[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM SERVICE WHERE ID_PLATE = ?',
-                params: [this.id_plate]
+                params: [id_plate]
             });
             return response;
         } catch (e) {
@@ -73,12 +72,12 @@ export default class Service {
         }
     }
 
-    update = (): Promise<RunResult> => {
+    update = (service = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'UPDATE SERVICE SET DATE = ?, SERVICE = ?, PRICE = ? WHERE ID = ?',
-                params: [this.date, this.service, this.price, this.id]
+                params: [service.date, service.service, service.price, service.id]
             });
             return response;
         } catch (e) {
@@ -86,12 +85,12 @@ export default class Service {
         }
     }
 
-    delete = (): Promise<RunResult> => {
+    delete = (id = this.id): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM SERVICE WHERE ID = ?',
-                params: [this.id]
+                params: [id]
             });
             return response;
         } catch (e) {

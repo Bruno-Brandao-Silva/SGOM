@@ -1,4 +1,3 @@
-import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Address {
@@ -12,20 +11,20 @@ export default class Address {
     complement?: string;
     cpf_cnpj: string;
 
-    insert = (): Promise<RunResult> => {
+    insert = (address = this): Promise<RunResult> => {
         try {
-            if (this.complement) {
+            if (address.complement) {
                 const response = ipcRenderer.invoke('database', {
                     method: 'run',
                     query: 'INSERT INTO ADDRESS (CEP, STREET, DISTRICT, CITY, STATE, NUMBER, COMPLEMENT, CPF_CNPJ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                    params: [this.cep, this.street, this.district, this.city, this.state, this.number, this.complement, this.cpf_cnpj]
+                    params: [address.cep, address.street, address.district, address.city, address.state, address.number, address.complement, address.cpf_cnpj]
                 });
                 return response;
             } else {
                 const response = ipcRenderer.invoke('database', {
                     method: 'run',
                     query: 'INSERT INTO ADDRESS (CEP, STREET, DISTRICT, CITY, STATE, NUMBER, CPF_CNPJ) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                    params: [this.cep, this.street, this.district, this.city, this.state, this.number, this.cpf_cnpj]
+                    params: [address.cep, address.street, address.district, address.city, address.state, address.number, address.cpf_cnpj]
                 });
                 return response;
             }
@@ -49,20 +48,20 @@ export default class Address {
         }
     }
 
-    update = (): Promise<RunResult> => {
+    update = (address = this): Promise<RunResult> => {
         try {
-            if (this.complement) {
+            if (address.complement) {
                 const response = ipcRenderer.invoke('database', {
                     method: 'run',
                     query: 'UPDATE ADDRESS SET CEP = ?, STREET = ?, DISTRICT = ?, CITY = ?, STATE = ?, NUMBER = ?, COMPLEMENT = ? WHERE ID = ?',
-                    params: [this.cep, this.street, this.district, this.city, this.state, this.number, this.complement, this.id]
+                    params: [address.cep, address.street, address.district, address.city, address.state, address.number, address.complement, address.id]
                 });
                 return response;
             } else {
                 const response = ipcRenderer.invoke('database', {
                     method: 'run',
                     query: 'UPDATE ADDRESS SET CEP = ?, STREET = ?, DISTRICT = ?, CITY = ?, STATE = ?, NUMBER = ? WHERE ID = ?',
-                    params: [this.cep, this.street, this.district, this.city, this.state, this.number, this.id]
+                    params: [address.cep, address.street, address.district, address.city, address.state, address.number, address.id]
                 });
                 return response;
             }
@@ -71,12 +70,12 @@ export default class Address {
         }
     }
 
-    delete = (): Promise<RunResult> => {
+    delete = (id = this.id): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM ADDRESS WHERE ID = ?',
-                params: [this.id]
+                params: [id]
             });
             return response;
         } catch (e) {

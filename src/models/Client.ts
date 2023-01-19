@@ -1,4 +1,3 @@
-import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Client {
@@ -12,7 +11,7 @@ export default class Client {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM CLIENT WHERE NAME = ?',
-                params: [this.name]
+                params: [name]
             });
             return response;
         } catch (e) {
@@ -46,24 +45,24 @@ export default class Client {
             throw e
         }
     }
-    insert = (): Promise<RunResult> => {
+    insert = (client = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'INSERT INTO CLIENT (CPF_CNPJ, NAME) VALUES (?, ?)',
-                params: [this.cpf_cnpj, this.name]
+                params: [client.cpf_cnpj, client.name]
             });
             return response;
         } catch (e) {
             throw e
         }
     }
-    update = (): Promise<RunResult> => {
+    update = (client = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'UPDATE CLIENT SET NAME = ? WHERE CPF_CNPJ = ?',
-                params: [this.name, this.cpf_cnpj]
+                params: [client.name, client.cpf_cnpj]
             }
             );
             return response;
@@ -71,7 +70,7 @@ export default class Client {
             throw e
         }
     }
-    delete = (): Promise<RunResult> => {
+    delete = (cpf_cnpj = this.cpf_cnpj): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

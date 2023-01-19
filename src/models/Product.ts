@@ -1,4 +1,3 @@
-import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Product {
@@ -7,12 +6,12 @@ export default class Product {
     price: number;
     description: string;
 
-    insert = (): Promise<RunResult> => {
+    insert = (product = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'INSERT INTO PRODUCT (NAME, PRICE, DESCRIPTION) VALUES (?, ?, ?)',
-                params: [this.name, this.price, this.description]
+                params: [product.name, product.price, product.description]
             });
             return response;
         } catch (e) {
@@ -33,12 +32,12 @@ export default class Product {
         }
     }
 
-    getById = (): Promise<Product> => {
+    getById = (id = this.id): Promise<Product> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
                 query: 'SELECT * FROM PRODUCT WHERE ID = ?',
-                params: [this.id]
+                params: [id]
             });
             return response;
         } catch (e) {
@@ -46,12 +45,12 @@ export default class Product {
         }
     }
 
-    getByName = (): Promise<Product[]> => {
+    getByName = (name = this.name): Promise<Product[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM PRODUCT WHERE NAME = ?',
-                params: [this.name]
+                params: [name]
             });
             return response;
         } catch (e) {
@@ -59,12 +58,12 @@ export default class Product {
         }
     }
 
-    update = (): Promise<RunResult> => {
+    update = (product = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'UPDATE PRODUCT SET NAME = ?, PRICE = ?, DESCRIPTION = ? WHERE ID = ?',
-                params: [this.name, this.price, this.description, this.id]
+                params: [product.name, product.price, product.description, product.id]
             });
             return response;
         } catch (e) {
@@ -72,12 +71,12 @@ export default class Product {
         }
     }
 
-    delete = (): Promise<RunResult> => {
+    delete = (id = this.id): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM PRODUCT WHERE ID = ?',
-                params: [this.id]
+                params: [id]
             });
             return response;
         } catch (e) {

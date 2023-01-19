@@ -1,4 +1,3 @@
-import { RunResult } from "better-sqlite3";
 import { ipcRenderer } from "electron";
 
 export default class Contact {
@@ -7,12 +6,12 @@ export default class Contact {
     contact: string;
     cpf_cnpj: string;
 
-    insert = (): Promise<RunResult> => {
+    insert = (contact = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'INSERT INTO CONTACT (TYPE, CONTACT, CPF_CNPJ) VALUES (?, ?, ?)',
-                params: [this.type, this.contact, this.cpf_cnpj]
+                params: [contact.type, contact.contact, contact.cpf_cnpj]
             });
             return response;
         } catch (e) {
@@ -20,12 +19,12 @@ export default class Contact {
         }
     }
 
-    getByCpfCnpj = (): Promise<Contact[]> => {
+    getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj): Promise<Contact[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
                 query: 'SELECT * FROM CONTACT WHERE CPF_CNPJ = ?',
-                params: [this.cpf_cnpj]
+                params: [cpf_cnpj]
             });
             return response;
         } catch (e) {
@@ -33,12 +32,12 @@ export default class Contact {
         }
     }
 
-    update = (): Promise<RunResult> => {
+    update = (contact = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'UPDATE CONTACT SET TYPE = ?, CONTACT = ? WHERE ID = ?',
-                params: [this.type, this.contact, this.id]
+                params: [contact.type, contact.contact, contact.id]
             });
             return response;
         } catch (e) {
@@ -46,12 +45,12 @@ export default class Contact {
         }
     }
 
-    delete = (): Promise<RunResult> => {
+    delete = (id = this.id): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM CONTACT WHERE ID = ?',
-                params: [this.id]
+                params: [id]
             });
             return response;
         } catch (e) {
