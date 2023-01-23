@@ -12,7 +12,7 @@ export default class Service {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO SERVICE (ID_PLATE, CPF_CNPJ, DATE, SERVICE, PRICE) VALUES (?, ?, ?, ?, ?)',
+                query: 'INSERT INTO SERVICE (id_plate, cpf_cnpj, date, service, price) VALUES (?, ?, ?, ?, ?)',
                 params: [service.id_plate, service.cpf_cnpj, service.date, service.service, service.price]
             });
             return response;
@@ -36,7 +36,7 @@ export default class Service {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM SERVICE WHERE CPF_CNPJ = ?',
+                query: 'SELECT * FROM SERVICE WHERE cpf_cnpj = ?',
                 params: [cpf_cnpj]
             });
             return response;
@@ -49,7 +49,7 @@ export default class Service {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM SERVICE WHERE ID_PLATE = ?',
+                query: 'SELECT * FROM SERVICE WHERE id_plate = ?',
                 params: [id_plate]
             });
             return response;
@@ -59,11 +59,11 @@ export default class Service {
     }
 
     getById = (id = this.id): Promise<Service> => {
-        if (!id) throw new Error('ID not defined');
+        if (!id) throw new Error('id not defined');
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
-                query: 'SELECT * FROM SERVICE WHERE ID = ?',
+                query: 'SELECT * FROM SERVICE WHERE id = ?',
                 params: [id]
             });
             return response;
@@ -76,7 +76,7 @@ export default class Service {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE SERVICE SET DATE = ?, SERVICE = ?, PRICE = ? WHERE ID = ?',
+                query: 'UPDATE SERVICE SET date = ?, SERVICE = ?, price = ? WHERE id = ?',
                 params: [service.date, service.service, service.price, service.id]
             });
             return response;
@@ -89,7 +89,7 @@ export default class Service {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM SERVICE WHERE ID = ?',
+                query: 'DELETE FROM SERVICE WHERE id = ?',
                 params: [id]
             });
             return response;

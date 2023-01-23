@@ -9,7 +9,7 @@ export default class RequireList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO REQUIRE_LIST (ID_SERVICE, ID_PRODUCT, AMOUNT) VALUES (?, ?, ?)',
+                query: 'INSERT INTO REQUIRE_LIST (id_service, id_product, amount) VALUES (?, ?, ?)',
                 params: [RequireList.id_service, RequireList.id_product, RequireList.amount]
             });
             return response;
@@ -22,7 +22,7 @@ export default class RequireList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM REQUIRE_LIST WHERE ID_SERVICE = ?',
+                query: 'SELECT * FROM REQUIRE_LIST WHERE id_service = ?',
                 params: [id_service]
             });
             return response;
@@ -35,7 +35,7 @@ export default class RequireList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE REQUIRE_LIST SET AMOUNT = ? WHERE ID_SERVICE = ? AND ID_PRODUCT = ?',
+                query: 'UPDATE REQUIRE_LIST SET amount = ? WHERE id_service = ? AND id_product = ?',
                 params: [RequireList.amount, RequireList.id_service, RequireList.id_product]
             });
             return response;
@@ -48,7 +48,7 @@ export default class RequireList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM REQUIRE_LIST WHERE ID_SERVICE = ? AND ID_PRODUCT = ?',
+                query: 'DELETE FROM REQUIRE_LIST WHERE id_service = ? AND id_product = ?',
                 params: [id_service, id_product]
             });
             return response;
@@ -61,7 +61,7 @@ export default class RequireList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM REQUIRE_LIST WHERE ID_SERVICE = ?',
+                query: 'DELETE FROM REQUIRE_LIST WHERE id_service = ?',
                 params: [id_service]
             });
             return response;

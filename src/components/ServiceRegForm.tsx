@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import utils from "../models/utils";
 
-export default function FormCadServiço() {
+export default function ServiceRegForm() {
     const navigate = useNavigate();
     const inputs = document.getElementsByTagName('input');
 

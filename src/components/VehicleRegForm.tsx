@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import utils from "../models/utils";
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function FormCadServiço() {
+export default function VehicleRegForm() {
     const navigate = useNavigate();
     const inputs = document.getElementsByTagName('input');
     const { id_cliente, placa } = useParams();

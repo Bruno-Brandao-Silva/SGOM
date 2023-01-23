@@ -3,15 +3,15 @@ import { ipcRenderer } from "electron";
 export default class Contact {
     id?: number;
     type: string;
-    contact: string;
+    value: string;
     cpf_cnpj: string;
 
     insert = (contact = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO CONTACT (TYPE, CONTACT, CPF_CNPJ) VALUES (?, ?, ?)',
-                params: [contact.type, contact.contact, contact.cpf_cnpj]
+                query: 'INSERT INTO CONTACT (type, value, cpf_cnpj) VALUES (?, ?, ?)',
+                params: [contact.type, contact.value, contact.cpf_cnpj]
             });
             return response;
         } catch (e) {
@@ -23,7 +23,7 @@ export default class Contact {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM CONTACT WHERE CPF_CNPJ = ?',
+                query: 'SELECT * FROM CONTACT WHERE cpf_cnpj = ?',
                 params: [cpf_cnpj]
             });
             return response;
@@ -36,8 +36,8 @@ export default class Contact {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE CONTACT SET TYPE = ?, CONTACT = ? WHERE ID = ?',
-                params: [contact.type, contact.contact, contact.id]
+                query: 'UPDATE CONTACT SET type = ?, value = ? WHERE id = ?',
+                params: [contact.type, contact.value, contact.id]
             });
             return response;
         } catch (e) {
@@ -49,7 +49,7 @@ export default class Contact {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM CONTACT WHERE ID = ?',
+                query: 'DELETE FROM CONTACT WHERE id = ?',
                 params: [id]
             });
             return response;

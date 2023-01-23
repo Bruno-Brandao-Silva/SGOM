@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import utils from "../models/utils";
+import Header from "./Header";
 
 export default function todosOrdem_Servicos() {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function todosOrdem_Servicos() {
     }, []);
 
     return (<>
+        <Header />
         <div className="todos">
             <div id="close" className="container-btn-top">
                 <div></div>

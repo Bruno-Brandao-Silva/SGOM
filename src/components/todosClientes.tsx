@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import utils from "../models/utils";
+import Header from "./Header";
 
-export default function todosClientes() {
+export default function TodosClientes() {
     const navigate = useNavigate();
+    console.log(navigate.name)
     const [clients, setClients] = useState<Client[]>([]);
     useEffect(() => {
         window.api.Client().getAll().then((clients) => {
@@ -12,6 +14,7 @@ export default function todosClientes() {
     }, []);
     const [busca, setBusca] = React.useState("");
     return (<>
+        <Header />
         <div className="todos">
             <div id="close" className="container-btn-top">
                 <div></div>
@@ -26,7 +29,6 @@ export default function todosClientes() {
             </div>
             <h1 className="index-h1">TODOS OS CLIENTES</h1>
             <div className="toolbar index-top-sub-container">
-                <Link to='/FormCadCliente' className="todo-a"><img src='../public/images/add-user.png'></img><span>CADASTRAR CLIENTE</span></Link>
             </div>
             <div>
                 <label>

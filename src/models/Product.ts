@@ -10,7 +10,7 @@ export default class Product {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO PRODUCT (NAME, PRICE, DESCRIPTION) VALUES (?, ?, ?)',
+                query: 'INSERT INTO PRODUCT (name, price, description) VALUES (?, ?, ?)',
                 params: [product.name, product.price, product.description]
             });
             return response;
@@ -36,7 +36,7 @@ export default class Product {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
-                query: 'SELECT * FROM PRODUCT WHERE ID = ?',
+                query: 'SELECT * FROM PRODUCT WHERE id = ?',
                 params: [id]
             });
             return response;
@@ -49,7 +49,7 @@ export default class Product {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM PRODUCT WHERE NAME = ?',
+                query: 'SELECT * FROM PRODUCT WHERE name = ?',
                 params: [name]
             });
             return response;
@@ -62,7 +62,7 @@ export default class Product {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE PRODUCT SET NAME = ?, PRICE = ?, DESCRIPTION = ? WHERE ID = ?',
+                query: 'UPDATE PRODUCT SET name = ?, price = ?, description = ? WHERE id = ?',
                 params: [product.name, product.price, product.description, product.id]
             });
             return response;
@@ -75,7 +75,7 @@ export default class Product {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM PRODUCT WHERE ID = ?',
+                query: 'DELETE FROM PRODUCT WHERE id = ?',
                 params: [id]
             });
             return response;

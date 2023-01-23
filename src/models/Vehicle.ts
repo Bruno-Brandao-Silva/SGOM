@@ -13,7 +13,7 @@ export default class Vehicle {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO VEHICLE (ID_PLATE, BRAND, MODEL, YEAR, COLOR, KM, CPF_CNPJ) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                query: 'INSERT INTO VEHICLE (id_plate, brand, model, year, color, km, cpf_cnpj) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 params: [vehicle.id_plate, vehicle.brand, vehicle.model, vehicle.year, vehicle.color, vehicle.km, vehicle.cpf_cnpj]
             });
             return response;
@@ -28,7 +28,7 @@ export default class Vehicle {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
-                query: 'SELECT * FROM VEHICLE WHERE ID_PLATE = ?',
+                query: 'SELECT * FROM VEHICLE WHERE id_plate = ?',
                 params: [id_plate]
             });
             return response;
@@ -43,7 +43,7 @@ export default class Vehicle {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM VEHICLE WHERE CPF_CNPJ = ?',
+                query: 'SELECT * FROM VEHICLE WHERE cpf_cnpj = ?',
                 params: [cpf_cnpj]
             });
             return response;
@@ -68,7 +68,7 @@ export default class Vehicle {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE VEHICLE SET BRAND = ?, MODEL = ?, YEAR = ?, COLOR = ?, KM = ?, CPF_CNPJ = ? WHERE ID_PLATE = ?',
+                query: 'UPDATE VEHICLE SET brand = ?, model = ?, year = ?, color = ?, km = ?, cpf_cnpj = ? WHERE id_plate = ?',
                 params: [vehicle.brand, vehicle.model, vehicle.year, vehicle.color, vehicle.km, vehicle.cpf_cnpj, vehicle.id_plate]
             });
             return response;
@@ -80,7 +80,7 @@ export default class Vehicle {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM VEHICLE WHERE ID_PLATE = ?',
+                query: 'DELETE FROM VEHICLE WHERE id_plate = ?',
                 params: [id_plate]
             });
             return response;

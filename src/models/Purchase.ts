@@ -9,7 +9,7 @@ export default class Purchase {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO PURCHASE (CPF_CNPJ, DATE) VALUES (?, ?)',
+                query: 'INSERT INTO PURCHASE (cpf_cnpj, date) VALUES (?, ?)',
                 params: [purchase.cpf_cnpj, purchase.date]
             });
             return response;
@@ -22,7 +22,7 @@ export default class Purchase {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM PURCHASE WHERE CPF_CNPJ = ?',
+                query: 'SELECT * FROM PURCHASE WHERE cpf_cnpj = ?',
                 params: [cpf_cnpj]
             });
             return response;
@@ -35,7 +35,7 @@ export default class Purchase {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
-                query: 'SELECT * FROM PURCHASE WHERE ID = ?',
+                query: 'SELECT * FROM PURCHASE WHERE id = ?',
                 params: [id]
             });
             return response;
@@ -48,7 +48,7 @@ export default class Purchase {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE PURCHASE SET DATE = ? WHERE ID = ?',
+                query: 'UPDATE PURCHASE SET date = ? WHERE id = ?',
                 params: [purchase.date, purchase.id]
             });
             return response;
@@ -61,7 +61,7 @@ export default class Purchase {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM PURCHASE WHERE ID = ?',
+                query: 'DELETE FROM PURCHASE WHERE id = ?',
                 params: [id]
             });
             return response;

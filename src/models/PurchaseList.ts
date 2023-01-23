@@ -9,7 +9,7 @@ export default class PurchaseList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO PURCHASE_LIST (ID_PURCHASE, ID_PRODUCT, AMOUNT) VALUES (?, ?, ?)',
+                query: 'INSERT INTO PURCHASE_LIST (id_purchase, id_product, amount) VALUES (?, ?, ?)',
                 params: [PurchaseList.id_purchase, PurchaseList.id_product, PurchaseList.amount]
             });
             return response;
@@ -22,7 +22,7 @@ export default class PurchaseList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM PURCHASE_LIST WHERE ID_PURCHASE = ?',
+                query: 'SELECT * FROM PURCHASE_LIST WHERE id_purchase = ?',
                 params: [id_purchase]
             });
             return response;
@@ -35,7 +35,7 @@ export default class PurchaseList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE PURCHASE_LIST SET AMOUNT = ? WHERE ID_PURCHASE = ? AND ID_PRODUCT = ?',
+                query: 'UPDATE PURCHASE_LIST SET amount = ? WHERE id_purchase = ? AND id_product = ?',
                 params: [PurchaseList.amount, PurchaseList.id_purchase, PurchaseList.id_product]
             });
             return response;
@@ -48,7 +48,7 @@ export default class PurchaseList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM PURCHASE_LIST WHERE ID_PURCHASE = ? AND ID_PRODUCT = ?',
+                query: 'DELETE FROM PURCHASE_LIST WHERE id_purchase = ? AND id_product = ?',
                 params: [id_purchase, id_product]
             });
             return response;
@@ -61,7 +61,7 @@ export default class PurchaseList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM PURCHASE_LIST WHERE ID_PURCHASE = ?',
+                query: 'DELETE FROM PURCHASE_LIST WHERE id_purchase = ?',
                 params: [id_purchase]
             });
             return response;

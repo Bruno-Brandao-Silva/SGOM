@@ -10,7 +10,7 @@ export default class Client {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM CLIENT WHERE NAME = ?',
+                query: 'SELECT * FROM CLIENT WHERE name = ?',
                 params: [name]
             });
             return response;
@@ -25,7 +25,7 @@ export default class Client {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'get',
-                query: 'SELECT * FROM CLIENT WHERE CPF_CNPJ = ?',
+                query: 'SELECT * FROM CLIENT WHERE cpf_cnpj = ?',
                 params: [cpf_cnpj]
             });
             return response;
@@ -49,7 +49,7 @@ export default class Client {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO CLIENT (CPF_CNPJ, NAME) VALUES (?, ?)',
+                query: 'INSERT INTO CLIENT (cpf_cnpj, name) VALUES (?, ?)',
                 params: [client.cpf_cnpj, client.name]
             });
             return response;
@@ -61,7 +61,7 @@ export default class Client {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE CLIENT SET NAME = ? WHERE CPF_CNPJ = ?',
+                query: 'UPDATE CLIENT SET name = ? WHERE cpf_cnpj = ?',
                 params: [client.name, client.cpf_cnpj]
             }
             );
@@ -74,7 +74,7 @@ export default class Client {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM CLIENT WHERE CPF_CNPJ = ?',
+                query: 'DELETE FROM CLIENT WHERE cpf_cnpj = ?',
                 params: [this.cpf_cnpj]
             });
             return response;

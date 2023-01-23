@@ -1,53 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import utils from "../models/utils";
+import Header from "./Header";
 
-export default function formCadProduct() {
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState("");
-    return (
-        <div className="formCadProduct">
-            <h1>Cadastro de Produtos</h1>
-            <form>
-                <label>
-
-                    <span>Nome</span>
-                    <input
-                        onFocus={e => utils.InputsHandleFocus(e)}
-                        onBlur={e => utils.InputsHandleFocusOut(e)}
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                    ></input>
-                </label>
-                <label>
-                    <span>Descrição</span>
-                    <input
-                        onFocus={e => utils.InputsHandleFocus(e)}
-                        onBlur={e => utils.InputsHandleFocusOut(e)}
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                    ></input>
-                </label>
-                <label>
-                    <span>Preço</span>
-                    <input
-                        onFocus={e => utils.InputsHandleFocus(e)}
-                        onBlur={e => utils.InputsHandleFocusOut(e)}
-                        value={price}
-                        onChange={e => setPrice(e.target.value)}
-                    ></input>
-                </label>
-                <div className="btn-submit">
-                    <button id="pt1" type="button" onClick={async () => {
-                        let product = window.api.Product()
-                        product.name = name
-                        product.description = description
-                        product.price = +price
-                        product.insert(product)
-
-                    }}>{'CADASTRAR'}</button>
-                </div>
-            </form>
+export default function Index() {
+    const [busca, setBusca] = useState("");
+    const [clients, setClients] = useState<Client[]>();
+    const [vehicles, setVehicles] = useState<Vehicle[]>();
+    return (<>
+        <Header />
+        <div>
+            <label>
+                <span>BUSCAR CLIENTE E VEÍCULO</span>
+                <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={busca} onChange={e => setBusca(e.target.value)}></input>
+            </label>
         </div>
-    )
+        <div>
+            <span>RESULTADOS</span>
+            <div className="todos-container">
+                {clients?.map((client, index: number) => {
+                    if (busca != "" && (client.name.toString().toLowerCase().startsWith(busca.toLowerCase()) || client.cpf_cnpj.toString().replace(/\D/g, '').toLowerCase().startsWith(busca.toLowerCase()))) {
+                        return (<Link key={index} to={`/Cliente/${client.cpf_cnpj}`} className="todos-a">
+                            <div className="todos-sub-container">
+                                <h1>{client.name}</h1>
+                                <h3>{client.cpf_cnpj}</h3>
+                            </div>
+                        </Link>)
+                    }
+                })}
+                {vehicles?.map((veiculo, index: number) => {
+                    if (busca != "" && veiculo.id_plate.toString().toLowerCase().startsWith(busca.toLowerCase())) {
+                        return (<Link key={index} to={`/Cliente/${veiculo.id_plate}`} className="todos-a">
+                            <div className="todos-sub-container">
+                                <h1>{veiculo.id_plate}</h1>
+                                <h3>{veiculo.brand}</h3>
+                                <p>{veiculo.model}</p>
+                                <p>{veiculo.color}</p>
+                                <p>{veiculo.km}</p>
+                            </div>
+                        </Link>)
+                    }
+                })}
+            </div>
+        </div>
+    </>)
 }

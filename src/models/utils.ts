@@ -172,17 +172,32 @@ const cepRegex = (e: any) => {
 }
 
 const phoneNumberRegex = (e: any) => {
-    if (e.target.value.length < 16) {
+    if (e.target.value.length < 15) {
         let temp = e.target.value
         temp = temp.replace(/\D/g, '')
         if (temp.length <= 2) {
             temp = temp.replace(/^(\d{1,2})/g, '($1')
         } else if (temp.length <= 6) {
             temp = temp.replace(/^(\d{2})(\d{1,4})/g, '($1) $2')
-        } else if (temp.length <= 9) {
+        } else if (temp.length <= 10) {
             temp = temp.replace(/^(\d{2})(\d{4})(\d{1,4})/g, '($1) $2-$3')
-        } else if (temp.length <= 12) {
-            temp = temp.replace(/^(\d{2})(\d{4,5})(\d{4})/g, '($1) $2-$3')
+        }
+        return temp;
+    } else {
+        return e.target.value.substring(0, 14)
+    }
+}
+
+const cellPhoneNumberRegex = (e: any) => {
+    if (e.target.value.length < 16) {
+        let temp = e.target.value
+        temp = temp.replace(/\D/g, '')
+        if (temp.length <= 2) {
+            temp = temp.replace(/^(\d{1,2})/g, '($1')
+        } else if (temp.length <= 7) {
+            temp = temp.replace(/^(\d{2})(\d{1,5})/g, '($1) $2')
+        } else if (temp.length <= 11) {
+            temp = temp.replace(/^(\d{2})(\d{5})(\d{1,4})/g, '($1) $2-$3')
         }
         return temp;
     } else {
@@ -215,5 +230,5 @@ const monetaryMask = (e: number | string): string => {
     return `R$ ${temp}`;
 }
 
-const utils = { monetaryMask, sleep, cpfRegex, cpfValidator, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
+const utils = { monetaryMask, sleep, cpfRegex, cpfValidator, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, cellPhoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
 export default utils
