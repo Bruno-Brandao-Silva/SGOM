@@ -12,11 +12,11 @@ export default function Header() {
                     behavior: "auto"
                 });
             }}>
-                <Link className={hash.includes("#/TodosClientes") ? "link link-active" : "link"} to='/TodosClientes'><img src='../public/images/user.png'></img><p>CLIENTES</p></Link>
-                <Link className={hash.includes("#/FormCadCliente") ? "link link-active" : "link"} to='/FormCadCliente'><img src='../public/images/add-user.png'></img><p>CADASTRAR CLIENTE</p></Link>
-                <Link className={hash.includes("#/TodosVeiculos") ? "link link-active" : "link"} to='/TodosVeiculos'><img src='../public/images/sedan.png'></img><p>VEÍCULOS</p></Link>
-                <Link className={hash.includes("#/TodosServicos") ? "link link-active" : "link"} to='/TodosServicos'><img src='../public/images/service.png'></img><p>SERVIÇO REALIZADOS</p></Link>
-                <Link className={hash.includes("#/FormCadEndereco") ? "link link-active" : "link"} to='/FormCadEndereco/459.336.068-47'><img src='../public/images/service.png'></img><p>TESTE</p></Link>
+                <Link className={hash.includes("#/AllClients") ? "link link-active" : "link"} to='/AllClients'><img src='../public/images/user.png'></img><p>CLIENTES</p></Link>
+                <Link className={hash.includes("#/ClientRegForm") ? "link link-active" : "link"} to='/ClientRegForm'><img src='../public/images/add-user.png'></img><p>CADASTRAR CLIENTE</p></Link>
+                <Link className={hash.includes("#/AllVehicles") ? "link link-active" : "link"} to='/AllVehicles'><img src='../public/images/sedan.png'></img><p>VEÍCULOS</p></Link>
+                <Link className={hash.includes("#/AllServices") ? "link link-active" : "link"} to='/AllServices'><img src='../public/images/service.png'></img><p>SERVIÇO REALIZADOS</p></Link>
+                <Link className={hash.includes("#/AddressRegForm") ? "link link-active" : "link"} to='/AddressRegForm/459.336.068-47'><img src='../public/images/service.png'></img><p>TESTE</p></Link>
             </div>
         </header>
     </>)

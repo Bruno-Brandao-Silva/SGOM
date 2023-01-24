@@ -229,6 +229,40 @@ const monetaryMask = (e: number | string): string => {
     temp = temp.replace(/(?=(\d{3})+(\D))\B/g, '.')
     return `R$ ${temp}`;
 }
-
-const utils = { monetaryMask, sleep, cpfRegex, cpfValidator, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, cellPhoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
+const plateRegex = (e: any) => {
+    let temp = e.target.value as string;
+    temp = temp.replace(/\W/g, '');
+    if (temp.length > 7) {
+        return e.target.value.substring(0, 8);
+    }
+    temp = temp.toUpperCase();
+    if (temp.length <= 3) {
+        return temp.replace(/[^A-Z]/g, '');
+    } else if (temp.length <= 4) {
+        let subString1 = temp.substring(0, 3);
+        subString1 = subString1.replace(/[^A-Z]/g, '');
+        let subString2 = temp.substring(3, 4);
+        subString2 = subString2.replace(/[^0-9]/g, '');
+        return `${subString1}-${subString2}`;
+    } else if (temp.length <= 5) {
+        let subString1 = temp.substring(0, 3);
+        subString1 = subString1.replace(/[^A-Z]/g, '');
+        let subString2 = temp.substring(3, 4);
+        subString2 = subString2.replace(/[^0-9]/g, '');
+        let subString3 = temp.substring(4, 5);
+        subString3 = subString3.replace(/[^A-Z0-9]/g, '');
+        return `${subString1}-${subString2}${subString3}`;
+    } else {
+        let subString1 = temp.substring(0, 3);
+        subString1 = subString1.replace(/[^A-Z]/g, '');
+        let subString2 = temp.substring(3, 4);
+        subString2 = subString2.replace(/\D/g, '');
+        let subString3 = temp.substring(4, 5);
+        subString3 = subString3.replace(/[^A-Z0-9]/g, '');
+        let subString4 = temp.substring(5, 7);
+        subString4 = subString4.replace(/\D/g, '');
+        return `${subString1}-${subString2}${subString3}${subString4}`;
+    }
+}
+const utils = { monetaryMask, sleep, cpfRegex, cpfValidator, plateRegex, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, cellPhoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
 export default utils

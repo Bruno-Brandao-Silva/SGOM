@@ -5,28 +5,16 @@ import Header from "./Header";
 
 export default function TodosClientes() {
     const navigate = useNavigate();
-    console.log(navigate.name)
     const [clients, setClients] = useState<Client[]>([]);
     useEffect(() => {
         window.api.Client().getAll().then((clients) => {
             setClients(clients);
         });
     }, []);
-    const [busca, setBusca] = React.useState("");
+    const [busca, setBusca] = useState("");
     return (<>
         <Header />
         <div className="todos">
-            <div id="close" className="container-btn-top">
-                <div></div>
-                <button type="button" className="btn-close" onClick={() => {
-                    navigate('/')
-                }}>
-                    <span>
-                        <div></div>
-                        <div></div>
-                    </span>
-                </button>
-            </div>
             <h1 className="index-h1">TODOS OS CLIENTES</h1>
             <div className="toolbar index-top-sub-container">
             </div>
@@ -49,7 +37,7 @@ export default function TodosClientes() {
                 <tbody>
                     {clients.map((cliente, index: number) => {
                         if (busca == '') {
-                            return (<tr key={index} onClick={() => navigate(`/Cliente/${cliente.cpf_cnpj}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/Client/${cliente.cpf_cnpj}`)} >
                                 <th>{cliente.name}</th>
                                 <th>{cliente.cpf_cnpj}</th>
                                 {/* <th>{cliente.email}</th>
@@ -58,7 +46,7 @@ export default function TodosClientes() {
                             </tr>)
                         } else if (cliente.cpf_cnpj.toString().toLowerCase().startsWith(busca.toLowerCase())
                             || cliente.name.toString().toLowerCase().startsWith(busca.toLowerCase())) {
-                            return (<tr key={index} onClick={() => navigate(`/Cliente/${cliente.cpf_cnpj}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/Client/${cliente.cpf_cnpj}`)} >
                                 <th>{cliente.name}</th>
                                 <th>{cliente.cpf_cnpj}</th>
                                 {/* <th>{cliente.email}</th>

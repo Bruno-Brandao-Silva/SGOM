@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Header from "./Header";
 import PopUp from "./PopUp";
 import PopUpErrorTemplate from "./PopUpErrorTemplate";
+import PopUpSuccessTemplate from "./PopUpSuccessTemplate";
 
 export default function ClientRegForm() {
     const navigate = useNavigate()
@@ -141,7 +142,11 @@ export default function ClientRegForm() {
                             setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />)
                             return
                         }
-                        navigate('/');
+                        setPopUp(<PopUpSuccessTemplate buttons={[
+                            { text: "Agora", onClick: () => navigate(`/FormCadEndereco/${cpf_cnpj}`) },
+                            { text: "Depois", onClick: () => navigate(`/Cliente/${cpf_cnpj}`) },
+                        ]} title="Cliente cadastrado com sucesso!"
+                            content="Cadastrar endereço agora?" />)
                     }
                 }}>{param_cpf_cnpj ? 'SALVAR' : 'CADASTRAR'}</button>
             </div>

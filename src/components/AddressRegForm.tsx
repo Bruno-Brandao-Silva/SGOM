@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Header from "./Header";
 import PopUp from "./PopUp";
 import PopUpErrorTemplate from "./PopUpErrorTemplate";
+import PopUpSuccessTemplate from "./PopUpSuccessTemplate";
 
 export default function AddressRegForm() {
     const navigate = useNavigate()
@@ -145,7 +146,9 @@ export default function AddressRegForm() {
                         setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />);
                         return
                     }
-
+                    setPopUp(<PopUpSuccessTemplate buttons={[
+                        { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj}`) },
+                    ]} title="Endereço salvo com sucesso!" />)
                 }}>SALVAR</button>
             </div>
         </form>

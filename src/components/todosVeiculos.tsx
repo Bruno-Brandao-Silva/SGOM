@@ -50,28 +50,28 @@ export default function todosVeiculos() {
                     </tr>
                 </thead>
                 <tbody>
-                    {veiculos.map((veiculo, index: number) => {
-                        const cliente = clientes.find(c => c.cpf_cnpj == veiculo.cpf_cnpj)
+                    {(veiculos && clientes) ? veiculos.map((veiculo, index: number) => {
+                        const cliente = clientes?.find(c => c.cpf_cnpj == veiculo.cpf_cnpj)
                         if (busca == '') {
-                            return (<tr key={index} onClick={() => navigate(`/FormCadVeiculo/${veiculo.cpf_cnpj}/${veiculo.id_plate}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${veiculo.cpf_cnpj}/${veiculo.id_plate}`)} >
                                 <th>{veiculo.id_plate}</th>
                                 <th>{veiculo.brand}</th>
                                 <th>{veiculo.model}</th>
                                 <th>{veiculo.year}</th>
-                                <th>{cliente.name}</th>
-                                <th>{cliente.cpf_cnpj}</th>
+                                <th>{cliente?.name}</th>
+                                <th>{cliente?.cpf_cnpj}</th>
                             </tr>)
                         } else if (veiculo.id_plate.toString().toLowerCase().startsWith(busca.toLowerCase())) {
-                            return (<tr key={index} onClick={() => navigate(`/FormCadVeiculo/${veiculo.cpf_cnpj}/${veiculo.id_plate}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${veiculo.cpf_cnpj}/${veiculo.id_plate}`)} >
                                 <th>{veiculo.id_plate}</th>
                                 <th>{veiculo.brand}</th>
                                 <th>{veiculo.model}</th>
                                 <th>{veiculo.year}</th>
-                                <th>{cliente.name}</th>
-                                <th>{cliente.cpf_cnpj}</th>
+                                <th>{cliente?.name}</th>
+                                <th>{cliente?.cpf_cnpj}</th>
                             </tr>)
                         }
-                    })}
+                    }) : null}
                 </tbody>
                 <tfoot>
                     <tr>

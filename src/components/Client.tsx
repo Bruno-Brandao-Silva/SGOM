@@ -1,8 +1,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Header from "./Header";
 
-export default function Cliente() {
+export default function Client() {
     const navigate = useNavigate();
     const { cpf_cnpj } = useParams();
     const [client, setClient] = useState<Client>();
@@ -16,40 +17,26 @@ export default function Cliente() {
         });
     }, []);
     return (<>
-        <div className="todos">
-            <div id="close" className="container-btn-top">
-                <button className="btn-return" onClick={() => { navigate(-1) }}>
-                    <img src="../public/images/back.svg" alt="Voltar" />
-                </button>
-                <button type="button" className="btn-close" onClick={() => {
-                    navigate('/')
-                }}>
-                    <span>
-                        <div></div>
-                        <div></div>
-                    </span>
-                </button>
+        <Header />
+        <div className="client">
+            <div className="client-toolbar">
+                <Link className="link" to={`/ClientRegForm/${cpf_cnpj}`}><img src='../public/images/user.png'></img><span>EDITAR CLIENTE</span></Link>
+                <Link className="link" to={`/VehicleRegForm/${cpf_cnpj}`}><img src='../public/images/sedan.png'></img><span>ADICIONAR VEíCULO</span></Link>
+                <Link className="link" to={`/AddressRegForm/${cpf_cnpj}`}><img src='../public/images/address.png'></img><span>ADICIONAR ENDEREÇO</span></Link>
+                <Link className="link" to={`/ServiceRegForm/${cpf_cnpj}`}><img src='../public/images/service.png'></img><span>ADICIONAR SERVIÇO</span></Link>
             </div>
-            <h1 className="index-h1">CLIENTE</h1>
-            <div className="toolbar index-top-sub-container">
-                <Link to={`/FormCadClient/${cpf_cnpj}`}><img src='../public/images/user.png'></img><span>ADICIONAR SERVIÇO</span></Link>
-                <Link to={`/FormCadVeiculo/${cpf_cnpj}`}><img src='../public/images/sedan.png'></img><span>ADICIONAR VEíCULO</span></Link>
-                <Link to={`/FormCadAddress/${cpf_cnpj}`}><img src='../public/images/address.png'></img><span>ADICIONAR ENDEREÇO</span></Link>
-                <Link to={`/FormCadServico/${cpf_cnpj}`}><img src='../public/images/service.png'></img><span>ADICIONAR SERVIÇO</span></Link>
-            </div>
-            <div className="cliente-info">
-                <h1>NOME: {client.name}</h1>
-                <h3>CPF/CNPJ: {client.cpf_cnpj}</h3>
-            </div>
-            <div className="todos-container">
-                {addresses.map((address, index: number) => (<Link to={`/FormCadAddress/${cpf_cnpj}/${address.cpf_cnpj}`} key={index} className="todos-sub-container" >
-                    <p>{address.street}</p>
-                    <p>{address.complement}</p>
-                    <p>{address.district}</p>
-                    <p>{address.city}</p>
-                    <p>{address.state}</p>
-                    <p>{address.cep}</p>
-                </Link>))}
+            <div className="client-container">
+                <div className="client-info">
+                    <h1>{client?.name}</h1>
+                    <h3>CPF/CNPJ: {client?.cpf_cnpj}</h3>
+                </div>
+                <div className="client-addresses">
+                    <h2>ENDEREÇOS</h2>
+                    {addresses?.map((address, index: number) => (<Link to={`/AddressRegForm/${cpf_cnpj}/${address.id}`} key={index} className="client-address-link" >
+                        <p>{`${address.street}, ${address.number} - ${address.district}, ${address.city} - ${address.state} - CEP:${address.cep}`}</p>
+                        {address.complement && <p>Complemento: {address.complement}</p>}
+                    </Link>))}
+                </div>
             </div>
         </div>
     </>)
