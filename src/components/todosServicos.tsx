@@ -51,28 +51,21 @@ export default function todosOrdem_Servicos() {
                 <tbody>
                     {services?.map((servico, index: number) => {
                         const client = clients.find(c => c.cpf_cnpj == servico.cpf_cnpj)
-                        let total = 0;
-                        // services.forEach(s => {
-                        //     // if (s.id_servico == servico.id) {
-                        //     //     total += s.quantidade * s.precoUnitario
-                        //     // }
-                        // })
-
                         if (search == '') {
-                            return (<tr key={index} onClick={() => navigate(`/EditServico/${servico.id}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/ServiceEditForm/${servico.id}`)} >
                                 <th>{servico.id_plate}</th>
                                 <th>{client.name}</th>
                                 <th>{client.cpf_cnpj}</th>
                                 <th>{servico.date.toString().replace(/\D/g, "").replace(/(\d{4})(\d{2})(\d{2})/, "$3/$2/$1")}</th>
-                                <th>{`${utils.monetaryMask(total)}`}</th>
+                                <th>{`${utils.monetaryMask(servico.price)}`}</th>
                             </tr>)
                         } else if (servico.id_plate.toString().toLowerCase().startsWith(search.toLowerCase())) {
-                            return (<tr key={index} onClick={() => navigate(`/EditServico/${servico.id}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/ServiceEditForm/${servico.id}`)} >
                                 <th>{servico.id_plate}</th>
                                 <th>{client.name}</th>
                                 <th>{client.cpf_cnpj}</th>
                                 <th>{servico.date.toString().replace(/\D/g, "").replace(/(\d{4})(\d{2})(\d{2})/, "$3/$2/$1")}</th>
-                                <th>{`${utils.monetaryMask(total)}`}</th>
+                                <th>{`${utils.monetaryMask(servico.price)}`}</th>
                             </tr>)
                         }
                     })}

@@ -32,6 +32,7 @@ declare global {
       RequireList: () => RequireListClass;
       Service: () => ServiceClass;
       Vehicle: () => VehicleClass;
+      chooseFile: () => Promise<string[]>;
     }
   }
 }

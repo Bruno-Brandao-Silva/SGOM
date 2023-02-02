@@ -53,7 +53,7 @@ export default function VehicleRegForm() {
             <div className="double-input-forced">
                 <label>
                     <span>PLACA</span>
-                    <input name="placaInput" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={idPlateInput} onChange={id_plate !== undefined ? () => { } : e => setIdPlateInput(utils.plateRegex(e))} disabled={(id_plate !== undefined)} required />
+                    <input name="placaInput" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={idPlateInput} onChange={id_plate !== undefined ? () => { } : e => setIdPlateInput(utils.plateRegex(e))} pattern="[A-Z]{3}-[0-9][A-Z0-9][0-9]{2}" disabled={(id_plate !== undefined)} required />
                 </label>
                 <label>
                     <span>MARCA</span>

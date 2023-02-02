@@ -1,4 +1,5 @@
 import { ipcRenderer } from "electron";
+import utils from "./utils";
 
 export default class Client {
     cpf_cnpj: string;
@@ -46,6 +47,9 @@ export default class Client {
         }
     }
     insert = (client = this): Promise<RunResult> => {
+        if (!utils.cpfValidator(client.cpf_cnpj) && !utils.CNPJValidator(client.cpf_cnpj)) {
+            throw new Error('CPF/CNPJ not valid');
+        }
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

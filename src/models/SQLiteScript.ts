@@ -104,16 +104,17 @@ CREATE TABLE IF NOT EXISTS REQUIRE_LIST (
 DROP TABLE IF EXISTS SERVICE;
 
 CREATE TABLE IF NOT EXISTS SERVICE (
-    id       INTEGER PRIMARY KEY AUTOINCREMENT
+    id              INTEGER PRIMARY KEY AUTOINCREMENT
                      UNIQUE
                      NOT NULL,
-    id_plate TEXT    REFERENCES VEHICLE (id_plate) 
+    id_plate        TEXT    REFERENCES VEHICLE (id_plate) 
                      NOT NULL,
-    cpf_cnpj TEXT    REFERENCES CLIENT (cpf_cnpj) 
+    cpf_cnpj        TEXT    REFERENCES CLIENT (cpf_cnpj) 
                      NOT NULL,
-    date     TEXT    NOT NULL,
-    service  TEXT    NOT NULL,
-    price    NUMERIC NOT NULL
+    date            TEXT    NOT NULL,
+    description     TEXT    NOT NULL,
+    price           NUMERIC NOT NULL,
+    km              NUMERIC NOT NULL
 );
 
 

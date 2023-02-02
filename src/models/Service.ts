@@ -4,16 +4,17 @@ export default class Service {
     id?: number;
     id_plate: string;
     cpf_cnpj: string;
-    date: Date;
-    service: string;
+    date: string;
+    description: string;
     price: number;
+    km: number;
 
     insert = (service = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO SERVICE (id_plate, cpf_cnpj, date, service, price) VALUES (?, ?, ?, ?, ?)',
-                params: [service.id_plate, service.cpf_cnpj, service.date, service.service, service.price]
+                query: 'INSERT INTO SERVICE (id_plate, cpf_cnpj, date, description, price, km) VALUES (?, ?, ?, ?, ?, ?)',
+                params: [service.id_plate, service.cpf_cnpj, service.date, service.description, service.price, service.km]
             });
             return response;
         } catch (e) {
@@ -76,8 +77,8 @@ export default class Service {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE SERVICE SET date = ?, SERVICE = ?, price = ? WHERE id = ?',
-                params: [service.date, service.service, service.price, service.id]
+                query: 'UPDATE SERVICE SET date = ?, description = ?, price = ?, km = ? WHERE id = ?',
+                params: [service.date, service.description, service.price, service.km, service.id]
             });
             return response;
         } catch (e) {

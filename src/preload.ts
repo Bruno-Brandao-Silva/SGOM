@@ -1,4 +1,4 @@
-import { contextBridge } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 import Address from "./models/Address";
 import Client from "./models/Client";
 import Contact from "./models/Contact";
@@ -19,4 +19,5 @@ contextBridge.exposeInMainWorld('api', {
     RequireList: () => new RequireList(),
     Service: () => new Service(),
     Vehicle: () => new Vehicle(),
+    chooseFile: () => ipcRenderer.invoke('chooseFile'),
 })

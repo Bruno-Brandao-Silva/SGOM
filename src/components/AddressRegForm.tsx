@@ -109,48 +109,46 @@ export default function AddressRegForm() {
                     </datalist> */}
                 </label>
             </div>
-            <div className="btn-submit">
-                <button type="button" className="reg-form-button" onClick={async () => {
-                    const form = document.getElementsByClassName('reg-form')[0] as HTMLFormElement;
-                    if (!form.checkValidity()) {
-                        form.reportValidity();
-                        return;
-                    }
-                    const address = window.api.Address();
-                    address.cpf_cnpj = cpf_cnpj;
-                    address.cep = cep;
-                    address.number = number;
-                    address.complement = complement;
-                    address.street = street;
-                    address.district = district;
-                    address.city = city;
-                    address.state = state;
-                    try {
-                        if (!id) {
-                            const response = await address.insert(address)
-                            if (response.changes == 0) {
-                                throw new Error('Não foi possível cadastrar o endereço')
-                            } else {
-
-                            }
+            <button type="button" className="reg-form-button" onClick={async () => {
+                const form = document.getElementsByClassName('reg-form')[0] as HTMLFormElement;
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                const address = window.api.Address();
+                address.cpf_cnpj = cpf_cnpj;
+                address.cep = cep;
+                address.number = number;
+                address.complement = complement;
+                address.street = street;
+                address.district = district;
+                address.city = city;
+                address.state = state;
+                try {
+                    if (!id) {
+                        const response = await address.insert(address)
+                        if (response.changes == 0) {
+                            throw new Error('Não foi possível cadastrar o endereço')
                         } else {
-                            address.id = +id;
-                            const response = await address.update(address)
-                            if (response.changes == 0) {
-                                throw new Error('Não foi possível atualizar o endereço')
-                            } else {
 
-                            }
                         }
-                    } catch (error) {
-                        setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />);
-                        return
+                    } else {
+                        address.id = +id;
+                        const response = await address.update(address)
+                        if (response.changes == 0) {
+                            throw new Error('Não foi possível atualizar o endereço')
+                        } else {
+
+                        }
                     }
-                    setPopUp(<PopUpSuccessTemplate buttons={[
-                        { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj}`) },
-                    ]} title="Endereço salvo com sucesso!" />)
-                }}>SALVAR</button>
-            </div>
+                } catch (error) {
+                    setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />);
+                    return
+                }
+                setPopUp(<PopUpSuccessTemplate buttons={[
+                    { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj}`) },
+                ]} title="Endereço salvo com sucesso!" />)
+            }}>SALVAR</button>
         </form>
     </>)
 }

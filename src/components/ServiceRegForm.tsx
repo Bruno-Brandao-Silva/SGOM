@@ -1,165 +1,191 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import utils from "../models/utils";
+import Header from "./Header";
 
 export default function ServiceRegForm() {
+    const { cpf_cnpj, id_plate, id } = useParams();
     const navigate = useNavigate();
-    const inputs = document.getElementsByTagName('input');
-
-    const { cpf_cnpj, id } = useParams();
-
-    // const service = window.api.Ordem_Servico.get(id) as any;
-    // const editServico = window.api.Servico.getAllByOrdem_Servico(id) as any[];
-    // const client = window.api.Cliente.get(service ? service.id_cliente : cpf_cnpj) as Client;
-    // const vehicles = window.api.Veiculo.getAllByCliente(cpf_cnpj) as Vehicle[];
-    // const vehicle = window.api.Veiculo.get(service?.placa) as Vehicle;
-
-    const [client, setClient] = useState<Client>();
-    const [vehicles, setVehicles] = useState<Vehicle[]>();
-    const [vehicle, setVehicle] = useState<Vehicle>();
-    const [service, setService] = useState<Service>();
-
-    useEffect(() => {
-        window.api.Client().getByCpfCnpj(cpf_cnpj).then((client: Client) => {
-            setClient(client);
-        });
-        window.api.Vehicle().getByCpfCnpj(cpf_cnpj).then((vehicles: Vehicle[]) => {
-            setVehicles(vehicles);
-        });
-        window.api.Service().getById(+id).then((service: Service) => {
-            setService(service);
-            window.api.Vehicle().getByPlate(service.id_plate).then((vehicle: Vehicle) => {
-                setVehicle(vehicle);
-            });
-        });
-    }, []);
-
 
     const dataAtual = new Date().toLocaleDateString().replace(/^(\d{2})\/(\d{2})\/(\d{4})/g, '$3-$2-$1')
-    const [, setReact] = useState({});
-    const [date, setDate] = useState(service?.date || dataAtual);
-    const [brand, setBrand] = useState(vehicle?.brand || "");
-    const [model, setModel] = useState(vehicle?.model || "");
-    const [id_plate, setId_plate] = useState(vehicle?.id_plate || useParams().placa || "");
-    const [color, setColor] = useState(vehicle?.color || "");
-    const [year, setYear] = useState(vehicle?.year.toString() || "");
-    // const [km, setKm] = useState(service?.km.toString() || "");
 
-    const [servico, setServico] = useState<string[]>();
-    const [detalhes, setDetalhes] = useState<string[]>();
-    const [precoUnitario, setPrecoUnitario] = useState<string[]>();
-    const [quantidade, setQuantidade] = useState<string[]>();
+    const [inputs, setInputs] = useState<(HTMLInputElement | HTMLTextAreaElement)[]>([]);
+    const [clients, setClients] = useState<Client[]>();
+    const [vehicles, setVehicles] = useState<Vehicle[]>();
+    const [name, setName] = useState("");
+    const [cpf_cnpj_input, setCpf_cnpj_input] = useState("");
+    const [description, setDescription] = useState("");
+    const [price, setPrice] = useState("");
+    const [date, setDate] = useState(dataAtual);
+    const [brand, setBrand] = useState("");
+    const [model, setModel] = useState("");
+    const [id_plateInput, setId_plateInput] = useState("");
+    const [color, setColor] = useState("");
+    const [year, setYear] = useState("");
+    const [km, setKm] = useState("");
+
+    const [carAlreadyRegistered, setCarAlreadyRegistered] = useState(false);
+    const [clientAlreadyRegistered, setClientAlreadyRegistered] = useState(false);
+
     useEffect(() => {
-        setDetalhes(detalhes)
-    }, [detalhes])
-    const servicosForm: JSX.Element[] = []
-    // if (servico && servico.length > 0) {
-    //     for (let i = 0; i < quantidadeServicos; i++) {
-    //         servicosForm.push(<div key={i} className="content-double-label">
-    //             <label>
-    //                 <span>SERVIÇO</span>
-    //                 <input name="servico" list="servico" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={servico[i]} onChange={e => {
-    //                     servico[i] = e.target.value;
-    //                     setServico(servico)
-    //                     setReact({})
-    //                 }} required />
-    //             </label>
-    //             <label>
-    //                 <span>DETALHES</span>
-    //                 <input name="detalhes" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={detalhes[i]} onChange={e => {
-    //                     detalhes[i] = e.target.value;
-    //                     setDetalhes(detalhes)
-    //                     setReact({})
-    //                 }} required />
-    //             </label>
-    //             <label>
-    //                 <span>QUANTIDADE</span>
-    //                 <input name="quantidade" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={quantidade[i]} onChange={e => {
-    //                     quantidade[i] = e.target.value;
-    //                     setQuantidade(quantidade)
-    //                     setReact({})
-    //                 }} required />
-    //             </label>
-    //             <label>
-    //                 <span>PREÇO UNITÁRIO</span>
-    //                 <input name="precoUnitario" type="number" step='0.01' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={precoUnitario[i]} onChange={e => {
-    //                     precoUnitario[i] = e.target.value;
-    //                     setPrecoUnitario(precoUnitario)
-    //                     setReact({})
-    //                 }} required />
-    //             </label>
-    //         </div>)
-    //     }
-    // }
-    // useEffect(() => {
-    //     for (let i = 0; i < inputs.length; i++) {
-    //         if (inputs[i].value != '') {
-    //             utils.InputsHandleFocus({ target: inputs[i] });
-    //         }
-    //     }
-    // }, [quantidadeServicos])
-    return (<>
-        <form id="formCadServico" >
-            <div className="container-btn-top">
-                <button className="btn-return" type="button" onClick={() => { navigate(-1) }}>
-                    <img src="../public/images/back.svg" alt="Voltar" />
-                </button>
-                <button className="btn-close" type="button" onClick={() => navigate('/')}>
-                    <span>
-                        <div></div>
-                        <div></div>
-                    </span>
-                </button>
-            </div>
-            <h1>{id ? 'Editar Ordem de Serviço' : 'Cadastrar Ordem de Serviço'}</h1>
-            <div className="content-double-label">
-                <label>
-                    <span>CLIENTE</span>
-                    <input name="cliente" list="cliente" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={client?.name} onChange={() => { }} disabled required />
+        let input = document.getElementsByTagName("input");
+        let textareas = document.getElementsByTagName("textarea");
+        let inputs = [];
+        for (let i = 0; i < input.length; i++)
+            inputs.push(input[i]);
+        for (let i = 0; i < textareas.length; i++)
+            inputs.push(textareas[i]);
+        setInputs(inputs);
+        window.api.Client().getAll().then((clients) => setClients(clients));
+    }, []);
 
+    useEffect(() => {
+        if (cpf_cnpj_input.length >= 14) {
+            const client = clients?.find((client: Client) => client.cpf_cnpj === cpf_cnpj_input);
+            if (client) {
+                setName(client.name);
+                setCpf_cnpj_input(client.cpf_cnpj);
+                setClientAlreadyRegistered(true);
+                window.api.Vehicle().getByCpfCnpj(client.cpf_cnpj).then((vehicles) => {
+                    console.log("edit vehicle")
+                    setVehicles(vehicles)
+                    setBrand("");
+                    setModel("");
+                    setColor("");
+                    setYear("");
+                    setKm("");
+                    setId_plateInput("");
+                    setCarAlreadyRegistered(false);
+                });
+                utils.inputsVerify(inputs)
+            } else {
+                setVehicles([]);
+                setBrand("");
+                setModel("");
+                setColor("");
+                setYear("");
+                setKm("");
+                setId_plateInput("");
+                setCarAlreadyRegistered(false);
+                setClientAlreadyRegistered(false);
+            }
+        }
+    }, [cpf_cnpj_input]);
+
+    useEffect(() => {
+        if (id_plateInput.length == 8) {
+            const vehicle = vehicles?.find((vehicle: Vehicle) => vehicle.id_plate === id_plateInput);
+            if (vehicle) {
+                setCarAlreadyRegistered(true);
+                setBrand(vehicle.brand);
+                setModel(vehicle.model);
+                setColor(vehicle.color);
+                setYear(vehicle.year.toString());
+                setKm(vehicle.km.toString());
+            } else {
+                setCarAlreadyRegistered(false);
+            }
+            utils.inputsVerify(inputs)
+        }
+    }, [id_plateInput]);
+
+    useEffect(() => {
+        if (id) {
+            window.api.Service().getById(+id).then((service: Service) => {
+                setDescription(service.description);
+                setPrice(service.price.toString());
+                setDate(service.date);
+                setId_plateInput(service.id_plate);
+                setKm(service.km.toString());
+                setCarAlreadyRegistered(true);
+                window.api.Vehicle().getByCpfCnpj(service.cpf_cnpj).then((vehicles) => setVehicles(vehicles));
+                window.api.Client().getByCpfCnpj(service.cpf_cnpj).then((client) => {
+                    setName(client.name)
+                    setCpf_cnpj_input(client.cpf_cnpj);
+                    setClientAlreadyRegistered(true);
+                });
+                window.api.Vehicle().getByPlate(service.id_plate).then((vehicle) => {
+                    setBrand(vehicle.brand);
+                    setModel(vehicle.model);
+                    setColor(vehicle.color);
+                    setYear(vehicle.year.toString());
+                });
+            }).finally(() => utils.inputsVerify(inputs));
+        } else {
+            cpf_cnpj && window.api.Client().getByCpfCnpj(cpf_cnpj).then((client: Client) => {
+                if (client) {
+                    setName(client.name);
+                    setCpf_cnpj_input(client.cpf_cnpj);
+                    setClientAlreadyRegistered(true);
+                } else {
+                    if ((cpf_cnpj.length > 14 ? utils.CNPJValidator(cpf_cnpj) : utils.cpfValidator(cpf_cnpj))) {
+                        setCpf_cnpj_input(cpf_cnpj);
+                        setClientAlreadyRegistered(false);
+                    }
+                }
+            }).finally(() => utils.inputsVerify(inputs));
+
+            cpf_cnpj && window.api.Vehicle().getByCpfCnpj(cpf_cnpj).then((vehicles: Vehicle[]) => {
+                setVehicles(vehicles);
+                if (id_plate) {
+                    setId_plateInput(id_plate);
+                    const vehicle = vehicles.find((vehicle: Vehicle) => vehicle.id_plate === id_plate);
+                    if (vehicle) {
+                        setCarAlreadyRegistered(true);
+                        setBrand(vehicle.brand);
+                        setModel(vehicle.model);
+                        setColor(vehicle.color);
+                        setYear(vehicle.year.toString());
+                        setKm(vehicle.km.toString());
+                    }
+                }
+            }).finally(() => utils.inputsVerify(inputs));
+        }
+    }, [inputs]);
+
+
+    return (<>
+        <Header />
+        <form className="reg-form" >
+            <div className="double-input">
+                <label style={{ width: "55%" }}>
+                    <span>CLIENTE</span>
+                    <input list="cliente" onFocus={e => utils.InputsHandleFocus(e)}
+                        onBlur={e => utils.InputsHandleFocusOut(e)} value={name}
+                        onChange={e => setName(e.target.value)} disabled={clientAlreadyRegistered} required />
                 </label>
-                <label>
-                    <span>CPF</span>
-                    <input name="cpf" list="cpf" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={client?.cpf_cnpj} onChange={() => { }} disabled required />
+                <label style={{ width: "24%" }}>
+                    <span>CPF/CNPJ</span>
+                    <input list="cpf_cnpj" onFocus={e => utils.InputsHandleFocus(e)}
+                        onBlur={e => utils.InputsHandleFocusOut(e)} value={cpf_cnpj_input} onChange={e => {
+                            setCpf_cnpj_input(e.target.value.length > 14 ? utils.CNPJRegex(e) : utils.cpfRegex(e))
+                            if (!(e.target.value.length > 14 ? utils.CNPJValidator(e) : utils.cpfValidator(e)))
+                                e.target.setCustomValidity("CPF/CNPJ inválido!");
+                            else
+                                e.target.setCustomValidity("");
+
+                        }} disabled={
+                            cpf_cnpj ? (cpf_cnpj.length > 14 ? utils.CNPJValidator(cpf_cnpj) : utils.cpfValidator(cpf_cnpj)) : false
+                        } required />
+                    <datalist id="cpf_cnpj" >
+                        {clients?.map((client: Client) => {
+                            return <option key={client.cpf_cnpj} value={client.cpf_cnpj} />
+                        })}
+                    </datalist>
+                </label>
+
+                <label style={{ width: "15%" }}>
+                    <span className="span-active">DATA</span>
+                    <input type="date" onFocus={e => utils.InputsHandleFocus(e)}
+                        value={date.toString()} onChange={e => setDate(e.target.value)} required />
                 </label>
             </div>
-            <label>
-                <span className="span-active">DATA</span>
-                <input name="data" type="date" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={date.toString()} onChange={e => setDate(new Date(e.target.value))} required />
-            </label>
-            <div className="content-double-label">
-                <label>
-                    <span>MARCA</span>
-                    <input name="marca" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={brand} onChange={e => setBrand(e.target.value)} required />
-                </label>
-                <label>
-                    <span>MODELO</span>
-                    <input name="modelo" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={model} onChange={e => setModel(e.target.value)} required />
-                </label>
-                <label>
-                    <span>COR</span>
-                    <input name="cor" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={color} onChange={e => setColor(e.target.value)} required />
-                </label>
-            </div>
-            <div className="content-double-label">
+            <div className="triple-input-forced">
                 <label>
                     <span>PLACA</span>
-                    <input name="placa" list="placa" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={id_plate} onChange={async e => {
-                        setId_plate(e.target.value)
-                        const veiculo = await window.api.Vehicle().getByPlate(e.target.value)
-                        if (veiculo) {
-                            setBrand(veiculo.brand || "")
-                            setModel(veiculo.model || "")
-                            setColor(veiculo.color || "")
-                            setYear(veiculo.year.toString() || "")
-                        }
-                        await utils.sleep(10)
-                        for (let i = 0; i < inputs.length; i++) {
-                            if (inputs[i].value != '') {
-                                utils.InputsHandleFocus({ target: inputs[i] });
-                            }
-                        }
-                    }} required />
+                    <input list="placa" pattern="[A-Z]{3}-[0-9][A-Z0-9][0-9]{2}"
+                        onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)}
+                        value={id_plateInput} onChange={async e => setId_plateInput(utils.plateRegex(e))} required />
                     <datalist id="placa" >
                         {vehicles?.map((veiculo, index: number) => {
                             return <option key={index} value={veiculo.id_plate}></option>
@@ -167,116 +193,81 @@ export default function ServiceRegForm() {
                     </datalist>
                 </label>
                 <label>
-                    <span>ANO</span>
-                    <input name="ano" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={year} onChange={e => setYear(e.target.value)} required />
+                    <span>MARCA</span>
+                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={brand} onChange={e => setBrand(e.target.value)} required disabled={carAlreadyRegistered} />
                 </label>
-                {/* <label>
+                <label>
+                    <span>MODELO</span>
+                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={model} onChange={e => setModel(e.target.value)} required disabled={carAlreadyRegistered} />
+                </label>
+            </div>
+            <div className="triple-input-forced">
+                <label>
+                    <span>ANO</span>
+                    <input type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={year} onChange={e => setYear(e.target.value)} required disabled={carAlreadyRegistered} />
+                </label>
+                <label>
                     <span>KM</span>
-                    <input name="km" type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={km} onChange={e => setKm(e.target.value)} required />
-                </label> */}
+                    <input type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={km} onChange={e => setKm(e.target.value)} required />
+                </label>
+                <label>
+                    <span>COR</span>
+                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={color} onChange={e => setColor(e.target.value)} required disabled={carAlreadyRegistered} />
+                </label>
             </div>
-            <div>
-                <div >
-                    {servicosForm}
-                </div>
-            </div>
-            <div className="btn-submit">
-                <button id="pt1" type="button" onClick={async () => {
-                    const formCadServico = document.getElementById('formCadServico') as any
-                    // try {
-                    //     if (!formCadServico.checkValidity()) {
-                    //         formCadServico.reportValidity()
-                    //         return
-                    //     }
-                    //     if (!id) {
-                    //         let include = false
-                    //         if (vehicles.length > 0) {
-                    //             vehicles.forEach(veiculo => {
-                    //                 if (veiculo.id_plate == id_plate) {
-                    //                     include = true
-                    //                 }
-                    //             })
-                    //         }
-                    //         const veiculo = new window.api.Veiculo.veiculo(id_plate, cpf_cnpj, brand, model, color, year, km)
-                    //         const veiculoR = !include ? window.api.Veiculo.insert(veiculo) : window.api.Veiculo.update(veiculo)
-                    //         if (veiculoR.changes == 0) {
-                    //             throw new Error("Não foi possível atualizar o veículo");
-                    //         }
-                    //         const servicoTemp = window.api.Ordem_Servico.ordem_servico(undefined, id_plate, km, cpf_cnpj, date)
-                    //         const servicoR = window.api.Ordem_Servico.insert(servicoTemp)
-                    //         for (let i = 0; i < quantidadeServicos; i++) {
-                    //             const servicoRealizado = window.api.Servico.servico(undefined, servicoR.lastInsertRowid, servico[i], detalhes[i], quantidade[i], precoUnitario[i])
-                    //             const servicoRealizadoR = window.api.Servico.insert(servicoRealizado)
-                    //             if (servicoRealizadoR.changes == 0) {
-                    //                 throw new Error("Não foi possível inserir o serviço");
-                    //             }
-                    //         }
-                    //         window.api.Pdf.create(servicoR.lastInsertRowid);
-                    //         (async () => {
-                    //             await window.api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso!' })
-                    //             navigate(-1)
-                    //         })();
-                    //     } else {
-                    //         const veiculo = new window.api.Veiculo.veiculo(id_plate, service.id_cliente, brand, model, color, year, km)
-                    //         const veiculoR = window.api.Veiculo.update(veiculo)
-                    //         if (veiculoR.changes == 0) {
-                    //             throw new Error("Não foi possível atualizar o veículo");
-                    //         }
-                    //         const servicoTemp = window.api.Ordem_Servico.ordem_servico(id, id_plate, km, service.id_cliente, date)
-                    //         const servicoR = window.api.Ordem_Servico.update(servicoTemp)
-                    //         if (servicoR.changes == 0) {
-                    //             throw new Error("Não foi possível atualizar a ordem de serviço");
-                    //         }
-                    //         editServico.forEach(servico => {
-                    //             const toBeDeleted = window.api.Servico.delete({ id: servico.id })
-                    //             if (toBeDeleted.changes == 0) {
-                    //                 throw new Error("Não foi possível excluir o serviço antigo");
-                    //             }
-                    //         });
-                    //         for (let i = 0; i < quantidadeServicos; i++) {
-                    //             const servicoRealizado = window.api.Servico.servico(undefined, id, servico[i], detalhes[i], quantidade[i], precoUnitario[i])
-                    //             const servicoRealizadoR = window.api.Servico.insert(servicoRealizado)
-                    //             if (servicoRealizadoR.changes == 0) {
-                    //                 throw new Error("Não foi possível inserir o serviço");
-                    //             }
-                    //         }
-                    //         (async () => {
-                    //             window.api.Pdf.create(id);
-                    //             const printer = await window.api.Printer.getPrinter();
-                    //             window.api.Printer.printer('./output/1.pdf', { printer: printer });
-                    //         })();
-                    //         (async () => {
-                    //             await window.api.Dialog.showMessageBox({ message: 'Ordem de Serviço cadastrada com sucesso!' })
-                    //             navigate(-1)
-                    //         })();
-                    //     }
-                    // } catch (error) {
-                    //     (async () => {
-                    //         await window.api.Dialog.showMessageBox({ type: 'error', message: error.message })
-                    //     })();
-                    // }
-                }}>SALVAR</button>
-                {/* <button type='button' onClick={() => {
-                    setServico([...servico, ''])
-                    setDetalhes([...detalhes, ''])
-                    setQuantidade([...quantidade, ""])
-                    setPrecoUnitario([...precoUnitario, ""])
-                    setQuantidadeServicos(quantidadeServicos + 1)
-                }}>ADD</button>
-                <button type='button' onClick={() => {
-                    if (quantidadeServicos > 0) {
-                        setQuantidadeServicos(quantidadeServicos - 1)
-                        servico.splice(servico.length - 1, 1)
-                        setServico(servico)
-                        detalhes.splice(detalhes.length - 1, 1)
-                        setDetalhes(detalhes)
-                        quantidade.splice(quantidade.length - 1, 1)
-                        setQuantidade(quantidade)
-                        precoUnitario.splice(precoUnitario.length - 1, 1)
-                        setPrecoUnitario(precoUnitario)
+            <label>
+                <span>DESCRIÇÃO DO SERVIÇO</span>
+                <textarea onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={description} onChange={e => setDescription(e.target.value)} required />
+            </label>
+            <label>
+                <span>PREÇO DO SERVIÇO</span>
+                <input type="number" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={price} onChange={e => setPrice(e.target.value)} required />
+            </label>
+            <button id="pt1" type="button" className="reg-form-button" onClick={async () => {
+                const form = document.getElementsByClassName('reg-form')[0] as HTMLFormElement;
+                if (!form.checkValidity()) {
+                    form.reportValidity()
+                    return
+                }
+                const vehicle = window.api.Vehicle();
+                vehicle.id_plate = id_plateInput;
+                vehicle.brand = brand;
+                vehicle.cpf_cnpj = cpf_cnpj_input;
+                vehicle.model = model;
+                vehicle.year = parseInt(year);
+                vehicle.km = parseFloat(km);
+                vehicle.color = color;
+                const service = window.api.Service();
+                service.id_plate = id_plateInput;
+                service.cpf_cnpj = cpf_cnpj_input;
+                service.date = date;
+                service.description = description;
+                service.price = parseFloat(price);
+                service.km = parseFloat(km);
+                let serviceResponse;
+                let carResponse;
+                try {
+                    if (!clientAlreadyRegistered) {
+                        const client = window.api.Client();
+                        client.cpf_cnpj = cpf_cnpj_input;
+                        client.name = name;
+                        await client.insert(client);
                     }
-                }}>SUB</button> */}
-            </div>
+                    if (carAlreadyRegistered) {
+                        carResponse = await vehicle.update(vehicle);
+                    } else {
+                        carResponse = await vehicle.insert(vehicle);
+                    }
+                    if (id) {
+                        service.id = +id;
+                        serviceResponse = await service.update(service);
+                    } else {
+                        serviceResponse = await service.insert(service);
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }}>SALVAR</button>
         </form>
     </>);
 }

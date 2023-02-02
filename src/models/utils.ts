@@ -86,7 +86,7 @@ const CNPJRegex = (e: any) => {
             }
             return temp
         } else {
-            return e
+            return e.substring(0, 18)
         }
     } else {
         if (e.target.value.length <= 18 && e.target.value.length > 0) {
@@ -105,7 +105,7 @@ const CNPJRegex = (e: any) => {
             }
             return temp
         } else {
-            return e.target.value
+            return e.target.value.substring(0, 18)
         }
     }
 
@@ -264,5 +264,13 @@ const plateRegex = (e: any) => {
         return `${subString1}-${subString2}${subString3}${subString4}`;
     }
 }
-const utils = { monetaryMask, sleep, cpfRegex, cpfValidator, plateRegex, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, cellPhoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
+const inputsVerify = async (inputs: (HTMLInputElement | HTMLTextAreaElement)[]) => {
+    await sleep(10)
+    for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].value != '') {
+            InputsHandleFocus({ target: inputs[i] });
+        }
+    }
+}
+const utils = { inputsVerify, monetaryMask, sleep, cpfRegex, cpfValidator, plateRegex, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, cellPhoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
 export default utils
