@@ -1,55 +1,87 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import utils from "../models/utils";
 import Header from "./Header";
 
 export default function ProductRegForm() {
+    const { id } = useParams();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
-    const [imagePreview, setImagePreview] = useState<string[]>([]);
-
+    const [imagePreview, setImagePreview] = useState<string>();
+    useEffect(() => {
+        id && window.api.Product().getById(+id).then(product => {
+            setName(product.name)
+            setDescription(product.description)
+            setPrice(product.price.toString())
+            setImagePreview(product.image)
+        }).finally(() => {
+            utils.inputsVerify(utils.getAllInputs(document))
+        })
+    }, [id])
     return (<>
         <Header />
         <form className="reg-form">
-            <label>
-                <span>Nome</span>
-                <input
-                    onFocus={e => utils.InputsHandleFocus(e)}
-                    onBlur={e => utils.InputsHandleFocusOut(e)}
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                ></input>
-            </label>
-            <label>
-                <span>Descrição</span>
-                <input
-                    onFocus={e => utils.InputsHandleFocus(e)}
-                    onBlur={e => utils.InputsHandleFocusOut(e)}
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
-                ></input>
-            </label>
-            <label>
-                <span>Preço</span>
-                <input
-                    onFocus={e => utils.InputsHandleFocus(e)}
-                    onBlur={e => utils.InputsHandleFocusOut(e)}
-                    value={price}
-                    onChange={e => setPrice(e.target.value)}
-                ></input>
-            </label>
+            <div className="reg-form-column">
+                <div style={{ width: "65%" }}>
+                    <label>
+                        <span>Nome do produto</span>
+                        <input
+                            onFocus={e => utils.InputsHandleFocus(e)}
+                            onBlur={e => utils.InputsHandleFocusOut(e)}
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            required
+                        ></input>
+                    </label>
+                    <label>
+                        <span>Descrição do produto</span>
+                        <textarea
+                            onFocus={e => utils.InputsHandleFocus(e)}
+                            onBlur={e => utils.InputsHandleFocusOut(e)}
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                        ></textarea>
+                    </label>
+                    <label>
+                        <span>Preço do produto</span>
+                        <input
+                            type="number"
+                            onFocus={e => utils.InputsHandleFocus(e)}
+                            onBlur={e => utils.InputsHandleFocusOut(e)}
+                            value={price}
+                            onChange={e => setPrice(e.target.value)}
+                            required
+                        ></input>
+                    </label>
+                </div>
+                <div className="reg-form-image-container">
+                    <img className="reg-form-image" src={`../public/images/products/${imagePreview || '../favicon.png'}`} />
+                    <button type="button" onClick={async () => {
+                        setImagePreview((await window.api.chooseFile())[0])
+                    }}>ESCOLHER IMAGEM</button>
+                </div>
+            </div>
 
-            <img src={`../public/images/products/${imagePreview[0] || '../favicon.png'}`} />
+
+
 
             <button type="button" className="reg-form-button" onClick={async () => {
-                setImagePreview(await window.api.chooseFile())
-            }}>IMG</button>
-            <button type="button" className="reg-form-button" onClick={async () => {
-                let product = window.api.Product()
-                product.name = name
-                product.description = description
-                product.price = +price
-                product.insert(product)
+                const form = document.querySelector(".reg-form") as HTMLFormElement
+                if (!form.checkValidity()) {
+                    form.reportValidity()
+                    return
+                }
+                try {
+                    let product = window.api.Product()
+                    if (name !== "") product.name = name
+                    if (description !== "") product.description = description
+                    if (price !== "") product.price = +price
+                    product.image = imagePreview
+                    if (id) { product.id = +id; product.update(product) } else { product.insert(product) }
+                } catch (e) {
+                    console.log(e)
+                }
             }}>{'CADASTRAR'}</button>
         </form>
     </>)

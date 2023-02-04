@@ -10,6 +10,7 @@ import Client from './components/Client';
 import VehicleRegForm from './components/VehicleRegForm';
 import AllVehicles from './components/todosVeiculos';
 import AllServices from './components/todosServicos';
+import AllProducts from './components/AllProducts';
 
 export default function App(): React.ReactNode {
     return (
@@ -39,6 +40,7 @@ export default function App(): React.ReactNode {
                     </Route>
                     <Route path='/AllVehicles' element={<AllVehicles />} />
                     <Route path='/AllServices' element={<AllServices />} />
+                    <Route path='/AllProducts' element={<AllProducts />} />
                 </Routes>
             </HashRouter>
         </React.StrictMode>

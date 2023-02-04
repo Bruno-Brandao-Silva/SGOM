@@ -228,9 +228,7 @@ export default function ClientRegForm() {
                                 }
 
                             });
-                            console.log(olderContacts)
                             contacts.forEach(async contact => {
-                                console.log(contact.id)
                                 if (!olderContacts.includes(contact.id)) {
                                     await window.api.Contact().delete(contact.id);
                                 }

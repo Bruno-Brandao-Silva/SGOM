@@ -59,7 +59,9 @@ CREATE TABLE IF NOT EXISTS PRODUCT (
                         NOT NULL,
     name        TEXT    NOT NULL,
     price       NUMERIC NOT NULL,
-    description TEXT
+    description TEXT,
+    image       TEXT,
+    amount      NUMERIC
 );
 
 

@@ -45,8 +45,9 @@ const createWindow = (): void => {
 		}
 		const response: string[] = [];
 		result.filePaths.forEach((path) => {
-			fs.copyFileSync(path, dir + path.split("\\").pop());
-			response.push(path.split("\\").pop());
+			const filename = `${Date.now()}-${path.split("\\").pop()}`
+			fs.copyFileSync(path, dir + filename);
+			response.push(filename);
 		});
 
 		return response;

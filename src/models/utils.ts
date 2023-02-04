@@ -266,11 +266,17 @@ const plateRegex = (e: any) => {
 }
 const inputsVerify = async (inputs: (HTMLInputElement | HTMLTextAreaElement)[]) => {
     await sleep(10)
-    for (let i = 0; i < inputs.length; i++) {
+    for (let i = 0; i < inputs?.length; i++) {
         if (inputs[i].value != '') {
             InputsHandleFocus({ target: inputs[i] });
         }
     }
 }
-const utils = { inputsVerify, monetaryMask, sleep, cpfRegex, cpfValidator, plateRegex, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, cellPhoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
+const getAllInputs = (document: Document): (HTMLInputElement | HTMLTextAreaElement)[] => {
+    const inputs = document.querySelectorAll('input');
+    const textAreas = document.querySelectorAll('textarea');
+    const allInputs = [...inputs, ...textAreas];
+    return allInputs
+}
+const utils = { getAllInputs, inputsVerify, monetaryMask, sleep, cpfRegex, cpfValidator, plateRegex, CNPJRegex, CNPJValidator, cepRegex, phoneNumberRegex, cellPhoneNumberRegex, InputsHandleFocus, InputsHandleFocusOut };
 export default utils

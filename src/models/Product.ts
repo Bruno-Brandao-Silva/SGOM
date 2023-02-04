@@ -4,14 +4,16 @@ export default class Product {
     id?: number;
     name: string;
     price: number;
-    description: string;
+    description?: string;
+    image?: string;
+    amount?: number;
 
     insert = (product = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO PRODUCT (name, price, description) VALUES (?, ?, ?)',
-                params: [product.name, product.price, product.description]
+                query: 'INSERT INTO PRODUCT (name, price, description, image, amount) VALUES (?, ?, ?, ?, ?)',
+                params: [product.name, product.price, product.description, product.image, product.amount]
             });
             return response;
         } catch (e) {
@@ -62,8 +64,8 @@ export default class Product {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE PRODUCT SET name = ?, price = ?, description = ? WHERE id = ?',
-                params: [product.name, product.price, product.description, product.id]
+                query: 'UPDATE PRODUCT SET name = ?, price = ?, description = ?, image = ?, amount = ? WHERE id = ?',
+                params: [product.name, product.price, product.description, product.image, product.amount, product.id]
             });
             return response;
         } catch (e) {

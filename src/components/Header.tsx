@@ -18,6 +18,7 @@ export default function Header() {
                 <Link className={hash.includes("#/AllServices") ? "link link-active" : "link"} to='/AllServices'><img src='../public/images/service.png'></img><p>SERVIÇO REALIZADOS</p></Link>
                 <Link className={hash.includes("#/ServiceRegForm/") ? "link link-active" : "link"} to='/ServiceRegForm/'><img src='../public/images/service.png'></img><p>CADASTAR SERVIÇO</p></Link>
                 <Link className={hash.includes("#/ProductRegForm/") ? "link link-active" : "link"} to='/ProductRegForm/'><img src='../public/images/service.png'></img><p>CADASTAR PRODUTO</p></Link>
+                <Link className={hash.includes("#/AllProducts/") ? "link link-active" : "link"} to='/AllProducts/'><img src='../public/images/service.png'></img><p>PRODUTOS</p></Link>
             </div>
         </header>
     </>)
