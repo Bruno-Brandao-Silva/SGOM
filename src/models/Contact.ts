@@ -1,7 +1,7 @@
 import { ipcRenderer } from "electron";
 
 export default class Contact {
-    id?: number;
+    id?: number | bigint;
     type: string;
     value: string;
     cpf_cnpj: string;

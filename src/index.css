@@ -741,3 +741,77 @@ header {
   font-weight: 600;
   color: var(--whitesmoke);
 }
+
+.service-product-show {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  background-color: var(--whitesmoke);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--medium-grey);
+}
+
+.service-product-show .start,
+.service-product-show .end {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font: 500 1.2em 'Roboto', sans-serif;
+}
+
+.service-product-show .start span {
+  max-width: 345px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.service-product-show .end {
+  margin-right: 15px;
+  gap: 10px;
+
+}
+
+.service-product-show .end button {
+  background-color: var(--grey);
+  color: var(--whitesmoke);
+  border: 2px solid rgba(0, 0, 0, 0);
+  height: 25px;
+  display: flex;
+  width: 25px;
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: 600;
+  padding-bottom: 2px;
+  cursor: pointer;
+  transition: all 100ms ease;
+  justify-content: center;
+  align-items: center;
+}
+
+.service-product-show .end button:hover:nth-child(2) {
+  background-color: yellow;
+  color: var(--deep-grey);
+}
+
+.service-product-show .end button:hover:nth-child(4) {
+  background-color: green;
+  color: var(--deep-grey);
+}
+
+.service-product-show .end button:hover:nth-child(5) {
+  background-color: red;
+  color: var(--deep-grey);
+}
+
+.service-product-show img {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}

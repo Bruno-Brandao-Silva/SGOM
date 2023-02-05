@@ -1,7 +1,7 @@
 import { ipcRenderer } from "electron";
 
 export default class Service {
-    id?: number;
+    id?: number | bigint;
     id_plate: string;
     cpf_cnpj: string;
     date: string;

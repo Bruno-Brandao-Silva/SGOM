@@ -7,10 +7,10 @@ import PurchaseListClass from "./models/PurchaseList";
 import RequireListClass from "./models/RequireList";
 import ServiceClass from "./models/Service";
 import VehicleClass from "./models/Vehicle";
-import { RunResult } from "better-sqlite3";
+import sqlite3 from "better-sqlite3";
 
 declare global {
-  type RunResult = RunResult;
+  type RunResult = sqlite3.RunResult;
   type Address = AddressClass;
   type Client = ClientClass;
   type Contact = ContactClass;

@@ -1,8 +1,8 @@
 import { ipcRenderer } from "electron";
 
 export default class PurchaseList {
-    id_purchase: number;
-    id_product: number;
+    id_purchase: number | bigint;
+    id_product: number | bigint;
     amount: number;
 
     insert = (PurchaseList = this): Promise<RunResult> => {

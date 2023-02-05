@@ -1,7 +1,7 @@
 import { ipcRenderer } from "electron";
 
 export default class Address {
-    id?: number;
+    id?: number | bigint;
     cep: string;
     street: string;
     district: string;

@@ -10,8 +10,8 @@ export default function ServiceRegForm() {
 
     const dataAtual = new Date().toLocaleDateString().replace(/^(\d{2})\/(\d{2})\/(\d{4})/g, '$3-$2-$1')
 
+    const [, setRender] = useState({});
     const [inputs, setInputs] = useState<(HTMLInputElement | HTMLTextAreaElement)[]>();
-    // const inputs = utils.getAllInputs(document);
     const [clients, setClients] = useState<Client[]>();
     const [vehicles, setVehicles] = useState<Vehicle[]>();
     const [name, setName] = useState("");
@@ -26,7 +26,7 @@ export default function ServiceRegForm() {
     const [year, setYear] = useState("");
     const [km, setKm] = useState("");
 
-    const [products, setProducts] = useState<{ product: Product, quantity: number }[]>();
+    const [requireList, setRequireList] = useState<{ product: Product, quantity: number }[]>([]);
     const [storeView, setStoreView] = useState(false);
 
     const [carAlreadyRegistered, setCarAlreadyRegistered] = useState(false);
@@ -36,10 +36,6 @@ export default function ServiceRegForm() {
         setInputs(utils.getAllInputs(document));
         window.api.Client().getAll().then((clients) => setClients(clients));
     }, []);
-
-    useEffect(() => {
-
-    }, [id_plate_input]);
 
     useEffect(() => {
         if (id) {
@@ -94,11 +90,10 @@ export default function ServiceRegForm() {
         }
     }, [inputs]);
 
-
     return (<>
         <Header />
         <div className="store-view-container">
-            {storeView && <StoreView />}
+            {storeView && <StoreView productsList={requireList} setProductsList={setRequireList} onClose={() => setStoreView(false)} />}
         </div>
         <form className="reg-form" >
             <div className="double-input">
@@ -224,11 +219,48 @@ export default function ServiceRegForm() {
                 <span>PREÇO DO SERVIÇO</span>
                 <input type="number" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={price} onChange={e => setPrice(e.target.value)} required />
             </label>
-            <div>
-                {products?.map(({ product, quantity }, index: number) => {
-                    return <></>
+            {requireList && <div style={{ width: "100%" }}>
+                {requireList?.map(({ product, quantity }, index) => {
+                    return <div className="service-product-show" key={index}>
+                        <div className="start">
+                            <img src={`../public/images/products/${product.image}`} alt={product.name} />
+                            <span>{product.name}</span>
+                        </div>
+                        <div className="end">
+                            <span>{utils.monetaryMask(quantity * product.price)}</span>
+                            <button type="button" onClick={() => {
+                                const newProducts = requireList;
+                                newProducts[index].quantity = newProducts[index].quantity - 1;
+                                if (newProducts[index].quantity === 0) {
+                                    newProducts.splice(index, 1);
+                                }
+                                setRequireList(newProducts);
+                                setRender({});
+                            }}>-</button>
+                            <span>{quantity}</span>
+                            <button type="button" onClick={() => {
+                                const newProducts = requireList;
+                                newProducts[index].quantity = newProducts[index].quantity + 1;
+                                setRequireList(newProducts);
+                                setRender({});
+                            }}>+</button>
+                            <button type="button" onClick={() => {
+                                const newProducts = requireList;
+                                newProducts.splice(index, 1);
+                                setRequireList(newProducts);
+                                setRender({});
+                            }}>tre</button>
+                        </div>
+                    </div>
+
                 })}
-            </div>
+                <div className="service-product-show" style={{ paddingRight: "1rem", paddingLeft: "1rem" }}>
+                    <p>TOTAL:</p>
+                    <p>{utils.monetaryMask(+price + requireList.reduce((acc, { product, quantity }) => {
+                        return acc + (product.price * quantity)
+                    }, 0))}</p>
+                </div>
+            </div>}
             <div className="reg-form-buttons">
                 <button type="button" className="reg-form-button" onClick={() => setStoreView(true)}>ADICIONAR PRODUTOS</button>
                 <button id="pt1" type="button" className="reg-form-button" onClick={async () => {
@@ -252,8 +284,7 @@ export default function ServiceRegForm() {
                     service.description = description;
                     service.price = parseFloat(price);
                     service.km = parseFloat(km);
-                    let serviceResponse;
-                    let carResponse;
+                    let serviceResponse: RunResult;
                     try {
                         if (!clientAlreadyRegistered) {
                             const client = window.api.Client();
@@ -262,15 +293,43 @@ export default function ServiceRegForm() {
                             await client.insert(client);
                         }
                         if (carAlreadyRegistered) {
-                            carResponse = await vehicle.update(vehicle);
+                            await vehicle.update(vehicle);
                         } else {
-                            carResponse = await vehicle.insert(vehicle);
+                            await vehicle.insert(vehicle);
                         }
                         if (id) {
                             service.id = +id;
                             serviceResponse = await service.update(service);
+                            if (requireList?.length > 0) {
+                                const require_list = window.api.RequireList();
+                                await require_list.deleteAllByService(service.id);
+                                requireList.forEach(async ({ product, quantity }) => {
+                                    const require_list = window.api.RequireList();
+                                    require_list.id_service = service.id;
+                                    require_list.id_product = product.id;
+                                    require_list.price = product.price;
+                                    require_list.name = product.name;
+                                    require_list.image = product.image;
+                                    require_list.description = product.description;
+                                    require_list.quantity = quantity;
+                                    await require_list.insert(require_list);
+                                });
+                            }
                         } else {
                             serviceResponse = await service.insert(service);
+                            if (requireList?.length > 0) {
+                                requireList.forEach(async ({ product, quantity }) => {
+                                    const require_list = window.api.RequireList();
+                                    require_list.id_service = serviceResponse.lastInsertRowid;
+                                    require_list.id_product = product.id;
+                                    require_list.price = product.price;
+                                    require_list.name = product.name;
+                                    require_list.image = product.image;
+                                    require_list.description = product.description;
+                                    require_list.quantity = quantity;
+                                    await require_list.insert(require_list);
+                                });
+                            }
                         }
                     } catch (error) {
                         console.log(error);

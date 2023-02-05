@@ -94,11 +94,14 @@ CREATE TABLE IF NOT EXISTS PURCHASE_LIST (
 DROP TABLE IF EXISTS REQUIRE_LIST;
 
 CREATE TABLE IF NOT EXISTS REQUIRE_LIST (
-    id_service INTEGER REFERENCES SERVICE (id) 
-                       NOT NULL,
-    id_product INTEGER REFERENCES PRODUCT (id) 
-                       NOT NULL,
-    amount     INTEGER NOT NULL
+    id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+    id_service INTEGER REFERENCES SERVICE (id)  NOT NULL,
+    id_product INTEGER NOT NULL,
+   name        TEXT    NOT NULL,
+   price       NUMERIC NOT NULL,
+   quantity     INTEGER NOT NULL,
+   description TEXT,
+   image       TEXT
 );
 
 

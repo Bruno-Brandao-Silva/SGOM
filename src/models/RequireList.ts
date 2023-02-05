@@ -1,24 +1,18 @@
 import { ipcRenderer } from "electron";
 
 export default class RequireList {
-    id_service: number;
-    id_product: number;
-    amount: number;
+    id?: number | bigint;
+    id_service: number | bigint;
+    id_product: number | bigint;
+    name: string;
+    price: number;
+    quantity: number;
+    description?: string;
+    image?: string;
 
-    insert = (RequireList = this): Promise<RunResult> => {
-        try {
-            const response = ipcRenderer.invoke('database', {
-                method: 'run',
-                query: 'INSERT INTO REQUIRE_LIST (id_service, id_product, amount) VALUES (?, ?, ?)',
-                params: [RequireList.id_service, RequireList.id_product, RequireList.amount]
-            });
-            return response;
-        } catch (e) {
-            throw e
-        }
-    }
+    getAllByService = (id_service = this.id_service): Promise<RequireList[]> => {
+        if (!id_service) throw new Error('Service not defined');
 
-    getByServiceId = (id_service = this.id_service): Promise<RequireList[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
@@ -29,14 +23,15 @@ export default class RequireList {
         } catch (e) {
             throw e
         }
+
     }
 
-    update = (RequireList = this): Promise<RunResult> => {
+    insert = (requireList = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE REQUIRE_LIST SET amount = ? WHERE id_service = ? AND id_product = ?',
-                params: [RequireList.amount, RequireList.id_service, RequireList.id_product]
+                query: 'INSERT INTO REQUIRE_LIST (id_service, id_product, name, price, quantity, description, image) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                params: [requireList.id_service, requireList.id_product, requireList.name, requireList.price, requireList.quantity, requireList.description, requireList.image]
             });
             return response;
         } catch (e) {
@@ -44,12 +39,28 @@ export default class RequireList {
         }
     }
 
-    delete = (id_service = this.id_service, id_product = this.id_product): Promise<RunResult> => {
+    update = (requireList = this): Promise<RunResult> => {
+        if (!requireList.id) throw new Error('ID not defined');
+
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'DELETE FROM REQUIRE_LIST WHERE id_service = ? AND id_product = ?',
-                params: [id_service, id_product]
+                query: 'UPDATE REQUIRE_LIST SET id_service = ?, name = ?, price = ?, amount = ?, description = ?, image = ? WHERE id = ?',
+                params: [requireList.id_service, requireList.name, requireList.price, requireList.quantity, requireList.description, requireList.image, requireList.id]
+            });
+            return response;
+        } catch (e) {
+            throw e
+        }
+    }
+    delete = (id = this.id): Promise<RunResult> => {
+        if (!id) throw new Error('ID not defined');
+
+        try {
+            const response = ipcRenderer.invoke('database', {
+                method: 'run',
+                query: 'DELETE FROM REQUIRE_LIST WHERE id = ?',
+                params: [id]
             });
             return response;
         } catch (e) {
@@ -57,7 +68,9 @@ export default class RequireList {
         }
     }
 
-    deleteAllByServiceId = (id_service = this.id_service): Promise<RunResult> => {
+    deleteAllByService = (id_service = this.id_service): Promise<RunResult> => {
+        if (!id_service) throw new Error('Service not defined');
+
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',

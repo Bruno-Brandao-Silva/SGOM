@@ -1,7 +1,7 @@
 import { ipcRenderer } from "electron";
 
 export default class Product {
-    id?: number;
+    id?: number | bigint;
     name: string;
     price: number;
     description?: string;

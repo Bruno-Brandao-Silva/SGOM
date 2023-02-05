@@ -79,7 +79,7 @@ export default class Client {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
                 query: 'DELETE FROM CLIENT WHERE cpf_cnpj = ?',
-                params: [this.cpf_cnpj]
+                params: [cpf_cnpj]
             });
             return response;
         } catch (e) {

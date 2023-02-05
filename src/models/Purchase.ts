@@ -1,7 +1,7 @@
 import { ipcRenderer } from "electron";
 
 export default class Purchase {
-    id?: number;
+    id?: number | bigint;
     cpf_cnpj: string;
     date: Date;
 
