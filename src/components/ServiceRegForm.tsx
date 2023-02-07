@@ -58,6 +58,19 @@ export default function ServiceRegForm() {
                     setColor(vehicle.color);
                     setYear(vehicle.year.toString());
                 });
+                window.api.RequireList().getAllByServiceId(+id).then((products) => {
+                    const productsList = products.map((product) => {
+                        const newProduct = window.api.Product();
+                        newProduct.id = product.id_product;
+                        newProduct.name = product.name;
+                        newProduct.price = product.price;
+                        newProduct.description = product.description;
+                        newProduct.image = product.image;
+                        return { product: newProduct, quantity: product.quantity };
+                    });
+                    setRequireList(productsList);
+                }
+                );
             }).finally(() => utils.inputsVerify(inputs));
         } else {
             cpf_cnpj && window.api.Client().getByCpfCnpj(cpf_cnpj).then((client: Client) => {
@@ -302,7 +315,7 @@ export default function ServiceRegForm() {
                             serviceResponse = await service.update(service);
                             if (requireList?.length > 0) {
                                 const require_list = window.api.RequireList();
-                                await require_list.deleteAllByService(service.id);
+                                await require_list.deleteAllByServiceId(service.id);
                                 requireList.forEach(async ({ product, quantity }) => {
                                     const require_list = window.api.RequireList();
                                     require_list.id_service = service.id;

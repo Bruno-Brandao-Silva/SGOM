@@ -7,6 +7,7 @@ export default function Index() {
     const [busca, setBusca] = useState("");
     const [clients, setClients] = useState<Client[]>();
     const [vehicles, setVehicles] = useState<Vehicle[]>();
+    const [img, setImg] = useState<any>();
     return (<>
         <Header />
         <div>

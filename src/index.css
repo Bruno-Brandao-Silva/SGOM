@@ -707,7 +707,35 @@ header {
 
 .store-view label {
   width: 50%;
-  margin: auto;
+  margin: auto 0;
+}
+
+.store-view .header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.store-view .header button {
+  /* close button */
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: var(--grey);
+  color: var(--whitesmoke);
+  border: 2px solid rgba(0, 0, 0, 0);
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 100ms ease;
+}
+
+.store-view .header button:hover {
+  background-color: var(--red);
 }
 
 .pagination {

@@ -29,13 +29,16 @@ export default function StoreView({ productsList, setProductsList, onClose }:
     }, [search]);
     return (
         <div className="store-view">
-            <label>
-                <span>BUSCAR PRODUTO POR NOME OU ID</span>
-                <input list="cliente" onFocus={e => utils.InputsHandleFocus(e)}
-                    onBlur={e => utils.InputsHandleFocusOut(e)} value={search}
-                    onChange={e => setSearch(e.target.value)} />
+            <div className="header">
+                <label>
+                    <span>BUSCAR PRODUTO POR NOME OU ID</span>
+                    <input list="cliente" onFocus={e => utils.InputsHandleFocus(e)}
+                        onBlur={e => utils.InputsHandleFocusOut(e)} value={search}
+                        onChange={e => setSearch(e.target.value)} />
+                </label>
                 <button onClick={onClose}>X</button>
-            </label>
+            </div>
+
             <div className="products-container">
                 {found?.slice(0 + (15 * page), 15 + (15 * page)).map((product, index) => {
                     return (

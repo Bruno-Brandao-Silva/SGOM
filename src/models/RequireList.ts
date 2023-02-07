@@ -10,7 +10,7 @@ export default class RequireList {
     description?: string;
     image?: string;
 
-    getAllByService = (id_service = this.id_service): Promise<RequireList[]> => {
+    getAllByServiceId = (id_service = this.id_service): Promise<RequireList[]> => {
         if (!id_service) throw new Error('Service not defined');
 
         try {
@@ -68,7 +68,7 @@ export default class RequireList {
         }
     }
 
-    deleteAllByService = (id_service = this.id_service): Promise<RunResult> => {
+    deleteAllByServiceId = (id_service = this.id_service): Promise<RunResult> => {
         if (!id_service) throw new Error('Service not defined');
 
         try {
