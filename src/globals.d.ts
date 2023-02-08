@@ -8,8 +8,11 @@ import RequireListClass from "./models/RequireList";
 import ServiceClass from "./models/Service";
 import VehicleClass from "./models/Vehicle";
 import sqlite3 from "better-sqlite3";
+import pdfmakeInterfaces from 'pdfmake/interfaces';
 
 declare global {
+  type BufferOptions = pdfmakeInterfaces.BufferOptions;
+  type TDocumentDefinitions = pdfmakeInterfaces.TDocumentDefinitions;
   type RunResult = sqlite3.RunResult;
   type Address = AddressClass;
   type Client = ClientClass;
@@ -33,6 +36,7 @@ declare global {
       Service: () => ServiceClass;
       Vehicle: () => VehicleClass;
       chooseFile: () => Promise<string[]>;
+      pdfCreator: (docDefinition: TDocumentDefinitions, docName: string, dir: string, options?: BufferOptions) => Promise<any>;
     }
   }
 }

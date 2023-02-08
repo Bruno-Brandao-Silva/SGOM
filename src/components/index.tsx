@@ -44,5 +44,23 @@ export default function Index() {
                 })}
             </div>
         </div>
+        <button onClick={async () => {
+            const docDefinition = {
+                content: [
+                    'First paragraph',
+                    'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines',
+                ],
+                defaultStyle: {
+                    font: 'Helvetica'
+                }
+            };
+            console.log(await window.api.pdfCreator(
+                docDefinition,
+                "nome",
+                "services"
+            ));
+        }}>
+            teste
+        </button>
     </>)
 }

@@ -207,7 +207,7 @@ export default function ClientRegForm() {
                     } else {
                         try {
                             await client.update(client);
-                            let olderContacts: number[] = [];
+                            let olderContacts: (number | bigint)[] = [];
                             inputContacts.forEach(async inputContact => {
                                 const contact = window.api.Contact();
                                 contact.cpf_cnpj = cpf_cnpjInput;
@@ -216,7 +216,7 @@ export default function ClientRegForm() {
                                 let temp = contacts.find((contact) => contact.type === inputContact.type && contact.value === inputContact.value);
                                 if (temp) {
                                     contact.id = temp.id;
-                                    olderContacts.push(temp.id);4
+                                    olderContacts.push(temp.id);
                                 }
                                 try {
                                     if (!temp) {
