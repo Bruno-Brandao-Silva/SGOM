@@ -36,7 +36,7 @@ declare global {
       Service: () => ServiceClass;
       Vehicle: () => VehicleClass;
       chooseFile: () => Promise<string[]>;
-      pdfCreator: (docDefinition: TDocumentDefinitions, docName: string, dir: string, options?: BufferOptions) => Promise<any>;
+      pdfCreator: (docDefinition: TDocumentDefinitions, docName: string, dir: string, options?: BufferOptions) => Promise<boolean>;
     }
   }
 }

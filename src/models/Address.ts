@@ -11,6 +11,10 @@ export default class Address {
     complement?: string;
     cpf_cnpj: string;
 
+    format = (): string => {
+        return `${this.street}, ${this.number}, ${this.district}, ${this.city} - ${this.state}, ${this.cep}`
+    }
+
     insert = (address = this): Promise<RunResult> => {
         try {
             if (address.complement) {

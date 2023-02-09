@@ -1,5 +1,4 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import os from 'os';
 import fs from 'fs';
 import PdfPrinter from 'pdfmake';
 
@@ -56,49 +55,44 @@ const createWindow = (): void => {
 	});
 
 	ipcMain.handle("pdfCreator", async (event, arg: { docDefinition: TDocumentDefinitions, docName: string, dir: string, options?: BufferOptions }) => {
-		// const dir = './pdfs/' + arg.dir + '/';
-		if (!fs.existsSync("pdfs")) {
-			fs.mkdirSync("pdfs");
-		}
+		try {
+			const dir = "pdfs\\" + arg.dir + "\\";
+			const fonts = {
+				Courier: {
+					normal: 'Courier',
+					bold: 'Courier-Bold',
+					italics: 'Courier-Oblique',
+					bolditalics: 'Courier-BoldOblique'
+				},
+				Helvetica: {
+					normal: 'Helvetica',
+					bold: 'Helvetica-Bold',
+					italics: 'Helvetica-Oblique',
+					bolditalics: 'Helvetica-BoldOblique'
+				},
+				Times: {
+					normal: 'Times-Roman',
+					bold: 'Times-Bold',
+					italics: 'Times-Italic',
+					bolditalics: 'Times-BoldItalic'
+				},
+				Symbol: {
+					normal: 'Symbol'
+				},
+				ZapfDingbats: {
+					normal: 'ZapfDingbats'
+				}
+			};
 
-		const dir = "pdfs\\" + arg.dir + "\\";
+			if (!fs.existsSync("pdfs")) fs.mkdirSync("pdfs");
+			if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
-		if (!fs.existsSync(dir)) {
-			fs.mkdirSync(dir);
-		}
-		const fonts = {
-			Courier: {
-				normal: 'Courier',
-				bold: 'Courier-Bold',
-				italics: 'Courier-Oblique',
-				bolditalics: 'Courier-BoldOblique'
-			},
-			Helvetica: {
-				normal: 'Helvetica',
-				bold: 'Helvetica-Bold',
-				italics: 'Helvetica-Oblique',
-				bolditalics: 'Helvetica-BoldOblique'
-			},
-			Times: {
-				normal: 'Times-Roman',
-				bold: 'Times-Bold',
-				italics: 'Times-Italic',
-				bolditalics: 'Times-BoldItalic'
-			},
-			Symbol: {
-				normal: 'Symbol'
-			},
-			ZapfDingbats: {
-				normal: 'ZapfDingbats'
-			}
-		};
-
-		let printer = new PdfPrinter(fonts);
-		let pdfDoc = printer.createPdfKitDocument(arg.docDefinition, arg.options);
-		pdfDoc.pipe(fs.createWriteStream(dir + arg.docName + '.pdf'));
-		pdfDoc.end();
-
-		return
+			let printer = new PdfPrinter(fonts);
+			let pdfDoc = printer.createPdfKitDocument(arg.docDefinition, arg.options);
+			pdfDoc.pipe(fs.createWriteStream(dir + arg.docName + '.pdf'));
+			pdfDoc.end();
+			return true
+		} catch (error) { return false }
 	});
 };
 

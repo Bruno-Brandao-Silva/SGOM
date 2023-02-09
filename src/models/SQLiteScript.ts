@@ -119,7 +119,8 @@ CREATE TABLE IF NOT EXISTS SERVICE (
     date            TEXT    NOT NULL,
     description     TEXT    NOT NULL,
     price           NUMERIC NOT NULL,
-    km              NUMERIC NOT NULL
+    km              NUMERIC NOT NULL,
+    warranty        NUMERIC NOT NULL
 );
 
 
