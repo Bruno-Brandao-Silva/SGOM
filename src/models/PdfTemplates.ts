@@ -1,7 +1,7 @@
 import utils from "./utils";
 
-const servicePDF = ({ service, client, address, contacts, vehicle, requireList }:
-	{ service: Service, client: Client, address: Address, contacts: Contact[], vehicle: Vehicle, requireList: RequireList[] }) => {
+const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList }:
+	{ service: Service, client: Client, addresses: Address[], contacts: Contact[], vehicle: Vehicle, requireList: RequireList[] }): TDocumentDefinitions => {
 
 	const title = 'Nome Da Empresa'
 	const line_1 = 'Manutenção em geral'
@@ -18,77 +18,116 @@ const servicePDF = ({ service, client, address, contacts, vehicle, requireList }
 		let body: any[][] = [[]]
 		let colCounter = 0;
 		let bodyIndex = 0;
-		contacts.forEach((contact) => {
-			let temp = []
-			let textLength = `${contact.type[0].toLocaleUpperCase() + contact.type.substring(1, contact.type.length)}: ${contact.value}`.length;
-			let text = [
-				{ text: `${contact.type[0].toLocaleUpperCase() + contact.type.substring(1, contact.type.length)}:`, style: "defText" },
-				` ${contact.value}`
-			]
-			if (textLength <= 25) {
-				temp = [{ text, colSpan: 1 }]
-			} else if (textLength <= 50) {
-				temp = [{ text, colSpan: 2 }, {}]
-			} else {
-				temp = [{ text, colSpan: 3 }, {}, {}]
-			}
-			if (temp.length + colCounter < 3) {
-				body[bodyIndex].push(...temp)
-				colCounter += temp.length
-			} else if (temp.length + colCounter === 3) {
-				body[bodyIndex].push(...temp)
-				bodyIndex++
-				body.push([])
-				colCounter = 0
-			} else if (temp.length + colCounter > 3) {
-				bodyIndex++
-				body.push([])
-				body[bodyIndex].push(...temp)
-				colCounter = temp.length
-			}
-		})
-		body.forEach((row, index, array) => {
-			if (row.length === 0) {
-				array.splice(index, 1)
-			}
-			while (row.length < 3) {
-				row.push({})
-			}
-		})
+		if (contacts && contacts.length > 0) {
+			contacts.forEach((contact) => {
+				let temp = []
+				let textLength = `${contact.type[0].toLocaleUpperCase() + contact.type.substring(1, contact.type.length)}: ${contact.value}`.length;
+				let text = [
+					{ text: `${contact.type[0].toLocaleUpperCase() + contact.type.substring(1, contact.type.length)}:`, style: "defText" },
+					` ${contact.value}`
+				]
+				if (textLength <= 25) {
+					temp = [{ text, colSpan: 1 }]
+				} else if (textLength <= 50) {
+					temp = [{ text, colSpan: 2 }, {}]
+				} else {
+					temp = [{ text, colSpan: 3 }, {}, {}]
+				}
+				if (temp.length + colCounter < 3) {
+					body[bodyIndex].push(...temp)
+					colCounter += temp.length
+				} else if (temp.length + colCounter === 3) {
+					body[bodyIndex].push(...temp)
+					bodyIndex++
+					body.push([])
+					colCounter = 0
+				} else if (temp.length + colCounter > 3) {
+					bodyIndex++
+					body.push([])
+					body[bodyIndex].push(...temp)
+					colCounter = temp.length
+				}
+			})
+			body?.forEach((row, index, array) => {
+				if (row.length === 0) {
+					array.splice(index, 1)
+				}
+				while (row.length < 3) {
+					row.push({})
+				}
+			})
+		}
 		return body
 	})();
 
-	const contacts_table = {
-		margin: [0, -0.85, 0, 0],
-		table: {
-			widths: ["33.33%", "33.33%", "33.34%"],
-			body: body
+	const contacts_table: any = (() => {
+		if (contacts && contacts.length > 0) {
+			return {
+				margin: [0, -0.85, 0, 0],
+				table: {
+					widths: ["33.33%", "33.33%", "33.34%"],
+					body: body
+				}
+			}
+		} else {
+			return {}
 		}
-	}
+	})()
 
-	const require_list_table = {
-		margin: [0, 15, 0, 0],
-		headerRows: 1,
-		table: {
-			widths: ["*", "auto", "auto", "auto"],
-			body: [
-				[
-					{ text: "Produto", alignment: "center", fillColor: '#e0e0e0', bold: true },
-					{ text: "Quantidade", alignment: "center", fillColor: '#e0e0e0', bold: true },
-					{ text: "Preço Unitário", alignment: "center", fillColor: '#e0e0e0', bold: true },
-					{ text: "Subtotal", alignment: "center", fillColor: '#e0e0e0', bold: true }
-				],
-				...requireList.map((item) => {
-					return [
-						{ text: item.name },
-						{ text: item.quantity, alignment: "center" },
-						{ text: utils.monetaryMask(item.price), alignment: "center" },
-						{ text: utils.monetaryMask((item.price * item.quantity).toFixed(2)), alignment: "center" }
-					];
-				})
-			]
+	const require_list_table: any = (() => {
+		if (requireList?.length > 0) {
+			return {
+				margin: [0, 15, 0, 0],
+				headerRows: 1,
+				table: {
+					widths: ["*", "auto", "auto", "auto"],
+					body: [
+						[
+							{ text: "Produto", alignment: "center", fillColor: '#e0e0e0', bold: true },
+							{ text: "Quantidade", alignment: "center", fillColor: '#e0e0e0', bold: true },
+							{ text: "Preço Unitário", alignment: "center", fillColor: '#e0e0e0', bold: true },
+							{ text: "Subtotal", alignment: "center", fillColor: '#e0e0e0', bold: true }
+						],
+						...requireList.map((item) => {
+							return [
+								{ text: item.name },
+								{ text: item.quantity, alignment: "center" },
+								{ text: utils.monetaryMask(item.price), alignment: "center" },
+								{ text: utils.monetaryMask((item.price * item.quantity).toFixed(2)), alignment: "center" }
+							];
+						})
+					]
+				}
+			};
+		} else {
+			return {};
 		}
-	};
+	})()
+
+	const addresses_table: any = (() => {
+		if (addresses?.length > 0) {
+			return {
+				margin: [0, -1, 0, 0],
+				table: {
+					widths: ['*'],
+					body: [
+						...addresses?.map((address) => {
+							return [
+								{
+									text: [
+										{ text: `Endereço:`, style: "defText" },
+										` ${window.api.Address().format(address)}`
+									]
+								}
+							]
+						}),
+					]
+				}
+			}
+		} else {
+			return {}
+		}
+	})()
 
 	return {
 		pageSize: 'A4',
@@ -134,7 +173,7 @@ const servicePDF = ({ service, client, address, contacts, vehicle, requireList }
 						[
 							{ text: [{ text: `Ordem de Serviço:`, style: "defText" }, `  Nº${service.id}`] },
 							{
-								text: [{ text: `Data:`, style: "defText" }, ` ${service.date}`],
+								text: [{ text: `Data:`, style: "defText" }, ` ${service.date.replace(/(\d{4})-(\d{2})-(\d{2})/, "$3/$2/$1")}`],
 								alignment: 'center',
 								margin: [10, 0, 10, 0]
 
@@ -168,22 +207,7 @@ const servicePDF = ({ service, client, address, contacts, vehicle, requireList }
 				}
 			},
 			contacts_table,
-			{
-				margin: [0, -1, 0, 0],
-				table: {
-					widths: ['*'],
-					body: [
-						[
-							{
-								text: [
-									{ text: `Endereço:`, style: "defText" },
-									` ${address.format()}`
-								]
-							}
-						],
-					]
-				}
-			},
+			addresses_table,
 			{
 				margin: [0, 15, 0, 0],
 				table: {
@@ -265,15 +289,22 @@ const servicePDF = ({ service, client, address, contacts, vehicle, requireList }
 						[
 							{
 								text: `Assinatura:  ____________________________________________`,
-								fillColor: '#f0f0f0'
+								fillColor: '#f0f0f0',
+								margin: [0, 15, 0, 0]
 							},
-							`Obrigado pela preferência!`
+							{
+								text: `Obrigado pela preferência!`,
+								margin: [0, 15, 0, 0]
+							}
 						],
 					]
 
 				}
 			}
 		],
+		defaultStyle: {
+			font: 'Helvetica',
+		},
 		styles: {
 			header: {
 				alignment: 'center',
@@ -291,5 +322,5 @@ const servicePDF = ({ service, client, address, contacts, vehicle, requireList }
 		},
 	};
 };
-
-export default { servicePDF }
+const pdfTemplate = { servicePDF }
+export default pdfTemplate;

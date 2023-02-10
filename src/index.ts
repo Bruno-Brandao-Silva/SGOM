@@ -81,6 +81,12 @@ const createWindow = (): void => {
 				},
 				ZapfDingbats: {
 					normal: 'ZapfDingbats'
+				},
+				Roboto: {
+					normal: __dirname + "\\..\\renderer\\public\\fonts\\Roboto\\Roboto-Regular.ttf",
+					bold: __dirname + "\\..\\renderer\\public\\fonts\\Roboto\\Roboto-Medium.ttf",
+					italics: __dirname + "\\..\\renderer\\public\\fonts\\Roboto\\Roboto-Italic.ttf",
+					bolditalics: __dirname + "\\..\\renderer\\public\\fonts\\Roboto\\Roboto-MediumItalic.ttf"
 				}
 			};
 
@@ -92,7 +98,7 @@ const createWindow = (): void => {
 			pdfDoc.pipe(fs.createWriteStream(dir + arg.docName + '.pdf'));
 			pdfDoc.end();
 			return true
-		} catch (error) { return false }
+		} catch (error) { console.log(error); return false }
 	});
 };
 

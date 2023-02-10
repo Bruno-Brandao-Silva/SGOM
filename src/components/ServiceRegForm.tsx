@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import utils from "../models/utils";
 import Header from "./Header";
 import StoreView from "./StoreView";
-
+import pdfTemplates from "../models/PdfTemplates";
 export default function ServiceRegForm() {
     const { cpf_cnpj, id_plate, id } = useParams();
     const navigate = useNavigate();
@@ -18,6 +18,7 @@ export default function ServiceRegForm() {
     const [cpf_cnpj_input, setCpf_cnpj_input] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
+    const [warranty, setWarranty] = useState("");
     const [date, setDate] = useState(dataAtual);
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
@@ -45,6 +46,7 @@ export default function ServiceRegForm() {
                 setDate(service.date);
                 setId_plate_input(service.id_plate);
                 setKm(service.km.toString());
+                setWarranty(service.warranty.toString());
                 setCarAlreadyRegistered(true);
                 window.api.Vehicle().getByCpfCnpj(service.cpf_cnpj).then((vehicles) => setVehicles(vehicles));
                 window.api.Client().getByCpfCnpj(service.cpf_cnpj).then((client) => {
@@ -228,10 +230,16 @@ export default function ServiceRegForm() {
                 <span>DESCRIÇÃO DO SERVIÇO</span>
                 <textarea onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={description} onChange={e => setDescription(e.target.value)} required />
             </label>
-            <label>
-                <span>PREÇO DO SERVIÇO</span>
-                <input type="number" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={price} onChange={e => setPrice(e.target.value)} required />
-            </label>
+            <div className="double-input">
+                <label style={{ width: "47.5%" }}>
+                    <span>MESES DE GARANTIA DO SERVIÇO</span>
+                    <input type="number" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={warranty} onChange={e => setWarranty(e.target.value)} required />
+                </label>
+                <label style={{ width: "47.5%" }}>
+                    <span>PREÇO DO SERVIÇO</span>
+                    <input type="number" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={price} onChange={e => setPrice(e.target.value)} required />
+                </label>
+            </div>
             {requireList && <div style={{ width: "100%" }}>
                 {requireList?.map(({ product, quantity }, index) => {
                     return <div className="service-product-show" key={index}>
@@ -282,6 +290,9 @@ export default function ServiceRegForm() {
                         form.reportValidity()
                         return
                     }
+                    const client = window.api.Client();
+                    const addresses = await window.api.Address().getByCpfCnpj(cpf_cnpj_input);
+                    const contacts = await window.api.Contact().getByCpfCnpj(cpf_cnpj_input);
                     const vehicle = window.api.Vehicle();
                     vehicle.id_plate = id_plate_input;
                     vehicle.brand = brand;
@@ -297,12 +308,12 @@ export default function ServiceRegForm() {
                     service.description = description;
                     service.price = parseFloat(price);
                     service.km = parseFloat(km);
+                    service.warranty = parseFloat(warranty);
                     let serviceResponse: RunResult;
                     try {
+                        client.cpf_cnpj = cpf_cnpj_input;
+                        client.name = name;
                         if (!clientAlreadyRegistered) {
-                            const client = window.api.Client();
-                            client.cpf_cnpj = cpf_cnpj_input;
-                            client.name = name;
                             await client.insert(client);
                         }
                         if (carAlreadyRegistered) {
@@ -330,6 +341,7 @@ export default function ServiceRegForm() {
                             }
                         } else {
                             serviceResponse = await service.insert(service);
+                            service.id = serviceResponse.lastInsertRowid;
                             if (requireList?.length > 0) {
                                 requireList.forEach(async ({ product, quantity }) => {
                                     const require_list = window.api.RequireList();
@@ -347,18 +359,14 @@ export default function ServiceRegForm() {
                     } catch (error) {
                         console.log(error);
                     }
-                    const docDefinition = {
-                        content: [
-                            'First paragraph',
-                            'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines',
-                        ],
-                        defaultStyle: {
-                            font: 'Helvetica'
-                        }
-                    };
+                    const docDefinition = pdfTemplates.servicePDF({
+                        service, client, addresses, contacts,
+                        requireList: await window.api.RequireList().getAllByServiceId(service.id), vehicle
+
+                    });
                     console.log(await window.api.pdfCreator(
                         docDefinition,
-                        "nome",
+                        `service-${service.id}`,
                         "services"
                     ));
                 }}>SALVAR</button>

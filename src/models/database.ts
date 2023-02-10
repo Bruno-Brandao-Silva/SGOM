@@ -20,7 +20,7 @@ function getDatabase() {
 }
 
 export default (arg: { method: 'all' | 'run' | 'get', query: string, params?: any[] }): RunResult => {
-    console.log(arg)
+    // console.log(arg)
     const db = getDatabase();
     try {
         const stmt = db.prepare(arg.query);

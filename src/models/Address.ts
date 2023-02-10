@@ -11,8 +11,8 @@ export default class Address {
     complement?: string;
     cpf_cnpj: string;
 
-    format = (): string => {
-        return `${this.street}, ${this.number}, ${this.district}, ${this.city} - ${this.state}, ${this.cep}`
+    format = (address = this): string => {
+        return `${address.street}, ${address.number}, ${address.district}, ${address.city} - ${address.state}, ${address.cep}`
     }
 
     insert = (address = this): Promise<RunResult> => {
