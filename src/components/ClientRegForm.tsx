@@ -8,7 +8,7 @@ import PopUpSuccessTemplate from "./PopUpSuccessTemplate";
 
 export default function ClientRegForm() {
     const navigate = useNavigate()
-    const { cpf_cnpj } = useParams();
+    const cpf_cnpj = useParams().cpf_cnpj?.replace("\\", "/");
     const [inputContacts, setInputContacts] = useState<{ id: number, type: string, value: string }[]>([])
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [contactsAmount, setContactsAmount] = useState(0);
@@ -25,7 +25,7 @@ export default function ClientRegForm() {
         }
     }, []);
     useEffect(() => {
-        if (cpf_cnpj?.length > 0) {
+        if (cpf_cnpj) {
             window.api.Client().getByCpfCnpj(cpf_cnpj).then((client) => {
                 setName(client.name);
                 setCpf_CnpjInput(client.cpf_cnpj);

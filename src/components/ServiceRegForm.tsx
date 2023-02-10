@@ -5,7 +5,8 @@ import Header from "./Header";
 import StoreView from "./StoreView";
 import pdfTemplates from "../models/PdfTemplates";
 export default function ServiceRegForm() {
-    const { cpf_cnpj, id_plate, id } = useParams();
+    const cpf_cnpj = useParams().cpf_cnpj?.replace("\\", "/");
+    const { id_plate, id } = useParams();
     const navigate = useNavigate();
 
     const dataAtual = new Date().toLocaleDateString().replace(/^(\d{2})\/(\d{2})\/(\d{4})/g, '$3-$2-$1')
@@ -244,7 +245,7 @@ export default function ServiceRegForm() {
                 {requireList?.map(({ product, quantity }, index) => {
                     return <div className="service-product-show" key={index}>
                         <div className="start">
-                            <img src={`../public/images/products/${product.image}`} alt={product.name} />
+                            <img src={`../public/images/products/${product.image ? product.image : "../picture.png"}`} alt={product.name} />
                             <span>{product.name}</span>
                         </div>
                         <div className="end">
@@ -270,7 +271,7 @@ export default function ServiceRegForm() {
                                 newProducts.splice(index, 1);
                                 setRequireList(newProducts);
                                 setRender({});
-                            }}>tre</button>
+                            }}><img src="./public/images/delete.png" /></button>
                         </div>
                     </div>
 

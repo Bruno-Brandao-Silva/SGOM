@@ -12,9 +12,9 @@ export default function ProductRegForm() {
     useEffect(() => {
         id && window.api.Product().getById(+id).then(product => {
             setName(product.name)
-            setDescription(product.description)
+            setDescription(product.description ? product.description : "")
             setPrice(product.price.toString())
-            setImagePreview(product.image)
+            setImagePreview(product.image ? product.image : "")
         }).finally(() => {
             utils.inputsVerify(utils.getAllInputs(document))
         })
@@ -56,7 +56,7 @@ export default function ProductRegForm() {
                     </label>
                 </div>
                 <div className="reg-form-image-container">
-                    <img className="reg-form-image" src={`../public/images/products/${imagePreview || '../favicon.png'}`} />
+                    <img className="reg-form-image" src={`../public/images/products/${imagePreview || '../picture.png'}`} />
                     <button type="button" onClick={async () => {
                         setImagePreview((await window.api.chooseFile())[0])
                     }}>ESCOLHER IMAGEM</button>
@@ -82,7 +82,7 @@ export default function ProductRegForm() {
                 } catch (e) {
                     console.log(e)
                 }
-            }}>{'CADASTRAR'}</button>
+            }}>{id ? 'SALVAR' : 'CADASTRAR'}</button>
         </form>
     </>)
 }

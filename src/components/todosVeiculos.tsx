@@ -53,7 +53,7 @@ export default function todosVeiculos() {
                     {(veiculos && clientes) ? veiculos.map((veiculo, index: number) => {
                         const cliente = clientes?.find(c => c.cpf_cnpj == veiculo.cpf_cnpj)
                         if (busca == '') {
-                            return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${veiculo.cpf_cnpj}/${veiculo.id_plate}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${veiculo.cpf_cnpj.replace("/", "\\")}/${veiculo.id_plate}`)} >
                                 <th>{veiculo.id_plate}</th>
                                 <th>{veiculo.brand}</th>
                                 <th>{veiculo.model}</th>
@@ -62,7 +62,7 @@ export default function todosVeiculos() {
                                 <th>{cliente?.cpf_cnpj}</th>
                             </tr>)
                         } else if (veiculo.id_plate.toString().toLowerCase().startsWith(busca.toLowerCase())) {
-                            return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${veiculo.cpf_cnpj}/${veiculo.id_plate}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${veiculo.cpf_cnpj.replace("/", "\\")}/${veiculo.id_plate}`)} >
                                 <th>{veiculo.id_plate}</th>
                                 <th>{veiculo.brand}</th>
                                 <th>{veiculo.model}</th>

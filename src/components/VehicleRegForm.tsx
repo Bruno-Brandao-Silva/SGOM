@@ -10,7 +10,8 @@ import PopUpSuccessTemplate from "./PopUpSuccessTemplate";
 export default function VehicleRegForm() {
     const navigate = useNavigate();
     const inputs = document.getElementsByTagName('input');
-    const { cpf_cnpj, id_plate } = useParams();
+    const { id_plate } = useParams();
+    const cpf_cnpj = useParams().cpf_cnpj?.replace("\\", "/");
 
     const [brand, setBrand] = useState("");
     const [model, setModel] = useState("");
@@ -103,7 +104,7 @@ export default function VehicleRegForm() {
                             throw new Error('Não foi possível cadastrar o veículo')
                         } else {
                             setPopUp(<PopUpSuccessTemplate buttons={[
-                                { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj}`) },
+                                { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj.replace("/", "\\")}`) },
                             ]} title="Veículo salvo com sucesso!" />)
                         }
                     } else {
@@ -114,7 +115,7 @@ export default function VehicleRegForm() {
                             throw new Error('Não foi possível editar o veículo')
                         } else {
                             setPopUp(<PopUpSuccessTemplate buttons={[
-                                { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj}`) },
+                                { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj.replace("/", "\\")}`) },
                             ]} title="Veículo salvo com sucesso!" />)
                         }
                     }

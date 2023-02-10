@@ -19,7 +19,7 @@ export default function AllProducts() {
                 return (
                     <div className="product-card" key={index}>
                         <div className="product-info-container" >
-                            <img src={`../public/images/products/${product.image}`} />
+                            <img src={`../public/images/products/${product.image ? product.image : "../picture.png"}`} />
                             <div className="product-info">
                                 <h2>{product.name}</h2>
                                 <p>{product.description}</p>

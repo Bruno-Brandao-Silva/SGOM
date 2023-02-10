@@ -37,7 +37,7 @@ export default function TodosClientes() {
                 <tbody>
                     {clients.map((cliente, index: number) => {
                         if (busca == '') {
-                            return (<tr key={index} onClick={() => navigate(`/Client/${cliente.cpf_cnpj}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/Client/${cliente.cpf_cnpj.replace("/", "\\")}`)} >
                                 <th>{cliente.name}</th>
                                 <th>{cliente.cpf_cnpj}</th>
                                 {/* <th>{cliente.email}</th>
@@ -46,7 +46,7 @@ export default function TodosClientes() {
                             </tr>)
                         } else if (cliente.cpf_cnpj.toString().toLowerCase().startsWith(busca.toLowerCase())
                             || cliente.name.toString().toLowerCase().startsWith(busca.toLowerCase())) {
-                            return (<tr key={index} onClick={() => navigate(`/Client/${cliente.cpf_cnpj}`)} >
+                            return (<tr key={index} onClick={() => navigate(`/Client/${cliente.cpf_cnpj.replace("/", "\\")}`)} >
                                 <th>{cliente.name}</th>
                                 <th>{cliente.cpf_cnpj}</th>
                                 {/* <th>{cliente.email}</th>

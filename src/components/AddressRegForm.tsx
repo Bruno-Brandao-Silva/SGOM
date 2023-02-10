@@ -8,7 +8,8 @@ import PopUpSuccessTemplate from "./PopUpSuccessTemplate";
 
 export default function AddressRegForm() {
     const navigate = useNavigate()
-    const { cpf_cnpj, id } = useParams();
+    const cpf_cnpj = useParams().cpf_cnpj?.replace("\\", "/");
+    const { id } = useParams();
 
     const [cep, setCep] = useState("");
     const [number, setNumber] = useState("");
@@ -116,7 +117,7 @@ export default function AddressRegForm() {
                     return;
                 }
                 const address = window.api.Address();
-                address.cpf_cnpj = cpf_cnpj;
+                address.cpf_cnpj = cpf_cnpj
                 address.cep = cep;
                 address.number = number;
                 address.complement = complement;
@@ -146,7 +147,7 @@ export default function AddressRegForm() {
                     return
                 }
                 setPopUp(<PopUpSuccessTemplate buttons={[
-                    { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj}`) },
+                    { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj.replace("/", "\\")}`) },
                 ]} title="Endereço salvo com sucesso!" />)
             }}>SALVAR</button>
         </form>

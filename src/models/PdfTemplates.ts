@@ -28,7 +28,7 @@ const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList
 				]
 				if (textLength <= 25) {
 					temp = [{ text, colSpan: 1 }]
-				} else if (textLength <= 50) {
+				} else if (textLength <= 60) {
 					temp = [{ text, colSpan: 2 }, {}]
 				} else {
 					temp = [{ text, colSpan: 3 }, {}, {}]
@@ -200,7 +200,7 @@ const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList
 									` ${client.cpf_cnpj}`
 								],
 								alignment: 'center',
-								margin: [9.5, 0, 10, 0]
+								margin: [0, 0, 15, 0]
 							}
 						],
 					]
@@ -284,7 +284,12 @@ const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList
 					body: [
 						[
 							{ text: `Garantia do serviço: ${service.warranty} meses. Peças conforme fabricante.` },
-							{ text: `Total: ${totalPrice}` }
+							{
+								text: [
+									{ text: `Total:`, style: "defText" },
+									` ${utils.monetaryMask(totalPrice)}`
+								]
+							}
 						],
 						[
 							{
