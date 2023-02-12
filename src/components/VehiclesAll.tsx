@@ -25,6 +25,7 @@ export default function VehiclesAll() {
     }, [vehicles]);
 
     useEffect(() => {
+        setPage(0);
         if (search.length > 0) {
             setFound(vehicleObj?.filter((obj) => {
                 return (obj.vehicle.id_plate.toLowerCase().includes(search.toLowerCase())

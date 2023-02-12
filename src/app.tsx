@@ -11,6 +11,7 @@ import VehicleRegForm from './components/VehicleRegForm';
 import AllVehicles from './components/VehiclesAll';
 import AllServices from './components/ServicesAll';
 import AllProducts from './components/ProductsAll';
+import Info from './components/Info';
 
 export default function App(): React.ReactNode {
     return (
@@ -37,6 +38,7 @@ export default function App(): React.ReactNode {
                     <Route path='/AllVehicles' element={<AllVehicles />} />
                     <Route path='/AllServices' element={<AllServices />} />
                     <Route path='/AllProducts' element={<AllProducts />} />
+                    <Route path='/Info' element={<Info />} />
                 </Routes>
             </HashRouter>
         </React.StrictMode>

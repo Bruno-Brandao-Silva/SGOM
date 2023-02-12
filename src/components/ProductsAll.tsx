@@ -18,6 +18,7 @@ export default function ProductsAll() {
     }, []);
 
     useEffect(() => {
+        setPage(0);
         if (search.length > 0) {
             setFound(products?.filter((p) => {
                 return p.name.toLowerCase().includes(search.toLowerCase()) || p.id.toString().includes(search);

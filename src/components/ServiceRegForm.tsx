@@ -127,11 +127,11 @@ export default function ServiceRegForm() {
 
     return (<>
         <Header />
-        <h1 className="title">{(id ? "EDITAR" : "CADASTRAR") + " SERVIÇO"}</h1>
-
         <div className="store-view-container">
             {storeView && <StoreView productsList={requireList} setProductsList={setRequireList} onClose={() => setStoreView(false)} />}
         </div>
+        <h1 className="title">{(id ? "EDITAR" : "CADASTRAR") + " SERVIÇO"}</h1>
+
         <form className="reg-form" >
             <div className="double-input">
                 <label style={{ width: "55%" }}>
@@ -381,14 +381,6 @@ export default function ServiceRegForm() {
                     } catch (error) {
                         console.log(error);
                     }
-                    // const info = window.api.Info();
-                    // info.name = "Nome Da Empresa";
-                    // info.line_1 = 'Manutenção em geral'
-                    // info.line_2 = 'Reparo de câmbio, tração e diferencial'
-                    // info.line_3 = 'Instalação de turbo e intercooler'
-                    // info.line_4 = 'Adailton: (11) 9 6503-6465'
-                    // info.line_5 = 'RUA BEM-TE-VI, 515 - CEP: 06 293-060 - VILA AYROSA - OSASCO - SP'
-                    // await info.insert(info);
                     const docDefinition = pdfTemplates.servicePDF({
                         service, client, addresses, contacts,
                         requireList: await window.api.RequireList().getAllByServiceId(service.id),

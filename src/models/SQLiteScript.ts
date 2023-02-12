@@ -96,11 +96,17 @@ CREATE TABLE IF NOT EXISTS PURCHASE (
 DROP TABLE IF EXISTS PURCHASE_LIST;
 
 CREATE TABLE IF NOT EXISTS PURCHASE_LIST (
-    id_purchase INTEGER REFERENCES PURCHASE (id) 
+     id          INTEGER PRIMARY KEY AUTOINCREMENT
+                        UNIQUE
                         NOT NULL,
-    id_product  INTEGER REFERENCES PRODUCT (id) 
+    id_purchase  INTEGER REFERENCES PURCHASE (id) 
                         NOT NULL,
-    amount      INTEGER NOT NULL
+    id_product  INTEGER NOT NULL,
+    name        TEXT    NOT NULL,
+    price       NUMERIC NOT NULL,
+    quantity    INTEGER NOT NULL,
+    description TEXT,
+    image       TEXT
 );
 
 

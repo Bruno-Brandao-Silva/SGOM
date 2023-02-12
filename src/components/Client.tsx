@@ -8,6 +8,8 @@ export default function Client() {
     const cpf_cnpj = useParams().cpf_cnpj?.replace("\\", "/");
     const [client, setClient] = useState<Client>();
     const [addresses, setAddresses] = useState<Address[]>();
+    const [vehicles, setVehicles] = useState<Vehicle[]>();
+    const [contacts, setContacts] = useState<Contact[]>();
     useEffect(() => {
         window.api.Client().getByCpfCnpj(cpf_cnpj).then((client) => {
             setClient(client);
@@ -15,9 +17,16 @@ export default function Client() {
         window.api.Address().getByCpfCnpj(cpf_cnpj).then((addresses) => {
             setAddresses(addresses);
         });
+        window.api.Vehicle().getByCpfCnpj(cpf_cnpj).then((vehicles) => {
+            setVehicles(vehicles);
+        });
+        window.api.Contact().getByCpfCnpj(cpf_cnpj).then((contacts) => {
+            setContacts(contacts);
+        });
     }, []);
     return (<>
         <Header />
+        <h1 className="title">CLIENTE</h1>
         <div className="client">
             <div className="client-toolbar">
                 <Link className="link" to={`/ClientEditForm/${cpf_cnpj.replace("/", "\\")}`}><img src='../public/images/edit-user.png'></img><span>EDITAR CLIENTE</span></Link>
@@ -29,6 +38,18 @@ export default function Client() {
                 <div className="client-info">
                     <h1>{client?.name}</h1>
                     <h3>CPF/CNPJ: {client?.cpf_cnpj}</h3>
+                </div>
+                <div className="client-contacts">
+                    <h2>CONTATOS</h2>
+                    {contacts?.map((contact, index: number) => (<Link to={`/ContactEditForm/${cpf_cnpj.replace("/", "\\")}/${contact.id}`} key={index} className="client-contact-link" >
+                        <p>{`${contact.type} - ${contact.value}`}</p>
+                    </Link>))}
+                </div>
+                <div className="client-vehicles">
+                    <h2>VEÍCULOS</h2>
+                    {vehicles?.map((vehicle, index: number) => (<Link to={`/VehicleEditForm/${cpf_cnpj.replace("/", "\\")}/${vehicle.id_plate}`} key={index} className="client-vehicle-link" >
+                        <p>{`${vehicle.brand} ${vehicle.model} ${vehicle.year} ${vehicle.id_plate}`}</p>
+                    </Link>))}
                 </div>
                 <div className="client-addresses">
                     <h2>ENDEREÇOS</h2>

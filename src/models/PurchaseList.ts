@@ -3,14 +3,19 @@ import { ipcRenderer } from "electron";
 export default class PurchaseList {
     id_purchase: number | bigint;
     id_product: number | bigint;
-    amount: number;
+    name: string;
+    price: number;
+    quantity: number;
+    description?: string;
+    image?: string;
+
 
     insert = (PurchaseList = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'INSERT INTO PURCHASE_LIST (id_purchase, id_product, amount) VALUES (?, ?, ?)',
-                params: [PurchaseList.id_purchase, PurchaseList.id_product, PurchaseList.amount]
+                query: 'INSERT INTO PURCHASE_LIST (id_purchase, id_product, name, price, quantity, description, image) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                params: [PurchaseList.id_purchase, PurchaseList.id_product, PurchaseList.name, PurchaseList.price, PurchaseList.quantity, PurchaseList.description, PurchaseList.image]
             });
             return response;
         } catch (e) {
@@ -35,8 +40,8 @@ export default class PurchaseList {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'run',
-                query: 'UPDATE PURCHASE_LIST SET amount = ? WHERE id_purchase = ? AND id_product = ?',
-                params: [PurchaseList.amount, PurchaseList.id_purchase, PurchaseList.id_product]
+                query: 'UPDATE PURCHASE_LIST SET name = ?, price = ?, quantity = ?, description = ?, image = ? WHERE id_purchase = ? AND id_product = ?',
+                params: [PurchaseList.name, PurchaseList.price, PurchaseList.quantity, PurchaseList.description, PurchaseList.image, PurchaseList.id_purchase, PurchaseList.id_product]
             });
             return response;
         } catch (e) {

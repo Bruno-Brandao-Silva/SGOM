@@ -26,6 +26,7 @@ export default function ClientsAll() {
     }, [clients])
 
     useEffect(() => {
+        setPage(0);
         if (search.length > 0) {
             setFound(clientsObj?.filter((obj) => {
                 return obj.name.toLowerCase().includes(search.toLowerCase())

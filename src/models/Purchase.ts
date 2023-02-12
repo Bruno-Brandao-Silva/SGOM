@@ -17,7 +17,17 @@ export default class Purchase {
             throw e
         }
     }
-
+    getAll = (): Promise<Purchase[]> => {
+        try {
+            const response = ipcRenderer.invoke('database', {
+                method: 'all',
+                query: 'SELECT * FROM PURCHASE'
+            });
+            return response;
+        } catch (e) {
+            throw e
+        }
+    }
     getByCpfCnpj = (cpf_cnpj = this.cpf_cnpj): Promise<Purchase[]> => {
         try {
             const response = ipcRenderer.invoke('database', {
