@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import utils from "../models/utils";
+import utils from "../models/Utils";
 import Header from "./Header";
 
 export default function ProductRegForm() {
@@ -21,6 +21,8 @@ export default function ProductRegForm() {
     }, [id])
     return (<>
         <Header />
+        <h1 className="title">{(id ? "EDITAR" : "CADASTRAR") + " PRODUTO"}</h1>
+
         <form className="reg-form">
             <div className="reg-form-column">
                 <div style={{ width: "65%" }}>

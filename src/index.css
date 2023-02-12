@@ -10,7 +10,7 @@
   --black: #000000;
   --blue: #1B77F3;
   --red: #CF3C3F;
-  --deep-blue: #282A35;
+  --deep-blue: #2e3144;
   --medium-blue: #4d5377;
   --green: #00AA00;
 }
@@ -26,6 +26,9 @@ html {
   background-color: var(--medium-blue);
 }
 
+body {
+  overflow: overlay;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 15px;
@@ -39,6 +42,7 @@ html {
 /* Track */
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 2px var(--light-grey);
+
 }
 
 .nav-bar::-webkit-scrollbar-track {
@@ -49,7 +53,7 @@ html {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.25);
+  background-color: var(--deep-blue);
   border-radius: 15px;
 }
 
@@ -121,6 +125,14 @@ header {
   height: 100px;
 }
 
+.title{
+  margin: auto;
+  margin-top: 20px;
+  text-align: center;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
 .logo {
   /* height: 80px !important; */
   margin: 10px;
@@ -175,7 +187,7 @@ header {
   justify-content: center;
   width: 70vw;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 30px;
   padding-bottom: 50px;
 }
 
@@ -838,10 +850,12 @@ header {
   background-color: red;
   color: var(--deep-grey);
 }
-.service-product-show .end button img{
+
+.service-product-show .end button img {
   width: 15px;
   height: 15px;
 }
+
 .service-product-show img {
   width: 50px;
   height: 50px;

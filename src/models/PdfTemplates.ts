@@ -1,14 +1,7 @@
-import utils from "./utils";
+import utils from "./Utils";
 
-const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList }:
-	{ service: Service, client: Client, addresses: Address[], contacts: Contact[], vehicle: Vehicle, requireList: RequireList[] }): TDocumentDefinitions => {
-
-	const title = 'Nome Da Empresa'
-	const line_1 = 'Manutenção em geral'
-	const line_2 = 'Reparo de câmbio, tração e diferencial'
-	const line_3 = 'Instalação de turbo e intercooler'
-	const line_4 = 'Adailton: (11) 9 6503-6465'
-	const line_5 = 'RUA BEM-TE-VI, 515 - CEP: 06 293-060 - VILA AYROSA - OSASCO - SP'
+const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList, info }:
+	{ service: Service, client: Client, addresses: Address[], contacts: Contact[], vehicle: Vehicle, requireList: RequireList[], info: Info }): TDocumentDefinitions => {
 
 	const totalPrice = requireList.reduce((acc, item) => {
 		return acc + (item.price * item.quantity)
@@ -135,36 +128,36 @@ const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList
 		pageMargins: [30, 20, 40, 30],
 		content: [
 			{
-				text: title,
+				text: info.name,
 				style: 'header',
 				margin: [0, 0, 0, 0]
 			},
 			{
-				text: line_1,
+				text: info.line_1,
 				style: 'subheader',
 				margin: [0, 15, 0, 0]
 			},
 			{
-				text: line_2,
+				text: info.line_2,
 				style: 'subheader',
-				margin: [0, 0, 0, 0]
+				margin: [0, 2, 0, 0]
 			},
 			{
-				text: line_3,
+				text: info.line_3,
 				style: 'subheader',
 				alignment: 'center',
 				fontSize: 14,
-				margin: [0, 0, 0, 0]
+				margin: [0, 2, 0, 0]
 			},
 			{
-				text: line_4,
+				text: info.line_4,
 				style: 'subheader',
 				margin: [0, 15, 0, 0]
 			},
 			{
-				text: line_5,
+				text: info.line_5,
 				style: 'subheader',
-				margin: [0, 0, 0, 10]
+				margin: [0, 2, 0, 10]
 			},
 			{
 				table: {

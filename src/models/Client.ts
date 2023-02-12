@@ -1,5 +1,5 @@
 import { ipcRenderer } from "electron";
-import utils from "./utils";
+import utils from "./Utils";
 
 export default class Client {
     cpf_cnpj: string;

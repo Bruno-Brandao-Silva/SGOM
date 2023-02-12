@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import utils from "../models/utils";
+import utils from "../models/Utils";
 import Header from "./Header";
 
-export default function todosVeiculos() {
+export default function VehiclesAll() {
     const navigate = useNavigate();
     const [veiculos, setVeiculos] = useState<Vehicle[]>([]);
     const [clientes, setClientes] = useState<Client[]>([]);
@@ -19,19 +19,9 @@ export default function todosVeiculos() {
     const [busca, setBusca] = React.useState("");
     return (<>
         <Header />
+        <h1 className="title">{"VEÍCULOS"}</h1>
+        
         <div className="todos">
-            <div id="close" className="container-btn-top">
-                <div></div>
-                <button type="button" className="btn-close" onClick={() => {
-                    navigate('/')
-                }}>
-                    <span>
-                        <div></div>
-                        <div></div>
-                    </span>
-                </button>
-            </div>
-            <h1 className="index-h1">TODOS OS VEÍCULOS</h1>
             <div>
                 <label>
                     <span>BUSCAR VEÍCULO POR PLACA</span>

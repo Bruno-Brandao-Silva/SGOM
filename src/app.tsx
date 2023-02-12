@@ -5,12 +5,12 @@ import ClientRegForm from './components/ClientRegForm';
 import AddressRegForm from './components/AddressRegForm';
 import ServiceRegForm from './components/ServiceRegForm';
 import ProductRegForm from './components/ProductRegForm';
-import AllClients from './components/todosClientes';
+import AllClients from './components/ClientsAll';
 import Client from './components/Client';
 import VehicleRegForm from './components/VehicleRegForm';
-import AllVehicles from './components/todosVeiculos';
-import AllServices from './components/todosServicos';
-import AllProducts from './components/AllProducts';
+import AllVehicles from './components/VehiclesAll';
+import AllServices from './components/ServicesAll';
+import AllProducts from './components/ProductsAll';
 
 export default function App(): React.ReactNode {
     return (

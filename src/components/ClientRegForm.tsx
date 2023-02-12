@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import utils from "./../models/utils";
+import utils from "../models/Utils";
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from "./Header";
 import PopUp from "./PopUp";
@@ -50,10 +50,10 @@ export default function ClientRegForm() {
             });
         }
     }, [cpf_cnpj]);
-
     return (<>
         <Header />
         {popUp && <PopUp>{popUp}</PopUp>}
+        <h1 className="title">{(cpf_cnpj ? "EDITAR" : "CADASTRAR") + " CLIENTE"}</h1>
         <form className="reg-form">
             <label>
                 <span>CPF/CNPJ</span>

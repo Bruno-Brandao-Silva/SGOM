@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import utils from "../models/utils";
+import utils from "../models/Utils";
 import Header from "./Header";
 
-export default function TodosClientes() {
+export default function ClientsAll() {
     const navigate = useNavigate();
     const [clients, setClients] = useState<Client[]>([]);
     useEffect(() => {
@@ -14,10 +14,9 @@ export default function TodosClientes() {
     const [busca, setBusca] = useState("");
     return (<>
         <Header />
+        <h1 className="title">{"CLIENTES"}</h1>
+
         <div className="todos">
-            <h1 className="index-h1">TODOS OS CLIENTES</h1>
-            <div className="toolbar index-top-sub-container">
-            </div>
             <div>
                 <label>
                     <span>BUSCAR CLIENTE POR NOME OU CPF/CNPJ</span>

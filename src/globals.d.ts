@@ -7,6 +7,7 @@ import PurchaseListClass from "./models/PurchaseList";
 import RequireListClass from "./models/RequireList";
 import ServiceClass from "./models/Service";
 import VehicleClass from "./models/Vehicle";
+import InfoClass from "./models/Info";
 import sqlite3 from "better-sqlite3";
 import pdfmakeInterfaces from 'pdfmake/interfaces';
 
@@ -23,6 +24,7 @@ declare global {
   type RequireList = RequireListClass;
   type Service = ServiceClass;
   type Vehicle = VehicleClass;
+  type Info = InfoClass;
 
   interface Window {
     api: {
@@ -35,6 +37,7 @@ declare global {
       RequireList: () => RequireListClass;
       Service: () => ServiceClass;
       Vehicle: () => VehicleClass;
+      Info: () => InfoClass;
       chooseFile: () => Promise<string[]>;
       pdfCreator: (docDefinition: TDocumentDefinitions, docName: string, dir: string, options?: BufferOptions) => Promise<boolean>;
     }

@@ -1,5 +1,5 @@
 const script = `--
--- Arquivo gerado com SQLiteStudio v3.4.1 em sex dez 30 20:53:53 2022
+-- Arquivo gerado com SQLiteStudio v3.4.1 em sex fev 10 20:13:59 2023
 --
 -- Codificação de texto usada: System
 --
@@ -50,6 +50,20 @@ CREATE TABLE IF NOT EXISTS CONTACT (
 );
 
 
+-- Tabela: INFO
+DROP TABLE IF EXISTS INFO;
+
+CREATE TABLE IF NOT EXISTS INFO (
+    id     INTEGER PRIMARY KEY,
+    name   TEXT,
+    line_1 TEXT,
+    line_2 TEXT,
+    line_3 TEXT,
+    line_4 TEXT,
+    line_5 TEXT
+);
+
+
 -- Tabela: PRODUCT
 DROP TABLE IF EXISTS PRODUCT;
 
@@ -94,14 +108,17 @@ CREATE TABLE IF NOT EXISTS PURCHASE_LIST (
 DROP TABLE IF EXISTS REQUIRE_LIST;
 
 CREATE TABLE IF NOT EXISTS REQUIRE_LIST (
-    id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
-    id_service INTEGER REFERENCES SERVICE (id)  NOT NULL,
-    id_product INTEGER NOT NULL,
-   name        TEXT    NOT NULL,
-   price       NUMERIC NOT NULL,
-   quantity     INTEGER NOT NULL,
-   description TEXT,
-   image       TEXT
+    id          INTEGER PRIMARY KEY AUTOINCREMENT
+                        UNIQUE
+                        NOT NULL,
+    id_service  INTEGER REFERENCES SERVICE (id) 
+                        NOT NULL,
+    id_product  INTEGER NOT NULL,
+    name        TEXT    NOT NULL,
+    price       NUMERIC NOT NULL,
+    quantity    INTEGER NOT NULL,
+    description TEXT,
+    image       TEXT
 );
 
 
@@ -109,18 +126,18 @@ CREATE TABLE IF NOT EXISTS REQUIRE_LIST (
 DROP TABLE IF EXISTS SERVICE;
 
 CREATE TABLE IF NOT EXISTS SERVICE (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT
-                     UNIQUE
-                     NOT NULL,
-    id_plate        TEXT    REFERENCES VEHICLE (id_plate) 
-                     NOT NULL,
-    cpf_cnpj        TEXT    REFERENCES CLIENT (cpf_cnpj) 
-                     NOT NULL,
-    date            TEXT    NOT NULL,
-    description     TEXT    NOT NULL,
-    price           NUMERIC NOT NULL,
-    km              NUMERIC NOT NULL,
-    warranty        NUMERIC NOT NULL
+    id          INTEGER PRIMARY KEY AUTOINCREMENT
+                        UNIQUE
+                        NOT NULL,
+    id_plate    TEXT    REFERENCES VEHICLE (id_plate) 
+                        NOT NULL,
+    cpf_cnpj    TEXT    REFERENCES CLIENT (cpf_cnpj) 
+                        NOT NULL,
+    date        TEXT    NOT NULL,
+    description TEXT    NOT NULL,
+    price       NUMERIC NOT NULL,
+    km          NUMERIC NOT NULL,
+    warranty    NUMERIC NOT NULL
 );
 
 

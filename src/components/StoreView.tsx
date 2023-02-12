@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import utils from "../models/utils";
+import utils from "../models/Utils";
 
 export default function StoreView({ productsList, setProductsList, onClose }:
     {

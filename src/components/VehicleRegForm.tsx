@@ -1,6 +1,6 @@
 // react component for a form to create a new service
 import React, { useEffect, useState } from "react";
-import utils from "../models/utils";
+import utils from "../models/Utils";
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from "./Header";
 import PopUp from "./PopUp";
@@ -50,6 +50,8 @@ export default function VehicleRegForm() {
     return (<>
         <Header />
         {popUp && <PopUp>{popUp}</PopUp>}
+        <h1 className="title">{(id_plate ? "EDITAR" : "CADASTRAR") + " VEÍCULO"}</h1>
+
         <form className="reg-form" >
             <div className="double-input-forced">
                 <label>
