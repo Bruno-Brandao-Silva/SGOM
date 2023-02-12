@@ -5,30 +5,49 @@ import Header from "./Header";
 
 export default function VehiclesAll() {
     const navigate = useNavigate();
-    const [veiculos, setVeiculos] = useState<Vehicle[]>([]);
-    const [clientes, setClientes] = useState<Client[]>([]);
+    const [page, setPage] = useState(0);
+    const [search, setSearch] = React.useState("");
+    const [found, setFound] = useState<{ vehicle: Vehicle, client: Client }[]>([]);
+    const [vehicleObj, setVehicleObj] = useState<{ vehicle: Vehicle, client: Client }[]>([]);
+    const [vehicles, setVehicles] = useState<Vehicle[]>([]);
     useEffect(() => {
-        window.api.Vehicle().getAll().then((veiculos) => {
-            setVeiculos(veiculos);
-        });
-        window.api.Client().getAll().then((clientes) => {
-            setClientes(clientes);
+        window.api.Vehicle().getAll().then((vehicles) => {
+            setVehicles(vehicles);
         });
     }, []);
+    useEffect(() => {
+        vehicles.forEach((vehicle, index: number) => {
+            window.api.Client().getByCpfCnpj(vehicle.cpf_cnpj).then(client => {
+                setVehicleObj(prev => [...prev, { vehicle, client }]);
+                setFound(prev => [...prev, { vehicle, client }]);
+            });
+        });
+    }, [vehicles]);
 
-    const [busca, setBusca] = React.useState("");
+    useEffect(() => {
+        if (search.length > 0) {
+            setFound(vehicleObj?.filter((obj) => {
+                return (obj.vehicle.id_plate.toLowerCase().includes(search.toLowerCase())
+                    || (obj.vehicle.id_plate.toLowerCase().replace(/\W/g, '').includes(search.toLowerCase())
+                        || obj.client.cpf_cnpj.toString().includes(search))
+                    || obj.client.cpf_cnpj.toString().replace(/\W/g, '').includes(search));
+            }));
+        } else {
+            setFound(vehicleObj);
+        }
+    }, [search]);
     return (<>
         <Header />
         <h1 className="title">{"VEÍCULOS"}</h1>
-        
-        <div className="todos">
+
+        <div className="all">
             <div>
                 <label>
-                    <span>BUSCAR VEÍCULO POR PLACA</span>
-                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={busca} onChange={e => { setBusca(e.target.value); }}></input>
+                    <span>BUSCAR VEÍCULO POR PLACA OU CPF/CNPJ</span>
+                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={search} onChange={e => { setSearch(e.target.value); }}></input>
                 </label>
             </div>
-            <table className="table-ordem-servicos">
+            <table className="table">
                 <thead>
                     <tr>
                         <th>PLACA</th>
@@ -40,35 +59,31 @@ export default function VehiclesAll() {
                     </tr>
                 </thead>
                 <tbody>
-                    {(veiculos && clientes) ? veiculos.map((veiculo, index: number) => {
-                        const cliente = clientes?.find(c => c.cpf_cnpj == veiculo.cpf_cnpj)
-                        if (busca == '') {
-                            return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${veiculo.cpf_cnpj.replace("/", "\\")}/${veiculo.id_plate}`)} >
-                                <th>{veiculo.id_plate}</th>
-                                <th>{veiculo.brand}</th>
-                                <th>{veiculo.model}</th>
-                                <th>{veiculo.year}</th>
-                                <th>{cliente?.name}</th>
-                                <th>{cliente?.cpf_cnpj}</th>
-                            </tr>)
-                        } else if (veiculo.id_plate.toString().toLowerCase().startsWith(busca.toLowerCase())) {
-                            return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${veiculo.cpf_cnpj.replace("/", "\\")}/${veiculo.id_plate}`)} >
-                                <th>{veiculo.id_plate}</th>
-                                <th>{veiculo.brand}</th>
-                                <th>{veiculo.model}</th>
-                                <th>{veiculo.year}</th>
-                                <th>{cliente?.name}</th>
-                                <th>{cliente?.cpf_cnpj}</th>
-                            </tr>)
-                        }
-                    }) : null}
+                    {found?.slice(0 + (15 * page), 15 + (15 * page)).map(({ vehicle, client }, index: number) => {
+                        return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${vehicle.cpf_cnpj.replace("/", "\\")}/${vehicle.id_plate}`)} >
+                            <th>{vehicle.id_plate}</th>
+                            <th>{vehicle.brand}</th>
+                            <th>{vehicle.model}</th>
+                            <th>{vehicle.year}</th>
+                            <th>{client?.name}</th>
+                            <th>{client?.cpf_cnpj}</th>
+                        </tr>)
+                    })}
                 </tbody>
-                <tfoot>
-                    <tr>
-                        {/* <th>OLA FOOTER</th> */}
-                    </tr>
-                </tfoot>
             </table>
+            <div className="pagination">
+                <button onClick={() => {
+                    if (page > 0) {
+                        setPage(page - 1);
+                    }
+                }}>{"<"}</button>
+                <span>{page + 1}</span>
+                <button onClick={() => {
+                    if (found?.length > 15 + (15 * page)) {
+                        setPage(page + 1);
+                    }
+                }}>{">"}</button>
+            </div>
         </div>
     </>)
 }

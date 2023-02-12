@@ -29,6 +29,7 @@ html {
 body {
   overflow: overlay;
 }
+
 /* width */
 ::-webkit-scrollbar {
   width: 15px;
@@ -125,7 +126,7 @@ header {
   height: 100px;
 }
 
-.title{
+.title {
   margin: auto;
   margin-top: 20px;
   text-align: center;
@@ -860,4 +861,43 @@ header {
   width: 50px;
   height: 50px;
   border-radius: 5px;
+}
+
+.all {
+  width: 70vw;
+  margin: 20px auto;
+}
+
+.table {
+  margin: auto;
+  width: 100%;
+}
+
+.table thead {
+  background-color: rgba(0, 0, 0, 0.25);
+  color: var(--light-grey);
+  font-size: 1.2em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.table tbody tr{
+  cursor: pointer;
+}
+.table tbody tr:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+} 
+.table thead tr th {
+  padding: 10px;
+}
+
+.table tbody tr th {
+  padding: 10px;
+  font-size: 1.2em;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: var(--light-grey);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 14vw;
 }
