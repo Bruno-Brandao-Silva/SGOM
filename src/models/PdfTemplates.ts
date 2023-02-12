@@ -1,4 +1,4 @@
-import utils from "./Utils";
+import Utils from "./Utils";
 
 const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList, info }:
 	{ service: Service, client: Client, addresses: Address[], contacts: Contact[], vehicle: Vehicle, requireList: RequireList[], info: Info }): TDocumentDefinitions => {
@@ -85,8 +85,8 @@ const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList
 							return [
 								{ text: item.name },
 								{ text: item.quantity, alignment: "center" },
-								{ text: utils.monetaryMask(item.price), alignment: "center" },
-								{ text: utils.monetaryMask((item.price * item.quantity).toFixed(2)), alignment: "center" }
+								{ text: Utils.monetaryMask(item.price), alignment: "center" },
+								{ text: Utils.monetaryMask((item.price * item.quantity).toFixed(2)), alignment: "center" }
 							];
 						})
 					]
@@ -263,7 +263,7 @@ const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList
 							{
 								text: [
 									{ text: `Preço do Serviço:`, style: "defText" },
-									`${utils.monetaryMask(service.price)}`]
+									`${Utils.monetaryMask(service.price)}`]
 							}
 						],
 					]
@@ -280,7 +280,7 @@ const servicePDF = ({ service, client, addresses, contacts, vehicle, requireList
 							{
 								text: [
 									{ text: `Total:`, style: "defText" },
-									` ${utils.monetaryMask(totalPrice)}`
+									` ${Utils.monetaryMask(totalPrice)}`
 								]
 							}
 						],

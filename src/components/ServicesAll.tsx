@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import utils from "../models/Utils";
+import Utils from "../models/Utils";
 import Header from "./Header";
 
 export default function ServicesAll() {
@@ -46,7 +46,7 @@ export default function ServicesAll() {
             <div>
                 <label>
                     <span>BUSCAR SERVIÇO POR PLACA</span>
-                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={search} onChange={e => { setSearch(e.target.value); }}></input>
+                    <input onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={search} onChange={e => { setSearch(e.target.value); }}></input>
                 </label>
             </div>
             <table className="table">
@@ -66,7 +66,7 @@ export default function ServicesAll() {
                             <th>{client.name}</th>
                             <th>{client.cpf_cnpj}</th>
                             <th>{service.date.toString().replace(/\D/g, "").replace(/(\d{4})(\d{2})(\d{2})/, "$3/$2/$1")}</th>
-                            <th>{`${utils.monetaryMask(service.price)}`}</th>
+                            <th>{`${Utils.monetaryMask(service.price)}`}</th>
                         </tr>)
                     })}
                 </tbody>

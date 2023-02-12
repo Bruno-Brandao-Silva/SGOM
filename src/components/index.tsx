@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import utils from "../models/Utils";
+import Utils from "../models/Utils";
 import Header from "./Header";
 
 export default function Index() {
@@ -13,7 +13,7 @@ export default function Index() {
         <div>
             <label>
                 <span>BUSCAR CLIENTE E VEÍCULO</span>
-                <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={busca} onChange={e => setBusca(e.target.value)}></input>
+                <input onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={busca} onChange={e => setBusca(e.target.value)}></input>
             </label>
         </div>
         <div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import utils from "../models/Utils";
+import Utils from "../models/Utils";
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from "./Header";
 import PopUp from "./PopUp";
@@ -20,7 +20,7 @@ export default function ClientRegForm() {
     useEffect(() => {
         for (let i = 0; i < inputs.length; i++) {
             if (inputs[i].value != '') {
-                utils.InputsHandleFocus({ target: inputs[i] });
+                Utils.InputsHandleFocus({ target: inputs[i] });
             }
         }
     }, []);
@@ -40,10 +40,10 @@ export default function ClientRegForm() {
                     }
                 });
             }).finally(() => {
-                utils.sleep(10).then(() => {
+                Utils.sleep(10).then(() => {
                     for (let i = 0; i < inputs.length; i++) {
                         if (inputs[i].value != '') {
-                            utils.InputsHandleFocus({ target: inputs[i] });
+                            Utils.InputsHandleFocus({ target: inputs[i] });
                         }
                     }
                 });
@@ -57,10 +57,10 @@ export default function ClientRegForm() {
         <form className="reg-form">
             <label>
                 <span>CPF/CNPJ</span>
-                <input name="cpf" id='cpf' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} required pattern="(\d{3}.\d{3}.\d{3}-\d{2})|(\d{2}.\d{3}.\d{3}/\d{4}-\d{2})" value={cpf_cnpjInput} onChange={e => {
+                <input name="cpf" id='cpf' onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} required pattern="(\d{3}.\d{3}.\d{3}-\d{2})|(\d{2}.\d{3}.\d{3}/\d{4}-\d{2})" value={cpf_cnpjInput} onChange={e => {
                     if (e.target.value.length <= 18) {
-                        setCpf_CnpjInput(e.target.value.length > 14 ? utils.CNPJRegex(e) : utils.cpfRegex(e))
-                        if (!(e.target.value.length > 14 ? utils.CNPJValidator(e) : utils.cpfValidator(e))) {
+                        setCpf_CnpjInput(e.target.value.length > 14 ? Utils.CNPJRegex(e) : Utils.cpfRegex(e))
+                        if (!(e.target.value.length > 14 ? Utils.CNPJValidator(e) : Utils.cpfValidator(e))) {
                             e.target.setCustomValidity("CPF/CNPJ inválido!");
                         } else {
                             e.target.setCustomValidity("");
@@ -70,7 +70,7 @@ export default function ClientRegForm() {
             </label>
             <label>
                 <span>NOME</span>
-                <input name="nome" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={name} onChange={e => setName(e.target.value)} required />
+                <input name="nome" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={name} onChange={e => setName(e.target.value)} required />
             </label>
             <div className="double-input">
                 {inputContacts.map((contact, index) => {
@@ -78,12 +78,12 @@ export default function ClientRegForm() {
                         return (
                             <label className="deletable-input" key={index} style={{ width: "45%" }}>
                                 <span>{`CONTATO: ${contact.type.toUpperCase()}`}</span>
-                                <input name={contact.type} pattern="\(\d{2}\) \d{5}-\d{4}" type="text" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={contact.value} onChange={e => {
+                                <input name={contact.type} pattern="\(\d{2}\) \d{5}-\d{4}" type="text" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={contact.value} onChange={e => {
                                     const index = inputContacts.findIndex((inputContact) => inputContact.id === contact.id);
                                     if (contact.type === "telefone") {
-                                        inputContacts[index].value = utils.phoneNumberRegex(e);
+                                        inputContacts[index].value = Utils.phoneNumberRegex(e);
                                     } else if (contact.type === "celular") {
-                                        inputContacts[index].value = utils.cellPhoneNumberRegex(e);
+                                        inputContacts[index].value = Utils.cellPhoneNumberRegex(e);
                                     } else {
                                         inputContacts[index].value = e.target.value;
                                     }
@@ -100,12 +100,12 @@ export default function ClientRegForm() {
                         return (
                             <label className="deletable-input" key={index} style={{ width: "45%" }}>
                                 <span>{`CONTATO: ${contact.type.toUpperCase()}`}</span>
-                                <input name={contact.type} pattern="\(\d{2}\) \d{4}-\d{4}" type="text" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={contact.value} onChange={e => {
+                                <input name={contact.type} pattern="\(\d{2}\) \d{4}-\d{4}" type="text" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={contact.value} onChange={e => {
                                     const index = inputContacts.findIndex((inputContact) => inputContact.id === contact.id);
                                     if (contact.type === "telefone") {
-                                        inputContacts[index].value = utils.phoneNumberRegex(e);
+                                        inputContacts[index].value = Utils.phoneNumberRegex(e);
                                     } else if (contact.type === "celular") {
-                                        inputContacts[index].value = utils.cellPhoneNumberRegex(e);
+                                        inputContacts[index].value = Utils.cellPhoneNumberRegex(e);
                                     } else {
                                         inputContacts[index].value = e.target.value;
                                     }
@@ -122,12 +122,12 @@ export default function ClientRegForm() {
                         return (
                             <label className="deletable-input" key={index} >
                                 <span>{`CONTATO: ${contact.type.toUpperCase()}`}</span>
-                                <input name={contact.type} type={contact.type === "email" ? "email" : "text"} onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={contact.value} onChange={e => {
+                                <input name={contact.type} type={contact.type === "email" ? "email" : "text"} onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={contact.value} onChange={e => {
                                     const index = inputContacts.findIndex((inputContact) => inputContact.id === contact.id);
                                     if (contact.type === "telefone") {
-                                        inputContacts[index].value = utils.phoneNumberRegex(e);
+                                        inputContacts[index].value = Utils.phoneNumberRegex(e);
                                     } else if (contact.type === "celular") {
-                                        inputContacts[index].value = utils.cellPhoneNumberRegex(e);
+                                        inputContacts[index].value = Utils.cellPhoneNumberRegex(e);
                                     } else {
                                         inputContacts[index].value = e.target.value;
                                     }

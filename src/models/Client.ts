@@ -1,5 +1,5 @@
 import { ipcRenderer } from "electron";
-import utils from "./Utils";
+import Utils from "./Utils";
 
 export default class Client {
     cpf_cnpj: string;
@@ -47,7 +47,7 @@ export default class Client {
         }
     }
     insert = (client = this): Promise<RunResult> => {
-        if (!utils.cpfValidator(client.cpf_cnpj) && !utils.CNPJValidator(client.cpf_cnpj)) {
+        if (!Utils.cpfValidator(client.cpf_cnpj) && !Utils.CNPJValidator(client.cpf_cnpj)) {
             throw new Error('CPF/CNPJ not valid');
         }
         try {
