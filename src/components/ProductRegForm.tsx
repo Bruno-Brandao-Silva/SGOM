@@ -10,15 +10,23 @@ export default function ProductRegForm() {
     const [price, setPrice] = useState("");
     const [imagePreview, setImagePreview] = useState<string>();
     useEffect(() => {
-        id && window.api.Product().getById(+id).then(product => {
-            setName(product.name)
-            setDescription(product.description ? product.description : "")
-            setPrice(product.price.toString())
-            setImagePreview(product.image ? product.image : "")
-        }).finally(() => {
-            Utils.inputsVerify(Utils.getAllInputs(document))
-        })
+        if (id) {
+            window.api.Product().getById(+id).then(product => {
+                setName(product.name)
+                setDescription(product.description ? product.description : "")
+                setPrice(product.price.toString())
+                setImagePreview(product.image ? product.image : "")
+            }).finally(() => {
+                Utils.inputsVerify(Utils.getAllInputs(document))
+            })
+        } else {
+            setName("")
+            setDescription("")
+            setPrice("")
+            setImagePreview("")
+        }
     }, [id])
+
     return (<>
         <Header />
         <h1 className="title">{(id ? "EDITAR" : "CADASTRAR") + " PRODUTO"}</h1>

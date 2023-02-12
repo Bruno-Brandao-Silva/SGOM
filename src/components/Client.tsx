@@ -20,7 +20,7 @@ export default function Client() {
         <Header />
         <div className="client">
             <div className="client-toolbar">
-                <Link className="link" to={`/ClientRegForm/${cpf_cnpj.replace("/", "\\")}`}><img src='../public/images/edit-user.png'></img><span>EDITAR CLIENTE</span></Link>
+                <Link className="link" to={`/ClientEditForm/${cpf_cnpj.replace("/", "\\")}`}><img src='../public/images/edit-user.png'></img><span>EDITAR CLIENTE</span></Link>
                 <Link className="link" to={`/VehicleRegForm/${cpf_cnpj.replace("/", "\\")}`}><img src='../public/images/add-sedan.png'></img><span>ADICIONAR VEíCULO</span></Link>
                 <Link className="link" to={`/AddressRegForm/${cpf_cnpj.replace("/", "\\")}`}><img src='../public/images/address.png'></img><span>ADICIONAR ENDEREÇO</span></Link>
                 <Link className="link" to={`/ServiceRegForm/${cpf_cnpj.replace("/", "\\")}`}><img src='../public/images/add-service.png'></img><span>ADICIONAR SERVIÇO</span></Link>
@@ -32,7 +32,7 @@ export default function Client() {
                 </div>
                 <div className="client-addresses">
                     <h2>ENDEREÇOS</h2>
-                    {addresses?.map((address, index: number) => (<Link to={`/AddressRegForm/${cpf_cnpj.replace("/", "\\")}/${address.id}`} key={index} className="client-address-link" >
+                    {addresses?.map((address, index: number) => (<Link to={`/AddressEditForm/${cpf_cnpj.replace("/", "\\")}/${address.id}`} key={index} className="client-address-link" >
                         <p>{`${address.street}, ${address.number} - ${address.district}, ${address.city} - ${address.state} - CEP:${address.cep}`}</p>
                         {address.complement && <p>Complemento: {address.complement}</p>}
                     </Link>))}

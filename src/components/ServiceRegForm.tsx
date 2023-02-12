@@ -7,7 +7,6 @@ import pdfTemplates from "../models/PdfTemplates";
 export default function ServiceRegForm() {
     const cpf_cnpj = useParams().cpf_cnpj?.replace("\\", "/");
     const { id_plate, id } = useParams();
-    const navigate = useNavigate();
 
     const dataAtual = new Date().toLocaleDateString().replace(/^(\d{2})\/(\d{2})\/(\d{4})/g, '$3-$2-$1')
 
@@ -38,6 +37,26 @@ export default function ServiceRegForm() {
         setInputs(Utils.getAllInputs(document));
         window.api.Client().getAll().then((clients) => setClients(clients));
     }, []);
+
+    useEffect(() => {
+        if (!id) {
+            setBrand("");
+            setModel("");
+            setColor("");
+            setYear("");
+            setKm("");
+            setName("");
+            setDescription("");
+            setPrice("");
+            setWarranty("");
+            setDate(dataAtual);
+            setRequireList([]);
+            setCarAlreadyRegistered(false);
+            setClientAlreadyRegistered(false);
+            setCpf_cnpj_input("");
+            setId_plate_input("");
+        }
+    }, [id]);
 
     useEffect(() => {
         if (id) {

@@ -48,6 +48,13 @@ export default function ClientRegForm() {
                     }
                 });
             });
+        } else {
+            setName("");
+            setCpf_CnpjInput("");
+            setContacts([]);
+            setContactsAmount(0);
+            setInputContacts([]);
+            setPopUp(null);
         }
     }, [cpf_cnpj]);
     return (<>

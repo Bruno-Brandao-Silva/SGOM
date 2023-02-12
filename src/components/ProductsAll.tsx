@@ -49,7 +49,7 @@ export default function ProductsAll() {
                                 <p className="id">{`ID: ${product.id}`}</p>
                                 <div className="products-buttons">
                                     <button onClick={() => {
-                                        navigate(`/ProductRegForm/${product.id}`);
+                                        navigate(`/ProductEditForm/${product.id}`);
                                     }}>editar</button>
                                     <button onClick={async () => {
                                         await window.api.Product().delete(product.id);

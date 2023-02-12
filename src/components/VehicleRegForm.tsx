@@ -30,22 +30,31 @@ export default function VehicleRegForm() {
     }, []);
 
     useEffect(() => {
-        id_plate && window.api.Vehicle().getByPlate(id_plate).then((vehicle) => {
-            setBrand(vehicle.brand);
-            setModel(vehicle.model);
-            setIdPlateInput(vehicle.id_plate);
-            setColor(vehicle.color);
-            setYear(vehicle.year.toString());
-            setKm(vehicle.km.toString());
-        }).finally(() => {
-            Utils.sleep(10).then(() => {
-                for (let i = 0; i < inputs.length; i++) {
-                    if (inputs[i].value != '') {
-                        Utils.InputsHandleFocus({ target: inputs[i] });
+        if (id_plate) {
+            window.api.Vehicle().getByPlate(id_plate).then((vehicle) => {
+                setBrand(vehicle.brand);
+                setModel(vehicle.model);
+                setIdPlateInput(vehicle.id_plate);
+                setColor(vehicle.color);
+                setYear(vehicle.year.toString());
+                setKm(vehicle.km.toString());
+            }).finally(() => {
+                Utils.sleep(10).then(() => {
+                    for (let i = 0; i < inputs.length; i++) {
+                        if (inputs[i].value != '') {
+                            Utils.InputsHandleFocus({ target: inputs[i] });
+                        }
                     }
-                }
+                });
             });
-        });
+        } else {
+            setBrand("");
+            setModel("");
+            setIdPlateInput("");
+            setColor("");
+            setYear("");
+            setKm("");
+        }
     }, [id_plate]);
     return (<>
         <Header />

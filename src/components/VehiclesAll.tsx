@@ -60,7 +60,7 @@ export default function VehiclesAll() {
                 </thead>
                 <tbody>
                     {found?.slice(0 + (15 * page), 15 + (15 * page)).map(({ vehicle, client }, index: number) => {
-                        return (<tr key={index} onClick={() => navigate(`/VehicleRegForm/${vehicle.cpf_cnpj.replace("/", "\\")}/${vehicle.id_plate}`)} >
+                        return (<tr key={index} onClick={() => navigate(`/VehicleEditForm/${vehicle.cpf_cnpj.replace("/", "\\")}/${vehicle.id_plate}`)} >
                             <th>{vehicle.id_plate}</th>
                             <th>{vehicle.brand}</th>
                             <th>{vehicle.model}</th>
