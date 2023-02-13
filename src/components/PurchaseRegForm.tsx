@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import utils from "../models/Utils";
 import Header from "./Header";
 import StoreView from "./StoreView";
+import pdfTemplate from "../models/PdfTemplates";
 
 export default function PurchaseRegForm() {
     const { id } = useParams();
@@ -197,9 +198,24 @@ export default function PurchaseRegForm() {
                             purchaseList.description = product.description;
                             await purchaseList.insert(purchaseList);
                         });
+                        const purchaseFinal = await window.api.Purchase().getById(newId)
+                        const docDefinition = pdfTemplate.purchasePDF({
+                            purchase: purchaseFinal,
+                            purchaseList: await window.api.PurchaseList().getByPurchaseId(newId),
+                            info: await window.api.Info().get(),
+                            client: await window.api.Client().getByCpfCnpj(purchaseFinal.cpf_cnpj),
+                            addresses: await window.api.Address().getByCpfCnpj(purchaseFinal.cpf_cnpj),
+                            contacts: await window.api.Contact().getByCpfCnpj(purchaseFinal.cpf_cnpj),
+                        });
+                        console.log(await window.api.pdfCreator(
+                            docDefinition,
+                            `purchase-${newId}`,
+                            "purchases"
+                        ));
                     } catch (error) {
                         console.log(error)
                     }
+
                 }}>{id ? "SALVAR" : "CADASTRAR"}</button>
             </div>
         </form>
