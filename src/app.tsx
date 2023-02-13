@@ -11,6 +11,8 @@ import VehicleRegForm from './components/VehicleRegForm';
 import AllVehicles from './components/VehiclesAll';
 import AllServices from './components/ServicesAll';
 import AllProducts from './components/ProductsAll';
+import AllPurchase from './components/PurchaseAll';
+import PurchaseRegForm from './components/PurchaseRegForm';
 import Info from './components/Info';
 
 export default function App(): React.ReactNode {
@@ -38,6 +40,9 @@ export default function App(): React.ReactNode {
                     <Route path='/AllVehicles' element={<AllVehicles />} />
                     <Route path='/AllServices' element={<AllServices />} />
                     <Route path='/AllProducts' element={<AllProducts />} />
+                    <Route path='/AllPurchase' element={<AllPurchase />} />
+                    <Route path='/PurchaseRegForm/' element={<PurchaseRegForm />} />
+                    <Route path='/PurchaseEditForm/:id' element={<PurchaseRegForm />} />
                     <Route path='/Info' element={<Info />} />
                 </Routes>
             </HashRouter>

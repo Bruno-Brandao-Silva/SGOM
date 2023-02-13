@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Utils from "../models/Utils";
+import utils from "../models/Utils";
 import Header from "./Header";
 
 export default function ProductsAll() {
@@ -27,14 +27,24 @@ export default function ProductsAll() {
             setFound(products);
         }
     }, [search]);
+
+    useEffect(() => {
+        if (search.length > 0) {
+            setFound(products?.filter((p) => {
+                return p.name.toLowerCase().includes(search.toLowerCase()) || p.id.toString().includes(search);
+            }));
+        } else {
+            setFound(products);
+        }
+    }, [products])
     return (<>
         <Header />
         <h1 className="title">{"PRODUTOS"}</h1>
 
         <label style={{ width: "50%", margin: "20px auto" }}>
             <span>BUSCAR PRODUTO POR NOME OU ID</span>
-            <input list="cliente" onFocus={e => Utils.InputsHandleFocus(e)}
-                onBlur={e => Utils.InputsHandleFocusOut(e)} value={search}
+            <input list="cliente" onFocus={e => utils.InputsHandleFocus(e)}
+                onBlur={e => utils.InputsHandleFocusOut(e)} value={search}
                 onChange={e => setSearch(e.target.value)} />
         </label>
         <div className="products-container">
@@ -46,7 +56,7 @@ export default function ProductsAll() {
                             <div className="product-info">
                                 <h2>{product.name}</h2>
                                 <p>{product.description}</p>
-                                <p className="price">{Utils.monetaryMask(product.price)}</p>
+                                <p className="price">{utils.monetaryMask(product.price)}</p>
                                 <p className="id">{`ID: ${product.id}`}</p>
                                 <div className="products-buttons">
                                     <button onClick={() => {

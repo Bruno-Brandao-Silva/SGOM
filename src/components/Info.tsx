@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Utils from "../models/Utils";
+import utils from "../models/Utils";
 import Header from "./Header";
 
 export default function Info() {
@@ -21,7 +21,7 @@ export default function Info() {
                 setLine_4(info.line_4);
                 setLine_5(info.line_5);
             }
-        }).finally(() => { Utils.inputsVerify(Utils.getAllInputs(document)) });
+        }).finally(() => { utils.inputsVerify(utils.getAllInputs(document)) });
     }, []);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ export default function Info() {
                         setLine_5(info.line_5);
                     }
                 });
-            }).finally(() => { Utils.inputsVerify(Utils.getAllInputs(document)) });
+            }).finally(() => { utils.inputsVerify(utils.getAllInputs(document)) });
         }
     }, [info]);
 
@@ -56,8 +56,8 @@ export default function Info() {
             <label>
                 <span>Nome da empresa</span>
                 <input
-                    onFocus={e => Utils.InputsHandleFocus(e)}
-                    onBlur={e => Utils.InputsHandleFocusOut(e)}
+                    onFocus={e => utils.InputsHandleFocus(e)}
+                    onBlur={e => utils.InputsHandleFocusOut(e)}
                     value={name}
                     onChange={e => setName(e.target.value)}
                     required
@@ -65,8 +65,8 @@ export default function Info() {
             </label><label>
                 <span>Linha 1</span>
                 <input
-                    onFocus={e => Utils.InputsHandleFocus(e)}
-                    onBlur={e => Utils.InputsHandleFocusOut(e)}
+                    onFocus={e => utils.InputsHandleFocus(e)}
+                    onBlur={e => utils.InputsHandleFocusOut(e)}
                     value={line_1}
                     onChange={e => setLine_1(e.target.value)}
                     required
@@ -74,8 +74,8 @@ export default function Info() {
             </label><label>
                 <span>Linha 2</span>
                 <input
-                    onFocus={e => Utils.InputsHandleFocus(e)}
-                    onBlur={e => Utils.InputsHandleFocusOut(e)}
+                    onFocus={e => utils.InputsHandleFocus(e)}
+                    onBlur={e => utils.InputsHandleFocusOut(e)}
                     value={line_2}
                     onChange={e => setLine_2(e.target.value)}
                     required
@@ -83,8 +83,8 @@ export default function Info() {
             </label><label>
                 <span>Linha 3</span>
                 <input
-                    onFocus={e => Utils.InputsHandleFocus(e)}
-                    onBlur={e => Utils.InputsHandleFocusOut(e)}
+                    onFocus={e => utils.InputsHandleFocus(e)}
+                    onBlur={e => utils.InputsHandleFocusOut(e)}
                     value={line_3}
                     onChange={e => setLine_3(e.target.value)}
                     required
@@ -92,8 +92,8 @@ export default function Info() {
             </label><label>
                 <span>Linha 4</span>
                 <input
-                    onFocus={e => Utils.InputsHandleFocus(e)}
-                    onBlur={e => Utils.InputsHandleFocusOut(e)}
+                    onFocus={e => utils.InputsHandleFocus(e)}
+                    onBlur={e => utils.InputsHandleFocusOut(e)}
                     value={line_4}
                     onChange={e => setLine_4(e.target.value)}
                     required
@@ -101,8 +101,8 @@ export default function Info() {
             </label><label>
                 <span>Linha 5</span>
                 <input
-                    onFocus={e => Utils.InputsHandleFocus(e)}
-                    onBlur={e => Utils.InputsHandleFocusOut(e)}
+                    onFocus={e => utils.InputsHandleFocus(e)}
+                    onBlur={e => utils.InputsHandleFocusOut(e)}
                     value={line_5}
                     onChange={e => setLine_5(e.target.value)}
                     required

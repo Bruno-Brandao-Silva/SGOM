@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import Utils from "../models/Utils";
+import utils from "../models/Utils";
 import Header from "./Header";
 import StoreView from "./StoreView";
 import pdfTemplates from "../models/PdfTemplates";
@@ -34,7 +34,7 @@ export default function ServiceRegForm() {
     const [clientAlreadyRegistered, setClientAlreadyRegistered] = useState(false);
 
     useEffect(() => {
-        setInputs(Utils.getAllInputs(document));
+        setInputs(utils.getAllInputs(document));
         window.api.Client().getAll().then((clients) => setClients(clients));
     }, []);
 
@@ -93,7 +93,7 @@ export default function ServiceRegForm() {
                     setRequireList(productsList);
                 }
                 );
-            }).finally(() => Utils.inputsVerify(inputs));
+            }).finally(() => utils.inputsVerify(inputs));
         } else {
             cpf_cnpj && window.api.Client().getByCpfCnpj(cpf_cnpj).then((client: Client) => {
                 if (client) {
@@ -101,12 +101,12 @@ export default function ServiceRegForm() {
                     setCpf_cnpj_input(client.cpf_cnpj);
                     setClientAlreadyRegistered(true);
                 } else {
-                    if ((cpf_cnpj.length > 14 ? Utils.CNPJValidator(cpf_cnpj) : Utils.cpfValidator(cpf_cnpj))) {
+                    if ((cpf_cnpj.length > 14 ? utils.CNPJValidator(cpf_cnpj) : utils.cpfValidator(cpf_cnpj))) {
                         setCpf_cnpj_input(cpf_cnpj);
                         setClientAlreadyRegistered(false);
                     }
                 }
-            }).finally(() => Utils.inputsVerify(inputs));
+            }).finally(() => utils.inputsVerify(inputs));
             cpf_cnpj && window.api.Vehicle().getByCpfCnpj(cpf_cnpj).then((vehicles: Vehicle[]) => {
                 setVehicles(vehicles);
                 if (id_plate) {
@@ -121,7 +121,7 @@ export default function ServiceRegForm() {
                         setKm(vehicle.km.toString());
                     }
                 }
-            }).finally(() => Utils.inputsVerify(inputs));
+            }).finally(() => utils.inputsVerify(inputs));
         }
     }, [inputs]);
 
@@ -136,17 +136,17 @@ export default function ServiceRegForm() {
             <div className="double-input">
                 <label style={{ width: "55%" }}>
                     <span>CLIENTE</span>
-                    <input list="cliente" onFocus={e => Utils.InputsHandleFocus(e)}
-                        onBlur={e => Utils.InputsHandleFocusOut(e)} value={name}
+                    <input list="cliente" onFocus={e => utils.InputsHandleFocus(e)}
+                        onBlur={e => utils.InputsHandleFocusOut(e)} value={name}
                         onChange={e => setName(e.target.value)} disabled={clientAlreadyRegistered} required />
                 </label>
                 <label style={{ width: "24%" }}>
                     <span>CPF/CNPJ</span>
-                    <input list="cpf_cnpj" onFocus={e => Utils.InputsHandleFocus(e)}
-                        onBlur={e => Utils.InputsHandleFocusOut(e)} value={cpf_cnpj_input} onChange={e => {
-                            const value = e.target.value.length > 14 ? Utils.CNPJRegex(e) : Utils.cpfRegex(e)
+                    <input list="cpf_cnpj" onFocus={e => utils.InputsHandleFocus(e)}
+                        onBlur={e => utils.InputsHandleFocusOut(e)} value={cpf_cnpj_input} onChange={e => {
+                            const value = e.target.value.length > 14 ? utils.CNPJRegex(e) : utils.cpfRegex(e)
                             setCpf_cnpj_input(value)
-                            if (!(e.target.value.length > 14 ? Utils.CNPJValidator(e) : Utils.cpfValidator(e)))
+                            if (!(e.target.value.length > 14 ? utils.CNPJValidator(e) : utils.cpfValidator(e)))
                                 e.target.setCustomValidity("CPF/CNPJ inválido!");
                             else
                                 e.target.setCustomValidity("");
@@ -167,7 +167,7 @@ export default function ServiceRegForm() {
                                         setId_plate_input("");
                                         setCarAlreadyRegistered(false);
                                     });
-                                    Utils.inputsVerify(inputs)
+                                    utils.inputsVerify(inputs)
                                 } else {
                                     setVehicles([]);
                                     setBrand("");
@@ -181,7 +181,7 @@ export default function ServiceRegForm() {
                                 }
                             }
                         }} disabled={
-                            cpf_cnpj ? (cpf_cnpj.length > 14 ? Utils.CNPJValidator(cpf_cnpj) : Utils.cpfValidator(cpf_cnpj)) : false
+                            cpf_cnpj ? (cpf_cnpj.length > 14 ? utils.CNPJValidator(cpf_cnpj) : utils.cpfValidator(cpf_cnpj)) : false
                         } required />
                     <datalist id="cpf_cnpj" >
                         {clients?.map((client: Client) => {
@@ -192,7 +192,7 @@ export default function ServiceRegForm() {
 
                 <label style={{ width: "15%" }}>
                     <span className="span-active">DATA</span>
-                    <input type="date" onFocus={e => Utils.InputsHandleFocus(e)}
+                    <input type="date" onFocus={e => utils.InputsHandleFocus(e)}
                         value={date.toString()} onChange={e => setDate(e.target.value)} required />
                 </label>
             </div>
@@ -200,9 +200,9 @@ export default function ServiceRegForm() {
                 <label>
                     <span>PLACA</span>
                     <input list="placa" pattern="[A-Z]{3}-[0-9][A-Z0-9][0-9]{2}"
-                        onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)}
+                        onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)}
                         value={id_plate_input} onChange={async e => {
-                            const value = Utils.plateRegex(e);
+                            const value = utils.plateRegex(e);
                             setId_plate_input(value)
                             if (value.length == 8) {
                                 const vehicle = vehicles?.find((vehicle: Vehicle) => vehicle.id_plate === value);
@@ -216,7 +216,7 @@ export default function ServiceRegForm() {
                                 } else {
                                     setCarAlreadyRegistered(false);
                                 }
-                                Utils.inputsVerify(inputs)
+                                utils.inputsVerify(inputs)
                             }
                         }} required />
                     <datalist id="placa" >
@@ -227,39 +227,39 @@ export default function ServiceRegForm() {
                 </label>
                 <label>
                     <span>MARCA</span>
-                    <input onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={brand} onChange={e => setBrand(e.target.value)} required disabled={carAlreadyRegistered} />
+                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={brand} onChange={e => setBrand(e.target.value)} required disabled={carAlreadyRegistered} />
                 </label>
                 <label>
                     <span>MODELO</span>
-                    <input onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={model} onChange={e => setModel(e.target.value)} required disabled={carAlreadyRegistered} />
+                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={model} onChange={e => setModel(e.target.value)} required disabled={carAlreadyRegistered} />
                 </label>
             </div>
             <div className="triple-input-forced">
                 <label>
                     <span>ANO</span>
-                    <input type="number" step='1' onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={year} onChange={e => setYear(e.target.value)} required disabled={carAlreadyRegistered} />
+                    <input type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={year} onChange={e => setYear(e.target.value)} required disabled={carAlreadyRegistered} />
                 </label>
                 <label>
                     <span>KM</span>
-                    <input type="number" step='1' onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={km} onChange={e => setKm(e.target.value)} required />
+                    <input type="number" step='1' onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={km} onChange={e => setKm(e.target.value)} required />
                 </label>
                 <label>
                     <span>COR</span>
-                    <input onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={color} onChange={e => setColor(e.target.value)} required disabled={carAlreadyRegistered} />
+                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={color} onChange={e => setColor(e.target.value)} required disabled={carAlreadyRegistered} />
                 </label>
             </div>
             <label>
                 <span>DESCRIÇÃO DO SERVIÇO</span>
-                <textarea onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={description} onChange={e => setDescription(e.target.value)} required />
+                <textarea onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={description} onChange={e => setDescription(e.target.value)} required />
             </label>
             <div className="double-input">
                 <label style={{ width: "47.5%" }}>
                     <span>MESES DE GARANTIA DO SERVIÇO</span>
-                    <input type="number" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={warranty} onChange={e => setWarranty(e.target.value)} required />
+                    <input type="number" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={warranty} onChange={e => setWarranty(e.target.value)} required />
                 </label>
                 <label style={{ width: "47.5%" }}>
                     <span>PREÇO DO SERVIÇO</span>
-                    <input type="number" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={price} onChange={e => setPrice(e.target.value)} required />
+                    <input type="number" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={price} onChange={e => setPrice(e.target.value)} required />
                 </label>
             </div>
             {requireList && <div style={{ width: "100%" }}>
@@ -270,7 +270,7 @@ export default function ServiceRegForm() {
                             <span>{product.name}</span>
                         </div>
                         <div className="end">
-                            <span>{Utils.monetaryMask(quantity * product.price)}</span>
+                            <span>{utils.monetaryMask(quantity * product.price)}</span>
                             <button type="button" onClick={() => {
                                 const newProducts = requireList;
                                 newProducts[index].quantity = newProducts[index].quantity - 1;
@@ -299,7 +299,7 @@ export default function ServiceRegForm() {
                 })}
                 <div className="service-product-show" style={{ paddingRight: "1rem", paddingLeft: "1rem" }}>
                     <p>TOTAL:</p>
-                    <p>{Utils.monetaryMask(+price + requireList.reduce((acc, { product, quantity }) => {
+                    <p>{utils.monetaryMask(+price + requireList.reduce((acc, { product, quantity }) => {
                         return acc + (product.price * quantity)
                     }, 0))}</p>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Utils from "../models/Utils";
+import utils from "../models/Utils";
 import Header from "./Header";
 
 export default function ProductRegForm() {
@@ -17,7 +17,7 @@ export default function ProductRegForm() {
                 setPrice(product.price.toString())
                 setImagePreview(product.image ? product.image : "")
             }).finally(() => {
-                Utils.inputsVerify(Utils.getAllInputs(document))
+                utils.inputsVerify(utils.getAllInputs(document))
             })
         } else {
             setName("")
@@ -37,8 +37,8 @@ export default function ProductRegForm() {
                     <label>
                         <span>Nome do produto</span>
                         <input
-                            onFocus={e => Utils.InputsHandleFocus(e)}
-                            onBlur={e => Utils.InputsHandleFocusOut(e)}
+                            onFocus={e => utils.InputsHandleFocus(e)}
+                            onBlur={e => utils.InputsHandleFocusOut(e)}
                             value={name}
                             onChange={e => setName(e.target.value)}
                             required
@@ -47,8 +47,8 @@ export default function ProductRegForm() {
                     <label>
                         <span>Descrição do produto</span>
                         <textarea
-                            onFocus={e => Utils.InputsHandleFocus(e)}
-                            onBlur={e => Utils.InputsHandleFocusOut(e)}
+                            onFocus={e => utils.InputsHandleFocus(e)}
+                            onBlur={e => utils.InputsHandleFocusOut(e)}
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                         ></textarea>
@@ -57,8 +57,8 @@ export default function ProductRegForm() {
                         <span>Preço do produto</span>
                         <input
                             type="number"
-                            onFocus={e => Utils.InputsHandleFocus(e)}
-                            onBlur={e => Utils.InputsHandleFocusOut(e)}
+                            onFocus={e => utils.InputsHandleFocus(e)}
+                            onBlur={e => utils.InputsHandleFocusOut(e)}
                             value={price}
                             onChange={e => setPrice(e.target.value)}
                             required
@@ -87,7 +87,7 @@ export default function ProductRegForm() {
                     if (name !== "") product.name = name
                     if (description !== "") product.description = description
                     if (price !== "") product.price = +price
-                    product.image = imagePreview
+                    if (imagePreview) product.image = imagePreview
                     if (id) { product.id = +id; product.update(product) } else { product.insert(product) }
                 } catch (e) {
                     console.log(e)

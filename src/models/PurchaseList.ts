@@ -9,7 +9,6 @@ export default class PurchaseList {
     description?: string;
     image?: string;
 
-
     insert = (PurchaseList = this): Promise<RunResult> => {
         try {
             const response = ipcRenderer.invoke('database', {

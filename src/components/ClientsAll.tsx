@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Utils from "../models/Utils";
+import utils from "../models/Utils";
 import Header from "./Header";
 
 export default function ClientsAll() {
@@ -46,7 +46,7 @@ export default function ClientsAll() {
             <div>
                 <label>
                     <span>BUSCAR CLIENTE POR NOME OU CPF/CNPJ</span>
-                    <input onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={search} onChange={e => { setSearch(e.target.value); }}></input>
+                    <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={search} onChange={e => { setSearch(e.target.value); }}></input>
                 </label>
             </div>
             <table className="table">

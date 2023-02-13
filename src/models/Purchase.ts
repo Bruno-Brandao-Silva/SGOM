@@ -2,8 +2,8 @@ import { ipcRenderer } from "electron";
 
 export default class Purchase {
     id?: number | bigint;
-    cpf_cnpj: string;
-    date: Date;
+    cpf_cnpj?: string;
+    date: string;
 
     insert = (purchase = this): Promise<RunResult> => {
         try {
@@ -21,7 +21,8 @@ export default class Purchase {
         try {
             const response = ipcRenderer.invoke('database', {
                 method: 'all',
-                query: 'SELECT * FROM PURCHASE'
+                query: 'SELECT * FROM PURCHASE',
+                params: []
             });
             return response;
         } catch (e) {

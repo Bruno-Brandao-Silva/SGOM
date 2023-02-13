@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Utils from "../models/Utils";
+import utils from "../models/Utils";
 import Header from "./Header";
 
 export default function Index() {

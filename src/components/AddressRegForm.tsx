@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Utils from "../models/Utils";
+import utils from "../models/Utils";
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from "./Header";
 import PopUp from "./PopUp";
@@ -23,7 +23,7 @@ export default function AddressRegForm() {
     useEffect(() => {
         for (let i = 0; i < inputs.length; i++) {
             if (inputs[i].value != '') {
-                Utils.InputsHandleFocus({ target: inputs[i] });
+                utils.InputsHandleFocus({ target: inputs[i] });
             }
         }
     }, []);
@@ -37,10 +37,10 @@ export default function AddressRegForm() {
             res.city && setCity(res.city);
             res.state && setState(res.state);
         }).finally(() => {
-            Utils.sleep(10).then(() => {
+            utils.sleep(10).then(() => {
                 for (let i = 0; i < inputs.length; i++) {
                     if (inputs[i].value != '') {
-                        Utils.InputsHandleFocus({ target: inputs[i] });
+                        utils.InputsHandleFocus({ target: inputs[i] });
                     }
                 }
             });
@@ -56,33 +56,33 @@ export default function AddressRegForm() {
             <div className="double-input">
                 <label style={{ width: "45%" }}>
                     <span>CEP</span>
-                    <input name="cep" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} pattern="\d{5}-\d{3}" value={cep} onChange={e => setCep(Utils.cepRegex(e))} required />
+                    <input name="cep" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} pattern="\d{5}-\d{3}" value={cep} onChange={e => setCep(utils.cepRegex(e))} required />
                 </label>
                 <label style={{ width: "45%" }}>
                     <span>Número</span>
-                    <input name="numero" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={number} onChange={e => setNumber(e.target.value)} required />
+                    <input name="numero" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={number} onChange={e => setNumber(e.target.value)} required />
                 </label>
             </div>
             <label>
                 <span>Complemento</span>
-                <input name="complemento" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={complement} onChange={e => setComplement(e.target.value)} />
+                <input name="complemento" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={complement} onChange={e => setComplement(e.target.value)} />
             </label>
             <label>
                 <span>Logradouro</span>
-                <input name="logradouro" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={street} onChange={e => setStreet(e.target.value)} required />
+                <input name="logradouro" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={street} onChange={e => setStreet(e.target.value)} required />
             </label>
             <label>
                 <span>Bairro</span>
-                <input name="bairro" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={district} onChange={e => setDistrict(e.target.value)} required />
+                <input name="bairro" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={district} onChange={e => setDistrict(e.target.value)} required />
             </label>
             <div className="double-input">
                 <label style={{ width: "45%" }}>
                     <span>Cidade</span>
-                    <input name="cidade" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={city} onChange={e => setCity(e.target.value)} required />
+                    <input name="cidade" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={city} onChange={e => setCity(e.target.value)} required />
                 </label>
                 <label style={{ width: "45%" }}>
                     <span>Estado</span>
-                    <input name="estado" list="estado" onFocus={e => Utils.InputsHandleFocus(e)} onBlur={e => Utils.InputsHandleFocusOut(e)} value={state} onChange={e => setState(e.target.value)} required />
+                    <input name="estado" list="estado" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={state} onChange={e => setState(e.target.value)} required />
                     {/* <datalist id="estado" className="datalist">
                         <option value={'Acre'}>AC</option>
                         <option value={'Alagoas'}>AL</option>

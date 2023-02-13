@@ -86,8 +86,7 @@ CREATE TABLE IF NOT EXISTS PURCHASE (
     id       INTEGER PRIMARY KEY AUTOINCREMENT
                      NOT NULL
                      UNIQUE,
-    cpf_cnpj TEXT    REFERENCES CLIENT (cpf_cnpj) 
-                     NOT NULL,
+    cpf_cnpj TEXT    REFERENCES CLIENT (cpf_cnpj),
     date     TEXT    NOT NULL
 );
 

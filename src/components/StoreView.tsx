@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Utils from "../models/Utils";
+import utils from "../models/Utils";
 
 export default function StoreView({ productsList, setProductsList, onClose }:
     {
@@ -33,8 +33,8 @@ export default function StoreView({ productsList, setProductsList, onClose }:
             <div className="header">
                 <label>
                     <span>BUSCAR PRODUTO POR NOME OU ID</span>
-                    <input list="cliente" onFocus={e => Utils.InputsHandleFocus(e)}
-                        onBlur={e => Utils.InputsHandleFocusOut(e)} value={search}
+                    <input list="cliente" onFocus={e => utils.InputsHandleFocus(e)}
+                        onBlur={e => utils.InputsHandleFocusOut(e)} value={search}
                         onChange={e => setSearch(e.target.value)} />
                 </label>
                 <button onClick={onClose}>X</button>
@@ -49,7 +49,7 @@ export default function StoreView({ productsList, setProductsList, onClose }:
                                 <div className="product-info">
                                     <h2>{product.name}</h2>
                                     <p>{product.description}</p>
-                                    <p className="price">{Utils.monetaryMask(product.price)}</p>
+                                    <p className="price">{utils.monetaryMask(product.price)}</p>
                                     <p className="id">{`ID: ${product.id}`}</p>
                                     <div className="products-buttons">
                                         <button onClick={() => {
