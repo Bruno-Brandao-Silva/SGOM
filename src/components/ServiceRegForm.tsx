@@ -292,7 +292,7 @@ export default function ServiceRegForm() {
                                 newProducts.splice(index, 1);
                                 setRequireList(newProducts);
                                 setRender({});
-                            }}><img src="./public/images/delete.png" /></button>
+                            }}><img src="../public/images/delete.png" /></button>
                         </div>
                     </div>
 

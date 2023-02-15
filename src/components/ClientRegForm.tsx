@@ -207,7 +207,7 @@ export default function ClientRegForm() {
                             return
                         }
                         setPopUp(<PopUpSuccessTemplate buttons={[
-                            { text: "Agora", onClick: () => navigate(`/FormCadEndereco/${cpf_cnpjInput}`) },
+                            { text: "Agora", onClick: () => navigate(`/AddressRegForm/${cpf_cnpjInput}`) },
                             { text: "Depois", onClick: () => navigate(`/Client/${cpf_cnpjInput}`) },
                         ]} title="Cliente cadastrado com sucesso!"
                             content="Cadastrar endereço agora?" />)

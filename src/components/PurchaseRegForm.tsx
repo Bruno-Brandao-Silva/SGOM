@@ -139,7 +139,7 @@ export default function PurchaseRegForm() {
                                 newProducts.splice(index, 1);
                                 setPurchaseList(newProducts);
                                 setRender({});
-                            }}><img src="./public/images/delete.png" /></button>
+                            }}><img src="../public/images/delete.png" /></button>
                         </div>
                     </div>
 
