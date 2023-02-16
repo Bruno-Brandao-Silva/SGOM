@@ -19,8 +19,8 @@ export default function Header() {
                 <Link className={hash.includes("#/ServiceRegForm/") ? "link link-active" : "link"} to='/ServiceRegForm/'><img src='../public/images/add-service.png'></img><p>CADASTAR SERVIÇO</p></Link>
                 <Link className={hash.includes("#/AllProducts/") ? "link link-active" : "link"} to='/AllProducts/'><img src='../public/images/produtos.png'></img><p>PRODUTOS</p></Link>
                 <Link className={hash.includes("#/ProductRegForm/") ? "link link-active" : "link"} to='/ProductRegForm/'><img src='../public/images/adicionar-produto.png'></img><p>CADASTAR PRODUTO</p></Link>
-                <Link className={hash.includes("#/AllPurchase/") ? "link link-active" : "link"} to='/AllPurchase/'><img src='../public/images/editar.png'></img><p>VENDAS</p></Link>
-                <Link className={hash.includes("#/PurchaseRegForm/") ? "link link-active" : "link"} to='/PurchaseRegForm/'><img src='../public/images/editar.png'></img><p>CADASTRAR VENDA</p></Link>
+                <Link className={hash.includes("#/AllPurchase/") ? "link link-active" : "link"} to='/AllPurchase/'><img src='../public/images/cifrao.png'></img><p>VENDAS</p></Link>
+                <Link className={hash.includes("#/PurchaseRegForm/") ? "link link-active" : "link"} to='/PurchaseRegForm/'><img src='../public/images/cifrao-plus.png'></img><p>CADASTRAR VENDA</p></Link>
                 <Link className={hash.includes("#/Info/") ? "link link-active" : "link"} to='/Info/'><img src='../public/images/editar.png'></img><p>INFO. IMPRESSÃO</p></Link>
             </div>
         </header>

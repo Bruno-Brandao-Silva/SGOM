@@ -11,7 +11,20 @@ export default function ProductsAll() {
     const [found, setFound] = useState<Product[]>([]);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
-    const [popUp, setPopUp] = useState<React.ReactNode>(null)
+    const [popUp, setPopUp] = useState<React.ReactNode>(<PopUpDeleteTemplate buttons={[
+        {
+            text: "Confirmar", onClick: async () => {
+                await window.api.Product().delete(1);
+                const newProducts = products.filter((p) => p.id !== 1);
+                setProducts(newProducts);
+                setPopUp(null)
+            }
+        }, {
+            text: "Cancelar", onClick: () => {
+                setPopUp(null)
+            }
+        }
+    ]} title="Confirmar exclusão do produto" />)
 
     useEffect(() => {
         window.api.Product().getAll().then((products) => {
@@ -24,7 +37,9 @@ export default function ProductsAll() {
         setPage(0);
         if (search.length > 0) {
             setFound(products?.filter((p) => {
-                return p.name.toLowerCase().includes(search.toLowerCase()) || p.id.toString().includes(search);
+                return p.name.toLowerCase().includes(search.toLowerCase())
+                    || p.id.toString().includes(search.toLowerCase())
+                    || p.description?.toLowerCase().includes(search.toLowerCase());
             }));
         } else {
             setFound(products);
@@ -46,7 +61,7 @@ export default function ProductsAll() {
         <h1 className="title">{"PRODUTOS"}</h1>
 
         <label style={{ width: "50%", margin: "20px auto" }}>
-            <span>BUSCAR PRODUTO POR NOME OU ID</span>
+            <span>BUSCAR PRODUTO POR NOME, DESCRIÇÃO OU ID</span>
             <input list="cliente" onFocus={e => utils.InputsHandleFocus(e)}
                 onBlur={e => utils.InputsHandleFocusOut(e)} value={search}
                 onChange={e => setSearch(e.target.value)} />

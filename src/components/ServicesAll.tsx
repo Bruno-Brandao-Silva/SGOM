@@ -55,7 +55,7 @@ export default function ServicesAll() {
         <div className="all">
             <div>
                 <label>
-                    <span>BUSCAR SERVIÇO POR PLACA</span>
+                    <span>BUSCAR SERVIÇO POR PLACA OU CPF/CNPJ</span>
                     <input onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={search} onChange={e => { setSearch(e.target.value); }}></input>
                 </label>
             </div>

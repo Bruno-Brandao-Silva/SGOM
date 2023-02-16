@@ -30,6 +30,14 @@ body {
   overflow: overlay;
 }
 
+img,
+a {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 15px;
@@ -442,7 +450,8 @@ header {
   margin-right: 20px;
 }
 
-.pop-up-success-template {
+.pop-up-success-template,
+.pop-up-delete-template {
   display: flex;
   align-items: center;
   width: 100%;
@@ -456,6 +465,18 @@ header {
   background-color: var(--green);
   border-radius: 100%;
   margin-right: 20px;
+}
+
+.pop-up-delete-template-image {
+  background-color: #CF3C3F;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.pop-up-delete-template-image img {
+  width: 80px;
+  height: 80px;
+
 }
 
 .pop-up-success-template-symbol div:first-child {
@@ -485,25 +506,35 @@ header {
   min-width: 240px;
 }
 
-.pop-up-success-template-content h1 {
+.pop-up-delete-template-content {
+  width: fit-content;
+  min-width: 240px;
+  padding: 30px;
+}
+
+.pop-up-success-template-content h1,
+.pop-up-delete-template-content h1 {
   max-width: 400px;
   font-size: 1.5em;
   white-space: break-spaces;
 }
 
-.pop-up-success-template-content p {
+.pop-up-success-template-c ontent p,
+.pop-up-delete-template-content p {
   font-size: 1.1em;
   font-weight: 500;
   max-width: 400px;
 }
 
-.pop-up-success-template-content-buttons {
+.pop-up-success-template-content-buttons,
+.pop-up-delete-template-content-buttons {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.pop-up-success-template-content-buttons button {
+.pop-up-success-template-content-buttons button,
+.pop-up-delete-template-content-buttons button {
   background-color: var(--medium-grey);
   color: var(--whitesmoke);
   border: 2px solid rgba(0, 0, 0, 0);
@@ -516,6 +547,18 @@ header {
   display: block;
   margin: auto;
   margin-top: 20px;
+}
+
+.pop-up-success-template-content-buttons button:first-child:hover {
+  background-color: var(--green);
+}
+
+.pop-up-delete-template-content-buttons button:first-child:hover {
+  background-color: var(--red);
+}
+
+.pop-up-delete-template-content-buttons button:last-child:hover {
+  background-color: var(--grey);
 }
 
 .client {

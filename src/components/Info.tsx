@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import utils from "../models/Utils";
 import Header from "./Header";
+import PopUpSuccessTemplate from "./PopUpSuccessTemplate";
+import PopUpErrorTemplate from "./PopUpErrorTemplate";
+import PopUp from "./PopUp";
 
 export default function Info() {
     const [info, setInfo] = useState<Info>(window.api.Info());
@@ -10,6 +13,8 @@ export default function Info() {
     const [line_3, setLine_3] = useState("");
     const [line_4, setLine_4] = useState("");
     const [line_5, setLine_5] = useState("");
+    const [popUp, setPopUp] = useState<React.ReactNode>()
+
     useEffect(() => {
         window.api.Info().get().then((info) => {
             setInfo(info);
@@ -51,6 +56,9 @@ export default function Info() {
 
     return (<>
         <Header />
+
+        {popUp && <PopUp>{popUp}</PopUp>}
+
         <h1 className="title">INFOMAÇÕES DE IMPRESSÃO</h1>
         <form className="reg-form">
             <label>
@@ -109,23 +117,30 @@ export default function Info() {
                 ></input>
             </label>
             <button type="button" className="reg-form-button" onClick={async () => {
-                const info = window.api.Info();
-                info.name = name;
-                info.line_1 = line_1;
-                info.line_2 = line_2;
-                info.line_3 = line_3;
-                info.line_4 = line_4;
-                info.line_5 = line_5;
-                await info.update(info);
-                window.api.Info().get().then((info) => {
-                    setInfo(info);
-                    setName(info.name);
-                    setLine_1(info.line_1);
-                    setLine_2(info.line_2);
-                    setLine_3(info.line_3);
-                    setLine_4(info.line_4);
-                    setLine_5(info.line_5);
-                });
+                try {
+                    const info = window.api.Info();
+                    info.name = name;
+                    info.line_1 = line_1;
+                    info.line_2 = line_2;
+                    info.line_3 = line_3;
+                    info.line_4 = line_4;
+                    info.line_5 = line_5;
+                    await info.update(info);
+                    window.api.Info().get().then((info) => {
+                        setInfo(info);
+                        setName(info.name);
+                        setLine_1(info.line_1);
+                        setLine_2(info.line_2);
+                        setLine_3(info.line_3);
+                        setLine_4(info.line_4);
+                        setLine_5(info.line_5);
+                    });
+                    setPopUp(<PopUpSuccessTemplate buttons={[
+                        {text: "OK", onClick: async () => setPopUp(null)},
+                    ]} title="Informações de impressão salvas com sucesso!" />)
+                } catch (error) {
+                    setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />)
+                }
             }}>Salvar</button>
         </form>
     </>);

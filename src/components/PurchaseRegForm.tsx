@@ -165,6 +165,7 @@ export default function PurchaseRegForm() {
                         return
                     }
                     if (purchaseList.length === 0) {
+                        setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={"Ensira ao menos 1 produto!"} />)
                         return
                     }
                     try {
@@ -208,9 +209,9 @@ export default function PurchaseRegForm() {
                             purchase: purchaseFinal,
                             purchaseList: await window.api.PurchaseList().getByPurchaseId(newId),
                             info: await window.api.Info().get(),
-                            client: await window.api.Client().getByCpfCnpj(purchaseFinal.cpf_cnpj),
-                            addresses: await window.api.Address().getByCpfCnpj(purchaseFinal.cpf_cnpj),
-                            contacts: await window.api.Contact().getByCpfCnpj(purchaseFinal.cpf_cnpj),
+                            client: purchaseFinal.cpf_cnpj && await window.api.Client().getByCpfCnpj(purchaseFinal.cpf_cnpj),
+                            addresses: purchaseFinal.cpf_cnpj && await window.api.Address().getByCpfCnpj(purchaseFinal.cpf_cnpj),
+                            contacts: purchaseFinal.cpf_cnpj && await window.api.Contact().getByCpfCnpj(purchaseFinal.cpf_cnpj),
                         });
                         setPopUp(<PopUpSuccessTemplate buttons={[
                             {
