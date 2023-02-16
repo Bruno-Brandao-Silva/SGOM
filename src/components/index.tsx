@@ -29,6 +29,9 @@ export default function Index() {
     }, [info]);
     return (<>
         <Header />
+        <button onClick={async () => {
+
+        }}>TESTE</button>
         <div style={{ width: "fit-content", margin: "150px auto" }}>
             <div className="react-logo">
                 <div></div>

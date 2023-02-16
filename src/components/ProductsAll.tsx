@@ -11,20 +11,7 @@ export default function ProductsAll() {
     const [found, setFound] = useState<Product[]>([]);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
-    const [popUp, setPopUp] = useState<React.ReactNode>(<PopUpDeleteTemplate buttons={[
-        {
-            text: "Confirmar", onClick: async () => {
-                await window.api.Product().delete(1);
-                const newProducts = products.filter((p) => p.id !== 1);
-                setProducts(newProducts);
-                setPopUp(null)
-            }
-        }, {
-            text: "Cancelar", onClick: () => {
-                setPopUp(null)
-            }
-        }
-    ]} title="Confirmar exclusão do produto" />)
+    const [popUp, setPopUp] = useState<React.ReactNode>()
 
     useEffect(() => {
         window.api.Product().getAll().then((products) => {
