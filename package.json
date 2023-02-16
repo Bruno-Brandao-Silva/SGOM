@@ -46,7 +46,9 @@
   },
   "dependencies": {
     "better-sqlite3": "^8.0.1",
+    "copy-webpack-plugin": "^11.0.0",
     "electron-squirrel-startup": "^1.0.0",
+    "pdf-to-printer": "^5.5.0",
     "pdfmake": "^0.2.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -213,15 +213,20 @@ export default function PurchaseRegForm() {
                             addresses: purchaseFinal.cpf_cnpj && await window.api.Address().getByCpfCnpj(purchaseFinal.cpf_cnpj),
                             contacts: purchaseFinal.cpf_cnpj && await window.api.Contact().getByCpfCnpj(purchaseFinal.cpf_cnpj),
                         });
+                        const dir = await window.api.pdfCreator(
+                            docDefinition,
+                            `purchase-${newId}`,
+                            "purchases"
+                        )
                         setPopUp(<PopUpSuccessTemplate buttons={[
                             {
                                 text: "SIM", onClick: async () => {
-                                    await window.api.pdfCreator(
-                                        docDefinition,
-                                        `purchase-${newId}`,
-                                        "purchases"
-                                    )
-                                    setPopUp(null);
+                                    const response = await window.api.printer(dir)
+                                    if (response === "success") {
+                                        setPopUp(null);
+                                    } else {
+                                        setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={response} />)
+                                    }
                                 }
                             },
                             { text: "NÃO", onClick: () => setPopUp(null) },

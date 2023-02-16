@@ -390,15 +390,20 @@ export default function ServiceRegForm() {
                             vehicle, info: await window.api.Info().get()
 
                         });
+                        const dir = await window.api.pdfCreator(
+                            docDefinition,
+                            `service-${service.id}`,
+                            "services"
+                        )
                         setPopUp(<PopUpSuccessTemplate buttons={[
                             {
                                 text: "SIM", onClick: async () => {
-                                    await window.api.pdfCreator(
-                                        docDefinition,
-                                        `service-${service.id}`,
-                                        "services"
-                                    )
-                                    setPopUp(null);
+                                    const response = await window.api.printer(dir)
+                                    if (response === "success") {
+                                        setPopUp(null);
+                                    } else {
+                                        setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={response} />)
+                                    }
                                 }
                             },
                             { text: "NÃO", onClick: () => setPopUp(null) },

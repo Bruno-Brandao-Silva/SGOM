@@ -23,4 +23,5 @@ contextBridge.exposeInMainWorld('api', {
     Info: () => new Info(),
     chooseFile: () => ipcRenderer.invoke('chooseFile'),
     pdfCreator: (docDefinition: TDocumentDefinitions, docName: string, dir: string, options?: BufferOptions) => ipcRenderer.invoke('pdfCreator', { docDefinition, docName, options, dir }),
+    printer: (path: string) => ipcRenderer.invoke("printer", { path }),
 })

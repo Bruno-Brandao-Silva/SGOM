@@ -39,7 +39,9 @@ declare global {
       Vehicle: () => VehicleClass;
       Info: () => InfoClass;
       chooseFile: () => Promise<string[]>;
-      pdfCreator: (docDefinition: TDocumentDefinitions, docName: string, dir: string, options?: BufferOptions) => Promise<boolean>;
+      pdfCreator: (docDefinition: TDocumentDefinitions, docName: string, dir: string, options?: BufferOptions) => Promise<string>;
+      printer: (path: string) => Promise<string>;
+
     }
   }
 }
