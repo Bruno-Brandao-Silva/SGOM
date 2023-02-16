@@ -39,23 +39,24 @@ export default function Client() {
                     <h1>{client?.name}</h1>
                     <h3>CPF/CNPJ: {client?.cpf_cnpj}</h3>
                 </div>
-                <div className="client-contacts">
-                    <h2>CONTATOS</h2>
-                    {contacts?.map((contact, index: number) => (<Link to={`/ContactEditForm/${cpf_cnpj.replace("/", "\\")}/${contact.id}`} key={index} className="client-contact-link" >
-                        <p>{`${contact.type} - ${contact.value}`}</p>
-                    </Link>))}
-                </div>
-                <div className="client-vehicles">
-                    <h2>VEÍCULOS</h2>
-                    {vehicles?.map((vehicle, index: number) => (<Link to={`/VehicleEditForm/${cpf_cnpj.replace("/", "\\")}/${vehicle.id_plate}`} key={index} className="client-vehicle-link" >
-                        <p>{`${vehicle.brand} ${vehicle.model} ${vehicle.year} ${vehicle.id_plate}`}</p>
-                    </Link>))}
+                <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
+                    <div className="client-contacts">
+                        <h2>CONTATOS</h2>
+                        {contacts?.map((contact, index: number) => (<Link to={`/ContactEditForm/${cpf_cnpj.replace("/", "\\")}/${contact.id}`} key={index} className="client-contact-link" >
+                            <p>{`${contact.type}: ${contact.value}`}</p>
+                        </Link>))}
+                    </div>
+                    <div className="client-vehicles">
+                        <h2>VEÍCULOS</h2>
+                        {vehicles?.map((vehicle, index: number) => (<Link to={`/VehicleEditForm/${cpf_cnpj.replace("/", "\\")}/${vehicle.id_plate}`} key={index} className="client-vehicle-link" >
+                            <p>{`${vehicle.id_plate}: ${vehicle.brand} ${vehicle.model} ${vehicle.color} ${vehicle.year}`}</p>
+                        </Link>))}
+                    </div>
                 </div>
                 <div className="client-addresses">
                     <h2>ENDEREÇOS</h2>
                     {addresses?.map((address, index: number) => (<Link to={`/AddressEditForm/${cpf_cnpj.replace("/", "\\")}/${address.id}`} key={index} className="client-address-link" >
-                        <p>{`${address.street}, ${address.number} - ${address.district}, ${address.city} - ${address.state} - CEP:${address.cep}`}</p>
-                        {address.complement && <p>Complemento: {address.complement}</p>}
+                        <p>{`${address.street}, ${address.number} - ${address.district}, ${address.city} - ${address.state} - CEP:${address.cep}` + (address.complement && `  -  Complemento: ${address.complement}`)}</p>
                     </Link>))}
                 </div>
             </div>

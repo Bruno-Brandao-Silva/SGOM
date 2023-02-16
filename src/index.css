@@ -571,27 +571,42 @@ header {
 .client-info {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
   color: var(--whitesmoke);
-  margin-left: -6.5vw;
 
+}
+
+.client-info h1 {
+  font-size: 45px;
+}
+
+.client-info h3 {
+  font-size: 30px;
 }
 
 .client-info h1,
 .client-info h3 {
-  text-align: center;
+  text-align: left;
   color: white;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
-.client-addresses,
 .client-vehicles,
 .client-contacts {
   color: var(--whitesmoke);
   margin-top: 20px;
-  max-width: 45%;
+  width: 50%;
+}
+
+.client-addresses {
+  color: var(--whitesmoke);
+  margin-top: 20px;
+}
+
+.client-contacts h2,
+.client-vehicles h2,
+.client-contacts h2 {
+  font-size: 25px;
+  font-weight: bolder;
 }
 
 .client-address-link,
@@ -599,7 +614,9 @@ header {
 .client-contact-link {
   color: var(--whitesmoke);
   text-decoration: none;
-  margin: 0 20px;
+  margin: 20px 0 20px 10px;
+  font-size: 20px;
+  display: block;
 }
 
 .client-toolbar {

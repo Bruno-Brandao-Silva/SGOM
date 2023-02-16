@@ -1,8 +1,9 @@
 {
-  "name": "sgom",
-  "productName": "SGOM - SISTEMA DE GERENCIAMENTO DE OFICINA MECÂNICA",
-  "version": "1.0.0",
+  "name": "sistema-de-gerenciamento-de-oficina-mecanica",
+  "productName": "SISTEMA DE GERENCIAMENTO DE OFICINA MECÂNICA",
+  "version": "1.0.1",
   "description": "My Electron application description",
+  "repository": "https://github.com/Bruno-Brandao-Silva/SGOM",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -52,6 +53,7 @@
     "pdfmake": "^0.2.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.6.1"
+    "react-router-dom": "^6.6.1",
+    "update-electron-app": "^2.0.1"
   }
 }

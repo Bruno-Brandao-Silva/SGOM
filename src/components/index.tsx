@@ -29,10 +29,6 @@ export default function Index() {
     }, [info]);
     return (<>
         <Header />
-        <button onClick={async () => {
-            const respo = await window.api.printer('./pdfs/services/service-1.pdf');
-            console.log(respo)
-        }}>TESTE</button>
         <div style={{ width: "fit-content", margin: "150px auto" }}>
             <div className="react-logo">
                 <div></div>
