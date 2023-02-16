@@ -179,70 +179,77 @@ export default function ClientRegForm() {
                     </div>
                 </div>
                 <button type="button" className="reg-form-button" onClick={async () => {
-                    const form = document.getElementsByClassName('reg-form')[0] as HTMLFormElement;
-                    if (!form.checkValidity()) {
-                        form.reportValidity();
-                        return;
-                    }
-                    const client = window.api.Client();
-                    client.cpf_cnpj = cpf_cnpjInput;
-                    client.name = name;
-                    if (!cpf_cnpj) {
-                        try {
-                            await client.insert(client);
-                            inputContacts.forEach(async inputContact => {
-                                const contact = window.api.Contact();
-                                contact.cpf_cnpj = cpf_cnpjInput;
-                                contact.type = inputContact.type;
-                                contact.value = inputContact.value;
-                                try {
-                                    await contact.insert(contact);
-                                } catch (error) {
-                                    setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />)
-                                    return
-                                }
-                            });
-                        } catch (error) {
-                            setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />)
-                            return
+                    try {
+                        const form = document.getElementsByClassName('reg-form')[0] as HTMLFormElement;
+                        if (!form.checkValidity()) {
+                            form.reportValidity();
+                            return;
                         }
-                        setPopUp(<PopUpSuccessTemplate buttons={[
-                            { text: "Agora", onClick: () => navigate(`/AddressRegForm/${cpf_cnpjInput}`) },
-                            { text: "Depois", onClick: () => navigate(`/Client/${cpf_cnpjInput}`) },
-                        ]} title="Cliente cadastrado com sucesso!"
-                            content="Cadastrar endereço agora?" />)
-                    } else {
-                        try {
-                            await client.update(client);
-                            let olderContacts: (number | bigint)[] = [];
-                            inputContacts.forEach(async inputContact => {
-                                const contact = window.api.Contact();
-                                contact.cpf_cnpj = cpf_cnpjInput;
-                                contact.type = inputContact.type;
-                                contact.value = inputContact.value;
-                                let temp = contacts.find((contact) => contact.type === inputContact.type && contact.value === inputContact.value);
-                                if (temp) {
-                                    contact.id = temp.id;
-                                    olderContacts.push(temp.id);
-                                }
-                                try {
-                                    if (!temp) {
+                        const client = window.api.Client();
+                        client.cpf_cnpj = cpf_cnpjInput;
+                        client.name = name;
+                        if (!cpf_cnpj) {
+                            try {
+                                await client.insert(client);
+                                inputContacts.forEach(async inputContact => {
+                                    const contact = window.api.Contact();
+                                    contact.cpf_cnpj = cpf_cnpjInput;
+                                    contact.type = inputContact.type;
+                                    contact.value = inputContact.value;
+                                    try {
                                         await contact.insert(contact);
+                                    } catch (error) {
+                                        throw error
                                     }
-                                } catch (error) {
-                                    setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />)
-                                    return
-                                }
+                                });
+                            } catch (error) {
+                                throw error
+                            }
+                            setPopUp(<PopUpSuccessTemplate buttons={[
+                                { text: "Agora", onClick: () => navigate(`/AddressRegForm/${cpf_cnpjInput.replace("/", "\\")}`) },
+                                { text: "Depois", onClick: () => navigate(`/Client/${cpf_cnpjInput.replace("/", "\\")}`) },
+                            ]} title="Cliente cadastrado com sucesso!"
+                                content="Cadastrar endereço agora?" />)
+                        } else {
+                            try {
+                                await client.update(client);
+                                let olderContacts: (number | bigint)[] = [];
+                                inputContacts.forEach(async inputContact => {
+                                    const contact = window.api.Contact();
+                                    contact.cpf_cnpj = cpf_cnpjInput;
+                                    contact.type = inputContact.type;
+                                    contact.value = inputContact.value;
+                                    let temp = contacts.find((contact) => contact.type === inputContact.type && contact.value === inputContact.value);
+                                    if (temp) {
+                                        contact.id = temp.id;
+                                        olderContacts.push(temp.id);
+                                    }
+                                    try {
+                                        if (!temp) {
+                                            await contact.insert(contact);
+                                        }
+                                    } catch (error) {
+                                        throw error
+                                    }
 
-                            });
-                            contacts.forEach(async contact => {
-                                if (!olderContacts.includes(contact.id)) {
-                                    await window.api.Contact().delete(contact.id);
-                                }
-                            });
-                        } catch (error) {
+                                });
+                                contacts.forEach(async contact => {
+                                    if (!olderContacts.includes(contact.id)) {
+                                        await window.api.Contact().delete(contact.id);
+                                    }
+                                });
+                                setPopUp(<PopUpSuccessTemplate buttons={[
+                                    { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpjInput.replace("/", "\\")}`) }
+                                ]} title="Cliente atualizado com sucesso!" />)
+                            } catch (error) {
+                                throw error
+                            }
+                        }
+                    } catch (error) {
+                        if (error.message.includes('UNIQUE')) {
+                            setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={"CPF/CNPJ já cadastrado!"} />)
+                        } else {
                             setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />)
-                            return
                         }
                     }
                 }}>{cpf_cnpj ? 'SALVAR' : 'CADASTRAR'}</button>

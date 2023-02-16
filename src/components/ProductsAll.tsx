@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import utils from "../models/Utils";
+import PopUp from "./PopUp";
+import PopUpDeleteTemplate from "./PopUpDeleteTemplate";
 import Header from "./Header";
 
 export default function ProductsAll() {
@@ -9,6 +11,7 @@ export default function ProductsAll() {
     const [found, setFound] = useState<Product[]>([]);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
+    const [popUp, setPopUp] = useState<React.ReactNode>(null)
 
     useEffect(() => {
         window.api.Product().getAll().then((products) => {
@@ -39,6 +42,7 @@ export default function ProductsAll() {
     }, [products])
     return (<>
         <Header />
+        {popUp && <PopUp>{popUp}</PopUp>}
         <h1 className="title">{"PRODUTOS"}</h1>
 
         <label style={{ width: "50%", margin: "20px auto" }}>
@@ -63,9 +67,21 @@ export default function ProductsAll() {
                                         navigate(`/ProductEditForm/${product.id}`);
                                     }}>editar</button>
                                     <button onClick={async () => {
-                                        await window.api.Product().delete(product.id);
-                                        const newProducts = products.filter((p) => p.id !== product.id);
-                                        setProducts(newProducts);
+                                        setPopUp(<PopUpDeleteTemplate buttons={[
+                                            {
+                                                text: "Confirmar", onClick: async () => {
+                                                    await window.api.Product().delete(product.id);
+                                                    const newProducts = products.filter((p) => p.id !== product.id);
+                                                    setProducts(newProducts);
+                                                    setPopUp(null)
+                                                }
+                                            }, {
+                                                text: "Cancelar", onClick: () => {
+                                                    setPopUp(null)
+                                                }
+                                            }
+                                        ]} title="Confirmar exclusão do produto" />)
+
                                     }}>excluir</button>
                                 </div>
                             </div>

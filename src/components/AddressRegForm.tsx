@@ -11,6 +11,35 @@ export default function AddressRegForm() {
     const cpf_cnpj = useParams().cpf_cnpj?.replace("\\", "/");
     const { id } = useParams();
 
+
+    const statesDataList = [
+        { state: 'Acre', acronym: 'AC' },
+        { state: 'Alagoas', acronym: 'AL' },
+        { state: 'Amapá', acronym: 'AP' },
+        { state: 'Amazonas', acronym: 'AM' },
+        { state: 'Bahia', acronym: 'BA' },
+        { state: 'Ceará', acronym: 'CE' },
+        { state: 'Distrito Federal', acronym: 'DF' },
+        { state: 'Espírito Santo', acronym: 'ES' },
+        { state: 'Goiás', acronym: 'GO' },
+        { state: 'Maranhão', acronym: 'MA' },
+        { state: 'Mato Grosso', acronym: 'MT' },
+        { state: 'Mato Grosso do Sul', acronym: 'MS' },
+        { state: 'Minas Gerais', acronym: 'MG' },
+        { state: 'Pará', acronym: 'PA' },
+        { state: 'Paraíba', acronym: 'PB' },
+        { state: 'Pernambuco', acronym: 'PE' },
+        { state: 'Piauí', acronym: 'PI' },
+        { state: 'Rio de Janeiro', acronym: 'RJ' },
+        { state: 'Rio Grande do Norte', acronym: 'RN' },
+        { state: 'Rio Grande do Sul', acronym: 'RS' },
+        { state: 'Rondônia', acronym: 'RO' },
+        { state: 'Santa Catárina', acronym: 'SC' },
+        { state: 'São Paulo', acronym: 'SP' },
+        { state: 'Sergipe', acronym: 'SE' },
+        { state: 'Tocantins', acronym: 'TO' },
+    ]
+    const [dtl, setDtl] = useState<JSX.Element[]>();
     const [cep, setCep] = useState("");
     const [number, setNumber] = useState("");
     const [complement, setComplement] = useState("");
@@ -26,6 +55,9 @@ export default function AddressRegForm() {
                 utils.InputsHandleFocus({ target: inputs[i] });
             }
         }
+        setDtl(statesDataList.map(({ state, acronym }, index) => {
+            return <option key={index} value={state}>{acronym}</option>
+        }))
     }, []);
     useEffect(() => {
         id && window.api.Address().getById(+id).then((res) => {
@@ -47,6 +79,18 @@ export default function AddressRegForm() {
         });
     }, [id]);
 
+    useEffect(() => {
+        if (state.length > 0) {
+            const temp = statesDataList.filter(({ state: stt, acronym }) => stt.toLowerCase().includes(state.toLowerCase()) || acronym.toLowerCase().includes(state.toLowerCase()))
+            setDtl(temp.map(({ state, acronym }, index) => {
+                return <option key={index} value={state}>{acronym}</option>
+            }))
+        } else {
+            setDtl(statesDataList.map(({ state, acronym }, index) => {
+                return <option key={index} value={state}>{acronym}</option>
+            }))
+        }
+    }, [state])
     return (<>
         <Header />
         {popUp && <PopUp>{popUp}</PopUp>}
@@ -83,33 +127,9 @@ export default function AddressRegForm() {
                 <label style={{ width: "45%" }}>
                     <span>Estado</span>
                     <input name="estado" list="estado" onFocus={e => utils.InputsHandleFocus(e)} onBlur={e => utils.InputsHandleFocusOut(e)} value={state} onChange={e => setState(e.target.value)} required />
-                    {/* <datalist id="estado" className="datalist">
-                        <option value={'Acre'}>AC</option>
-                        <option value={'Alagoas'}>AL</option>
-                        <option value={'Amapá'}>AP</option>
-                        <option value={'Amazonas'}>AM</option>
-                        <option value={'Bahia'}>BA</option>
-                        <option value={'Ceará'}>CE</option>
-                        <option value={'Distrito Federal'}>DF</option>
-                        <option value={'Espírito Santo'}>ES</option>
-                        <option value={'Goiás'}>GO</option>
-                        <option value={'Maranhão'}>MA</option>
-                        <option value={'Mato Grosso'}>MT</option>
-                        <option value={'Mato Grosso do Sul'}>MS</option>
-                        <option value={'Minas Gerais'}>MG</option>
-                        <option value={'Pará'}>PA</option>
-                        <option value={'Paraíba'}>PB</option>
-                        <option value={'Pernambuco'}>PE</option>
-                        <option value={'Piauí'}>PI</option>
-                        <option value={'Rio de Janeiro'}>RJ</option>
-                        <option value={'Rio Grande do Norte'}>RN</option>
-                        <option value={'Rio Grande do Sul'}>RS</option>
-                        <option value={'Rondônia'}>RO</option>
-                        <option value={'Santa Catarina'}>SC</option>
-                        <option value={'São Paulo'}>SP</option>
-                        <option value={'Sergipe'}>SE</option>
-                        <option value={'Tocantins'}>TO</option>
-                    </datalist> */}
+                    <datalist id="estado" className="datalist" >
+                        {dtl?.slice(0, 7)}
+                    </datalist>
                 </label>
             </div>
             <button type="button" className="reg-form-button" onClick={async () => {
@@ -144,13 +164,13 @@ export default function AddressRegForm() {
 
                         }
                     }
+                    setPopUp(<PopUpSuccessTemplate buttons={[
+                        { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj.replace("/", "\\")}`) },
+                    ]} title={id ? "Endereço cadastrado com sucesso!" : "Endereço salvo com sucesso!"} />)
                 } catch (error) {
                     setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />);
                     return
                 }
-                setPopUp(<PopUpSuccessTemplate buttons={[
-                    { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj.replace("/", "\\")}`) },
-                ]} title="Endereço salvo com sucesso!" />)
             }}>SALVAR</button>
         </form>
     </>)

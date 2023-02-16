@@ -4,6 +4,9 @@ import utils from "../models/Utils";
 import Header from "./Header";
 import StoreView from "./StoreView";
 import pdfTemplate from "../models/PdfTemplates";
+import PopUpSuccessTemplate from "./PopUpSuccessTemplate";
+import PopUpErrorTemplate from "./PopUpErrorTemplate";
+import PopUp from "./PopUp";
 
 export default function PurchaseRegForm() {
     const { id } = useParams();
@@ -17,6 +20,7 @@ export default function PurchaseRegForm() {
     const [storeView, setStoreView] = useState(false);
     const [clientAlreadyRegistered, setClientAlreadyRegistered] = useState(false);
     const [clients, setClients] = useState<Client[]>();
+    const [popUp, setPopUp] = useState<React.ReactNode>()
 
     useEffect(() => {
         window.api.Client().getAll().then((clients) => {
@@ -57,6 +61,7 @@ export default function PurchaseRegForm() {
     const [, setRender] = useState({});
     return (<>
         <Header />
+        {popUp && <PopUp>{popUp}</PopUp>}
         <div className="store-view-container">
             {storeView && <StoreView productsList={purchaseList} setProductsList={setPurchaseList} onClose={() => setStoreView(false)} />}
         </div>
@@ -207,13 +212,21 @@ export default function PurchaseRegForm() {
                             addresses: await window.api.Address().getByCpfCnpj(purchaseFinal.cpf_cnpj),
                             contacts: await window.api.Contact().getByCpfCnpj(purchaseFinal.cpf_cnpj),
                         });
-                        console.log(await window.api.pdfCreator(
-                            docDefinition,
-                            `purchase-${newId}`,
-                            "purchases"
-                        ));
+                        setPopUp(<PopUpSuccessTemplate buttons={[
+                            {
+                                text: "SIM", onClick: async () => {
+                                    await window.api.pdfCreator(
+                                        docDefinition,
+                                        `purchase-${newId}`,
+                                        "purchases"
+                                    )
+                                    setPopUp(null);
+                                }
+                            },
+                            { text: "NÃO", onClick: () => setPopUp(null) },
+                        ]} title={id ? "Venda atualizada com sucesso!\nDeseja imprimir?" : "Venda cadastrada com sucesso!\nDeseja imprimir?"} />)
                     } catch (error) {
-                        console.log(error)
+                        setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />)
                     }
 
                 }}>{id ? "SALVAR" : "CADASTRAR"}</button>

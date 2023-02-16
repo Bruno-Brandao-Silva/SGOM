@@ -488,6 +488,7 @@ header {
 .pop-up-success-template-content h1 {
   max-width: 400px;
   font-size: 1.5em;
+  white-space: break-spaces;
 }
 
 .pop-up-success-template-content p {

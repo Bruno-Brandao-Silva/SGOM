@@ -116,7 +116,7 @@ export default function VehicleRegForm() {
                         } else {
                             setPopUp(<PopUpSuccessTemplate buttons={[
                                 { text: "OK", onClick: () => navigate(`/Client/${cpf_cnpj.replace("/", "\\")}`) },
-                            ]} title="Veículo salvo com sucesso!" />)
+                            ]} title="Veículo cadastrado com sucesso!" />)
                         }
                     } else {
                         vehicle.id_plate = id_plate;
@@ -131,7 +131,11 @@ export default function VehicleRegForm() {
                         }
                     }
                 } catch (error) {
-                    setPopUp(<PopUpErrorTemplate content={error.message} onClose={() => setPopUp(null)} />);
+                    if (error.message.includes('UNIQUE')) {
+                        setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={"Veículo já cadastrado!"} />)
+                    } else {
+                        setPopUp(<PopUpErrorTemplate content={error.message} onClose={() => setPopUp(null)} />);
+                    }
                 }
             }}>SALVAR</button>
         </form>

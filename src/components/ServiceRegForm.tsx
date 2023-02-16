@@ -4,12 +4,17 @@ import utils from "../models/Utils";
 import Header from "./Header";
 import StoreView from "./StoreView";
 import pdfTemplates from "../models/PdfTemplates";
+import PopUp from "./PopUp";
+import PopUpSuccessTemplate from "./PopUpSuccessTemplate";
+import PopUpErrorTemplate from "./PopUpErrorTemplate";
+
 export default function ServiceRegForm() {
     const cpf_cnpj = useParams().cpf_cnpj?.replace("\\", "/");
     const { id_plate, id } = useParams();
 
     const dataAtual = new Date().toLocaleDateString().replace(/^(\d{2})\/(\d{2})\/(\d{4})/g, '$3-$2-$1')
 
+    const [popUp, setPopUp] = useState<React.ReactNode>()
     const [, setRender] = useState({});
     const [inputs, setInputs] = useState<(HTMLInputElement | HTMLTextAreaElement)[]>();
     const [clients, setClients] = useState<Client[]>();
@@ -127,6 +132,7 @@ export default function ServiceRegForm() {
 
     return (<>
         <Header />
+        {popUp && <PopUp>{popUp}</PopUp>}
         <div className="store-view-container">
             {storeView && <StoreView productsList={requireList} setProductsList={setRequireList} onClose={() => setStoreView(false)} />}
         </div>
@@ -378,20 +384,28 @@ export default function ServiceRegForm() {
                                 });
                             }
                         }
-                    } catch (error) {
-                        console.log(error);
-                    }
-                    const docDefinition = pdfTemplates.servicePDF({
-                        service, client, addresses, contacts,
-                        requireList: await window.api.RequireList().getAllByServiceId(service.id),
-                        vehicle, info: await window.api.Info().get()
+                        const docDefinition = pdfTemplates.servicePDF({
+                            service, client, addresses, contacts,
+                            requireList: await window.api.RequireList().getAllByServiceId(service.id),
+                            vehicle, info: await window.api.Info().get()
 
-                    });
-                    console.log(await window.api.pdfCreator(
-                        docDefinition,
-                        `service-${service.id}`,
-                        "services"
-                    ));
+                        });
+                        setPopUp(<PopUpSuccessTemplate buttons={[
+                            {
+                                text: "SIM", onClick: async () => {
+                                    await window.api.pdfCreator(
+                                        docDefinition,
+                                        `service-${service.id}`,
+                                        "services"
+                                    )
+                                    setPopUp(null);
+                                }
+                            },
+                            { text: "NÃO", onClick: () => setPopUp(null) },
+                        ]} title={id ? "Serviço atualizado com sucesso!\nDeseja imprimir?" : "Serviço cadastrado com sucesso!\nDeseja imprimir?"} />)
+                    } catch (error) {
+                        setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />)
+                    }
                 }}>SALVAR</button>
             </div>
         </form>

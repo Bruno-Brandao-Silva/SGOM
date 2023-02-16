@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import utils from "../models/Utils";
 import Header from "./Header";
+import PopUp from "./PopUp";
+import PopUpErrorTemplate from "./PopUpErrorTemplate";
+import PopUpSuccessTemplate from "./PopUpSuccessTemplate";
 
 export default function ProductRegForm() {
     const { id } = useParams();
@@ -9,6 +12,8 @@ export default function ProductRegForm() {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [imagePreview, setImagePreview] = useState<string>();
+    const [popUp, setPopUp] = useState<React.ReactNode>(null);
+
     useEffect(() => {
         if (id) {
             window.api.Product().getById(+id).then(product => {
@@ -29,6 +34,9 @@ export default function ProductRegForm() {
 
     return (<>
         <Header />
+
+        {popUp && <PopUp>{popUp}</PopUp>}
+
         <h1 className="title">{(id ? "EDITAR" : "CADASTRAR") + " PRODUTO"}</h1>
 
         <form className="reg-form">
@@ -88,9 +96,26 @@ export default function ProductRegForm() {
                     if (description !== "") product.description = description
                     if (price !== "") product.price = +price
                     if (imagePreview) product.image = imagePreview
-                    if (id) { product.id = +id; product.update(product) } else { product.insert(product) }
-                } catch (e) {
-                    console.log(e)
+                    if (id) {
+                        product.id = +id; product.update(product)
+                    } else {
+                        product.insert(product)
+                    }
+                    setPopUp(<PopUpSuccessTemplate buttons={[
+                        {
+                            text: "OK", onClick: () => {
+                                if (!id) {
+                                    setName("")
+                                    setDescription("")
+                                    setPrice("")
+                                    setImagePreview("")
+                                }
+                                setPopUp(null)
+                            }
+                        },
+                    ]} title={id ? "Produto cadastrado com sucesso!" : "Produto salvo com sucesso!"} />)
+                } catch (error) {
+                    setPopUp(<PopUpErrorTemplate onClose={() => setPopUp(null)} content={error.message} />);
                 }
             }}>{id ? 'SALVAR' : 'CADASTRAR'}</button>
         </form>
